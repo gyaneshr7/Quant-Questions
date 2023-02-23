@@ -1,0 +1,73 @@
+.quest-block{
+    display: flex;
+    flex-direction: column;
+    width:750px;
+    margin: auto;
+}
+
+
+.div1{
+    display: flex;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+.first-left{
+    display: flex;
+    /* margin:5px; */
+    gap:5px;
+}
+
+.random-side{
+    display: flex;
+}
+
+.solved{
+  background-color: rgb(43, 136, 249);
+  border:1px solid rgb(71, 149, 245);
+  border-radius: 20px;
+  color:white;
+  padding:5px;
+  font-weight: 600;
+}
+
+.easy{
+    background-color: rgb(10, 220, 10);
+    border:1px solid rgb(10, 220, 10);
+    border-radius: 20px;
+    color:white;
+    padding:5px;
+    font-weight: 600;
+}
+
+.medium{
+    background-color: rgb(240, 232, 9);
+  border:1px solid rgb(240, 232, 9);
+  border-radius: 20px;
+  color:white;
+  padding:5px;
+  font-weight: 600;
+}
+
+.hard{
+    background-color: rgb(204, 8, 15);
+    border:1px solid rgb(204, 8, 15);
+    border-radius: 20px;
+    color:white;
+    padding:5px;
+    font-weight: 600;
+}
+
+.random{
+    background-color: transparent;
+    border: 1px solid grey;
+    color:grey;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.border1{
+    border:1px solid rgb(195, 195, 195);
+    margin-top: 13px;
+}

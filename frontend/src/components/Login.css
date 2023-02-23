@@ -1,0 +1,89 @@
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box{
+    border:1px solid rgb(209, 207, 207);
+    border-radius: 4px;
+    padding:20px;
+}
+.login-page{
+    height:450px;
+    width:500px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.login-logo{
+    width:170px;
+    height:120px;
+    object-fit: inherit;
+    justify-content: center;
+}
+
+.inputBox{
+    padding:10px;
+    border:1px solid rgb(209, 207, 207);
+    width:400px;
+    margin:10px;
+    border-radius: 4px;
+}
+
+.logbtn{
+    background-color: rgb(26, 146, 221);
+    border:1px solid rgb(26, 146, 221);
+    color:white;
+    width:420px;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logbtn:hover{
+    background-color: rgb(7, 110, 212);
+    border-radius:1px solid  rgb(7, 110, 212);
+}
+
+.last-block{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.forgot,
+.sign{
+    text-decoration: none;
+    color:rgb(69, 69, 69);
+}
+
+.forgot{
+    position: relative;
+    left:18px;
+}
+
+.sign{
+    position: relative;
+    left:-18px;
+}
+.forgot:hover,
+.sign:hover{
+   text-decoration: underline;
+}
+
+.eyePassword{
+    position: relative;
+    top:15px;
+    left:-50px;
+}
+
+.passwordfield{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    left:10px;
+}

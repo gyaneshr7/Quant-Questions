@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import logo2 from '../images/logo2.png'
 import './Login.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,34 +9,59 @@ import {
 
 function Login() {
   const [eye, setEye] = useState(true);
-  const[name,setName]=useState("");
-  const[password,setPassword]=useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const URL ='http://localhost:8000/auth'
+
+  const handleLogin=async ()=>{
+    console.log(email,password);
+    const val ={
+      email:email,
+      password:password
+    }
+    try {
+      const data = await fetch(`${URL}/login`, {
+        method: "POST",
+        body: JSON.stringify(val),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      const user = await data.json();
+      console.log(user);
+      if(user!='wrong email or password'){
+        localStorage.setItem("quantuser",JSON.stringify(user));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className='login-page'>
       <div className='box'>
-      <div className='login'>
-      <img src={logo2} className="login-logo" alt=""/>
-      <input className='inputBox' value={name} autoComplete="off" onChange={(e)=>setName(e.target.value)} type="text" placeholder='Username'/>
-      <div className='passwordfield'>
-      <input className='inputBox' type={eye ? "password" : "text"} autoComplete="off" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Password'/>
-      <div className="eyePassword" onClick={() => setEye(!eye)}>
-                        {eye ? (
-                          <FontAwesomeIcon icon={faEyeSlash} />
-                        ) : (
-                          <FontAwesomeIcon icon={faEye} />
-                        )}
+        <div className='login'>
+          <img src={logo2} className="login-logo" alt="" />
+          <input className='inputBox' value={email} autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email Address' />
+          <div className='passwordfield'>
+            <input className='inputBox' type={eye ? "password" : "text"} autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+            <div className="eyePassword" onClick={() => setEye(!eye)}>
+              {eye ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </div>
+          </div>
+
+          <button type="button" className='logbtn' onClick={handleLogin}>Log In</button>
+        </div>
+        <div className='last-block'>
+          <a href="/" className='forgot'>Forgot Password</a>
+          <a href="/signup" className='sign'>Sign Up</a>
+        </div>
       </div>
-      </div>
-      
-      <button type="button" className='logbtn'>Log In</button>
-      </div>
-      <div className='last-block'>
-        <a href="/" className='forgot'>Forgot Password</a>
-        <a href="/signup" className='sign'>Sign Up</a>
-      </div>
-      </div>
-    
+
     </div>
   )
 }

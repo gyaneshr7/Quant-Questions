@@ -6,6 +6,7 @@ import {
   faEye,
   faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
+import Header from './Header';
 
 function Signup() {
     const [eye, setEye] = useState(true);
@@ -13,6 +14,8 @@ function Signup() {
     const[email,setEmail]=useState("");
     const[password,setPassword]=useState("");
   return (
+    <>
+    <Header/>
       <div className='login-page'>
       <div className='box'>
       <div className='login'>
@@ -29,7 +32,7 @@ function Signup() {
       </div>
       </div>
       <input className='inputBox' value={email} autoComplete="off" onChange={(e)=>setEmail(e.target.value)} type="text" placeholder='E-mail address'/>
-      <button type="button" className='logbtn'>Log In</button>
+      <button type="button" className='logbtn'>Sign Up</button>
       </div>
       <div className='last-block'>
         <a href="/" className='forgot'>Forgot Password</a>
@@ -38,6 +41,7 @@ function Signup() {
       </div>
     
     </div>
+    </>
   )
 }
 

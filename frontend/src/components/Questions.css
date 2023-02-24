@@ -8,7 +8,7 @@
 
 .div1{
     display: flex;
-    margin-top: 30px;
+    margin-top: 20px;
     justify-content: space-between;
 }
 
@@ -41,10 +41,10 @@
 }
 
 .medium{
-    background-color: rgb(240, 232, 9);
+  background-color: rgb(240, 232, 9);
   border:1px solid rgb(240, 232, 9);
   border-radius: 20px;
-  color:white;
+  color:black;
   padding:5px;
   font-weight: 600;
 }
@@ -70,4 +70,66 @@
 .border1{
     border:1px solid rgb(195, 195, 195);
     margin-top: 13px;
+}
+
+.div2{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.search{
+  background-color: transparent;
+  border:1px solid grey;
+  font-size: 1rem;
+  padding:5px;
+  color:grey;
+  border-radius: 5px;
+}
+
+.div3{
+    padding-bottom: 40px;
+}
+
+.sc-bYMpWt .sc-ilhmMj .dLyRAV .lmSJmf{
+    display:none
+}
+
+.any{
+    gap:5px;
+}
+
+
+@media screen and (max-width:540px){
+    .quest-block{
+        width:400px;
+    }
+
+    .first-left{
+        margin-left: 7px;
+    }
+    .easy,
+    .solved,
+    .medium,
+    .hard{
+        font-size: 12px;
+        padding:2px;
+        font-weight: 600;
+        width:fit-content;
+    }
+    .random{
+        position: relative;
+        left:-29px;
+    }
+    .div2{
+        flex-direction: column;
+    }
+
+    .search{
+        width:300px;
+    }
+
+    .any{
+        margin-top: 20px;
+    }
 }

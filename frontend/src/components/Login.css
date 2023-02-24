@@ -11,10 +11,10 @@
     padding:20px;
 }
 .login-page{
-    height:450px;
+    height:490px;
     width:500px;
     margin: auto;
-    margin-top: 100px;
+    margin-top: 70px;
 }
 
 .login-logo{
@@ -36,7 +36,7 @@
     background-color: rgb(26, 146, 221);
     border:1px solid rgb(26, 146, 221);
     color:white;
-    width:420px;
+    width:400px;
     padding: 10px;
     margin-top: 20px;
     font-size: 1.2rem;
@@ -63,12 +63,12 @@
 
 .forgot{
     position: relative;
-    left:18px;
+    left:26px;
 }
 
 .sign{
     position: relative;
-    left:-18px;
+    left:-26px;
 }
 .forgot:hover,
 .sign:hover{
@@ -77,7 +77,7 @@
 
 .eyePassword{
     position: relative;
-    top:15px;
+    top:20px;
     left:-50px;
 }
 
@@ -86,4 +86,21 @@
     flex-direction: row;
     position: relative;
     left:10px;
+}
+
+
+@media screen and (max-width:540px){
+   .login-page{
+    width:300px;
+    margin-top: 50px;
+    height:480px;
+   }  
+   
+   .inputBox{
+    width:240px;
+   }
+
+   .logbtn{
+    width:240px;
+   }
 }

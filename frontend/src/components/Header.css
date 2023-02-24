@@ -32,3 +32,55 @@
     background-color: rgb(1, 1, 66);
     color: white;
 }
+
+.hamburger{
+    display: none;
+}
+
+@media screen and (max-width:540px) {
+    .logo{
+       position:relative;
+       left:-45px;
+    }
+
+    .right{
+        display: none;
+    }
+
+    .hamburger{
+        display: block;
+    }
+
+    .ham-icon{
+        position:relative;
+        top:20px;
+        left:30px;
+        color:black;
+    }
+    .que-btn{
+        width:300px;
+
+    }
+    .mobile-right{
+        gap:9px;
+        background-color:transparent;
+        display:flex;
+        flex-direction: column;
+        position:relative;
+        top:40px;
+        left:-250px;
+        padding-bottom: 50px;
+        align-items: center;
+        margin-right: 40px;
+    }
+
+    .show-menu{
+        display: block;
+    }
+
+    .hide-menu{
+        display: none;
+    }
+}
+
+

@@ -6,6 +6,7 @@ import {
   faEye,
   faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
+import Header from './Header';
 
 function Login() {
   const [eye, setEye] = useState(true);
@@ -38,6 +39,8 @@ function Login() {
   }
 
   return (
+    <>
+    <Header/>
     <div className='login-page'>
       <div className='box'>
         <div className='login'>
@@ -63,6 +66,7 @@ function Login() {
       </div>
 
     </div>
+    </>
   )
 }
 

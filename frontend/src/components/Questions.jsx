@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 import "./Questions.css";
 import 'react-dropdown/style.css';
 import cross from '../images/cross.png'
+import Header from "./Header";
 
 function Questions() {
   const [searched, setSearched] = useState("");
@@ -131,6 +132,8 @@ function Questions() {
   }
 
   return (
+    <>
+    <Header/>
     <div>
       <div className="quest-block">
         <div className="div1">
@@ -283,7 +286,8 @@ function Questions() {
         </div>
       </div>
     </div>
-  );
+    </>
+  )
 }
 
 export default Questions;

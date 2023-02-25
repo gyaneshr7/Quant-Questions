@@ -1,0 +1,163 @@
+.detail-side{
+    display:flex;
+}
+
+.detail-one{
+    border:1px solid rgb(206, 205, 205);
+    width:850px;
+    height: 400px;
+    margin-top: 20px;
+    margin-left: 220px;
+    border-radius: 5px;
+}
+
+.line-one{
+    display: flex;
+}
+
+.main-detail{
+    display: flex;
+    margin-left: 30px;
+    margin-top: 30px;
+    justify-content: left;
+}
+
+.detail-title{
+    font-size: 24px;
+    color:black;
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+}
+
+.que-descr{
+    display: flex;
+    justify-content: left;
+    text-align: left;
+    margin-left: 40px;
+    margin-top: 70px;
+    font-size: 14px;
+    color:black;
+    width:750px;
+}
+
+.answer{
+    text-align: left;
+    margin-left: 40px;
+}
+
+.answer{
+    color:black;
+}
+
+.ans-field{
+    width:400px;
+    height:40px;
+    border:1px solid grey;
+}
+
+.submit{
+    color:white;
+    background-color: #28a745;
+    border:1px solid #28a745;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.submit:hover{
+    background-color: #18742d;
+}
+
+.show{
+    background-color: #007bff;
+    color:white;
+    border:1px solid #007bff;
+    border-radius: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    display: none;
+}
+
+.align-btn{
+    display: flex;
+    text-align: left;
+    margin-left: 40px;
+    position: relative;
+    top:9px;
+    gap:8px;
+}
+
+.detail-icons{
+    margin-top: 20px;
+    /* margin-left: 90px; */
+    position: absolute;
+    left:900px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.icon-line1,
+.icon-line2{
+    display: flex;
+    gap:15px;
+}
+
+.icon-line2{
+    margin-top: 8px;
+}
+.buttons{
+    margin-top: 10px;
+    margin-left:525px;
+    display: flex;
+    gap:15px;
+}
+
+.prev,
+.next{
+    border:1px solid rgb(206, 205, 205);
+    background-color: transparent;
+    border-radius: 5px;
+    color:grey;
+    padding:10px;
+}
+
+.prev:hover,
+.next:hover{
+    background-color: rgb(116, 115, 115);
+    color:white;
+}
+
+.prev:hover .chng{
+    color:white;
+}
+
+.nums{
+    position: relative;
+    top: 10px;
+}
+
+.options{
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    position: relative;
+    top:-15px;
+}
+
+.disp-radio{
+    display:flex;
+    gap:1px;
+}
+
+
+.input-pin{
+    position: relative;
+    top:8px;
+}

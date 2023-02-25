@@ -1,0 +1,86 @@
+.dash{
+    display: flex;
+}
+
+.dash-left{
+    position: relative;
+    left:0;
+    width:300px;
+    border-right: 1px solid grey;
+    height:100vh;
+}
+
+.first-row{
+    display:flex;
+    margin-top: 100px;
+    margin-left: 50px;
+    gap:50px;
+}
+
+.dash-head{
+    margin-top: 40px;
+    font-size: 2rem;
+    position: relative;
+    top:-15px;
+    font-weight: 600;
+}
+
+.add-que{
+    font-size: 1.4rem;
+    /* margin-top: 20px; */
+    background-color: grey;
+    color:white;
+}
+
+.opt-font{
+    font-size: 1.2rem;
+    font-weight: 500;
+    border:1px solid grey;
+}
+
+.second-row{
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.disp-title{
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+.que{
+    margin-top: 50px;
+}
+
+.radio-type{
+    display:flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.single{
+    display:flex;
+}
+
+.add-btn{
+    background-color: transparent;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 15px;
+    padding:4px;
+    width:70px;
+}
+
+.add-btn:hover{
+    background-color: black;
+    color:white;
+    border: 1px solid black;
+}
+

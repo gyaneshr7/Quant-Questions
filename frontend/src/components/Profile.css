@@ -1,0 +1,122 @@
+.profile-box{
+    width:1000px;
+    margin:auto;
+}
+
+.second-box{
+    display: flex;
+    margin-top: 30px;
+    gap:40px;
+}
+
+.profile{
+    border-radius: 4px;
+    border: 1px solid rgb(195, 194, 194);
+    text-align: left;
+    width:500px;
+}
+
+.pro{
+    background-color: rgb(248, 249, 250);
+    padding:20px;
+    padding-left: 40px;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.p-pro{
+    padding-left:40px;
+    display: flex;
+    gap:5px;
+    flex-direction: column;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 16px;
+    color:black;
+}
+
+.settings{
+    border-radius: 4px;
+    border: 1px solid rgb(195, 194, 194);
+    text-align: left;
+    width:500px;
+    height:40%;
+}
+
+.cross{
+    margin-left: 2px;
+}
+.free{
+    background-color: rgb(2, 2, 96);
+    color:white;
+    border-radius: 5px;
+    border: 1px solid rgb(2, 2, 96);
+    width:40px;
+    margin-left: 3px;
+    padding-left:2px;
+}
+
+.prog{
+    margin-right: 5px;
+    position: relative;
+    top:-2px;
+}
+.free-disp{
+    display: flex;
+}
+
+.table-size{
+    width:440px;
+    position: relative;
+    left:-20px;
+}
+.table-size td{
+    padding:6px;
+}
+.table-size th{
+    padding:6px;
+}
+.table-size th{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+}
+.table-head{
+    border-top: 1px solid rgb(154, 154, 154);
+    border-bottom: 1px solid rgb(154, 154, 154);
+}
+
+.pie-size{
+    width:350px;
+    margin: auto;
+}
+
+.que-co{
+    color:#007bff;
+    cursor: pointer;
+}
+
+.que-co:hover{
+    text-decoration: underline;
+    color:rgb(2, 2, 95);
+}
+
+.define-prog{
+    display: flex;
+    flex-direction: column;
+}
+.defined{
+    display: flex;
+    gap:93px;
+}
+
+.prog1{
+   color:#66c2a5;
+}
+
+.prog2{
+  color:#fc8d62;
+}
+
+.prog3{
+color:rgb(81, 80, 80);
+}

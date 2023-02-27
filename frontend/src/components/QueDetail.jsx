@@ -14,32 +14,45 @@ import { AiOutlineDislike } from 'react-icons/ai';
 
 function QueDetail() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
 
+  const handleNext = () => {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    console.log(currentQuestionIndex);
+  };
+
+  const handlePrevious = () => {
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    console.log(currentQuestionIndex);
+  };
+
   const handleAnswerOptionClick = (answer) => {
-    if (answer === data[currentQuestion].answer) {
+    if (answer === data[currentQuestionIndex].answer) {
       setScore(score + 1);
     }
+ };
 
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < data.length) {
-      setCurrentQuestion(nextQuestion);
-    }
-  };
 
-  const handlePreviousButtonClick = () => {
-    const previousQuestion = currentQuestion - 1;
-    if (previousQuestion >= 0) {
-      setCurrentQuestion(previousQuestion);
-    }
-  };
+//     const nextQuestion = currentQuestion + 1;
+//     if (nextQuestion < data.length) {
+//       setCurrentQuestion(nextQuestion);
+//     }
+//   };
 
-  const handleNextButtonClick = () => {
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < data.length) {
-      setCurrentQuestion(nextQuestion);
-    }
-  };
+//   const handlePreviousButtonClick = () => {
+//     const previousQuestion = currentQuestion - 1;
+//     if (previousQuestion >= 0) {
+//       setCurrentQuestion(previousQuestion);
+//     }
+//   };
+
+//   const handleNextButtonClick = () => {
+//     const nextQuestion = currentQuestion + 1;
+//     if (nextQuestion < data.length) {
+//       setCurrentQuestion(nextQuestion);
+//     }
+//   };
 
   const data = [
     {
@@ -79,6 +92,13 @@ function QueDetail() {
     },
   ];
 
+  const isPreviousDisabled = currentQuestionIndex === 0;
+  const isNextDisabled = currentQuestionIndex === data.length - 1;
+
+  console.log(isPreviousDisabled);
+  console.log(isNextDisabled);
+ 
+
   return (
     <div>
       <Header />
@@ -87,8 +107,8 @@ function QueDetail() {
         <div className="detail-one">
           <div className="line-one">
             <div className="main-detail">
-              <div className="detail-title">{data[currentQuestion].id}</div>
-              <div className="detail-title">{data[currentQuestion].title}</div>
+              <div className="detail-title ">{data[currentQuestionIndex].id}</div>
+              <div className="detail-title settitle ">{data[currentQuestionIndex].title}</div>
             </div>
             <div className="detail-icons">
               <div className="icon-line1">
@@ -107,18 +127,18 @@ function QueDetail() {
           </div>
 
           <div className="line-two">
-            <p className="que-descr">{data[currentQuestion].description}</p>
+            <p className="que-descr">{data[currentQuestionIndex].description}</p>
           </div>
           <p className="answer">Your Answer</p>
           {
-            data[currentQuestion].ansType==="text"
+            data[currentQuestionIndex].ansType==="text"
             ?
             <div className="answer">
                 <input type="text" className="ans-field" />
             </div>    
             :
             <div className="options">
-          {data[currentQuestion].options.map((option) => (
+          {data[currentQuestionIndex].options.map((option) => (
           <div className="disp-radio">
             <input type="radio" value={option} name="option" onClick={() => handleAnswerOptionClick(option)}/>
             <p className="input-pin">{option}</p>
@@ -137,11 +157,14 @@ function QueDetail() {
         </div>
 
      <div className="buttons">
-        <button className="prev" onClick={handlePreviousButtonClick}>
-            <IoIosArrowBack fontSize={20}/>
-            Prev</button>
+            <button className="prev" 
+                onClick={handlePrevious} disabled={isPreviousDisabled}>
+                <IoIosArrowBack fontSize={20}/>
+                Prev</button>
+        
         <p className="nums">1/120</p>
-        <button className="next" onClick={handleNextButtonClick}>Next
+        <button className="next" 
+         onClick={handleNext} disabled={isNextDisabled}>Next
         <IoIosArrowForward fontSize={20}/>
         </button>
       </div>

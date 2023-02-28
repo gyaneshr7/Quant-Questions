@@ -1,0 +1,21 @@
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
+const questionsSchema = mongoose.Schema(
+    {
+        uniqueId:{type:Number},
+        title:{type:String},
+        question:{type:String},
+        answer:{type:String},
+        difficulty:{type:String},
+        date:{type:String},
+        submission:{type:String},
+        accepted:{type:String},
+        answerType:{type:String,enum:['mcq','text']},
+        options:[{type:String}],
+        category:{type:String}
+    }
+)
+questionsSchema.plugin(AutoIncrement, {inc_field: 'uniqueId'});
+
+module.exports = mongoose.model('Question',questionsSchema) ;

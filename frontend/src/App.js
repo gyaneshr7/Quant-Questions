@@ -13,24 +13,31 @@ import Profile from './components/Profile';
 import Progress from './components/Progress';
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("quantuser"));
+  const userRole = user && user.role;
+
   return (
     <div className='App'>
       <BrowserRouter>
-      <Routes>
-        <Route path='/admin' element={<Admin/>}></Route>
-        <Route path='/dashboard' element={<Dashboard/>}></Route>
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/login' element={<Login/>}></Route>
-        <Route path='/signup' element={<Signup/>}></Route>
-        <Route path='/questions' element={<Questions/>}></Route>
-        <Route path='/quedetail' element={<QueDetail/>}></Route>
-        <Route path='/change_password' element={<ChangePassword/>}></Route>
-        <Route path='/submissions' element={<Submissions/>}></Route>
-        <Route path='/profile' element={<Profile/>}></Route>
-        <Route path='/progress' element={<Progress/>}></Route>
-      </Routes>
+        <Routes>
+          <Route path='/admin' element={<Admin />}></Route>
+          <Route path='/dashboard' element={<Dashboard />}></Route>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/signup' element={<Signup />}></Route>
+          <Route path='/questions' element={<Questions />}></Route>
+          {
+            userRole == 'user' &&
+            <>
+              <Route path='/quedetail' element={<QueDetail />}></Route>
+              <Route path='/change_password' element={<ChangePassword />}></Route>
+              <Route path='/submissions' element={<Submissions />}></Route>
+              <Route path='/profile' element={<Profile />}></Route>
+              <Route path='/progress' element={<Progress />}></Route>
+            </>
+          }
+        </Routes>
       </BrowserRouter>
-      
     </div>
   );
 }

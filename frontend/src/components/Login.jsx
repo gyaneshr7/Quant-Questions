@@ -32,6 +32,7 @@ function Login() {
       console.log(user);
       if(user!='wrong email or password'){
         localStorage.setItem("quantuser",JSON.stringify(user));
+        window.location.href='/questions'
       }
     } catch (error) {
       console.log(error);

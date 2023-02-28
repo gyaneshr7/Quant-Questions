@@ -5,6 +5,7 @@ const User = require('../models/User');
 
 // Add questions
 router.post('/add', async (req, res) => {
+    console.log(req.body);
     try {
         const question = await Questions.create(req.body);
         res.status(500).json(question);

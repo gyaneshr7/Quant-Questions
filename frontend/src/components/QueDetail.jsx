@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "./QueDetail.css";
-import { IoIosArrowBack,IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { AiOutlineMail } from 'react-icons/ai';
 import { GrNote } from 'react-icons/gr';
 import { AiOutlineLike } from 'react-icons/ai';
@@ -10,12 +10,29 @@ import { DiJavascript1 } from 'react-icons/di';
 import { RiWindowLine } from 'react-icons/ri';
 import { RiLightbulbFlashLine } from 'react-icons/ri';
 import { AiOutlineDislike } from 'react-icons/ai';
+import { useLocation } from "react-router-dom";
 
 
 function QueDetail() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const location = useLocation();
+  const [userData, setUserData] = useState();
+  const [currentQuestion, setCurrentQuestion] = useState();
+  const [allQuestions, setAllquestions] = useState();
+  const [showAns, setShowAns] = useState(false);
   const [score, setScore] = useState(0);
+  const [answer, setAnswer] = useState();
+  const [submit, setSubmit] = useState();
+  const user = JSON.parse(localStorage.getItem("quantuser"));
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
+
+  const todaysdate = dd + '/' + mm + '/' + yyyy;
 
   const handleNext = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -27,152 +44,171 @@ function QueDetail() {
     console.log(currentQuestionIndex);
   };
 
-  const handleAnswerOptionClick = (answer) => {
-    if (answer === data[currentQuestionIndex].answer) {
-      setScore(score + 1);
+  const fetchQuestions = async () => {
+    const data = await fetch(`http://localhost:8000/question/getallquestions`);
+    const res = await data.json();
+    res && res.map((ques, i) => {
+      if (ques.uniqueId == location.state.id) {
+        setCurrentQuestion(i)
+      }
+    })
+    setAllquestions(res);
+  }
+
+  const fetchUser = async () => {
+    const data = await fetch(`http://localhost:8000/user/${user.id}`);
+    const res = await data.json();
+    setUserData(res);
+  }
+
+  useEffect(() => {
+    fetchQuestions();
+    fetchUser();
+  }, [submit])
+
+  const ansSubmitHandler = async () => {
+    const a = await fetch(`http://localhost:8000/user/${user.id}`);
+    const updateduser = await a.json();
+    let score;
+    if (allQuestions[currentQuestion].difficulty == 'hard') {
+      score = 5;
+    } else if (allQuestions[currentQuestion].difficulty == 'medium') {
+      score = 3;
+    } else {
+      score = 2
     }
- };
+    setShowAns(true)
+    let val;
+    if (answer == allQuestions[currentQuestion].answer) {
+      console.log("correctanswer");
+      val = {
+        userId: updateduser._id,
+        score: updateduser.score + score,
+        totalSubmissions: updateduser.totalSubmissions + 1,
+        correctAns: updateduser.correctAns + 1,
+        wrongAns: updateduser.wrongAns,
+        submittedQuestions: {
+          question: allQuestions[currentQuestion]._id,
+          correctAns: true,
+          date: todaysdate
+        }
+      }
+      // update user
+      const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
+        method: "PUT",
+        body: JSON.stringify(val),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const res = await data.json();
+      console.log(res);
 
-
-//     const nextQuestion = currentQuestion + 1;
-//     if (nextQuestion < data.length) {
-//       setCurrentQuestion(nextQuestion);
-//     }
-//   };
-
-//   const handlePreviousButtonClick = () => {
-//     const previousQuestion = currentQuestion - 1;
-//     if (previousQuestion >= 0) {
-//       setCurrentQuestion(previousQuestion);
-//     }
-//   };
-
-//   const handleNextButtonClick = () => {
-//     const nextQuestion = currentQuestion + 1;
-//     if (nextQuestion < data.length) {
-//       setCurrentQuestion(nextQuestion);
-//     }
-//   };
-
-  const data = [
-    {
-      id: 1,
-      title: ". Two Drawers with Black and White Balls",
-      description:"There are 2 drawers. The first drawer contains only black balls. The second contains 50% black balls and 50% white balls. There are an equal number of balls in each drawer. I pick a ball at random and it is black. What is the probability that the ball came from the first drawer?",
-      ansType:"text"
-    },
-    {
-      id: 2,
-      title: ". Delta Range",
-      description:"What are the smallest and largest values that Delta can take? Note this is from the option holder perspective. Use the academic version of delta (not trader convention of ×100.",
-      ansType:"text"
-    },
-    {
-      id: 3,
-      title: ". First Ace",
-      description:
-        "You turn over a card one by one from a deck. What is the expected number of cards that you need to flip before you see the first ace?",
-      ansType:"text"        
-    },
-    {
-      id: 4,
-      title: ".What is the capital of France?",
-      description:"What are the differences between a forward and futures contract (recite your answer out loud or enter it in the scratch work section)? If the price of the underlying asset is strongly positively correlated with interest rates, which one has a higher price?",
-      options: ["Paris", "Rome"],
-      answer: "Paris",
-      ansType:"mcq"
-    },
-    {
-      id: 5,
-      title: ".What is the largest country in the world?",
-      description:"What are the differences between a forward and futures contract (recite your answer out loud or enter it in the scratch work section)? If the price of the underlying asset is strongly positively correlated with interest rates, which one has a higher price?",
-      options: ["USA", "China"],
-      answer: "Russia",
-      ansType:"mcq"
-    },
-  ];
-
-  const isPreviousDisabled = currentQuestionIndex === 0;
-  const isNextDisabled = currentQuestionIndex === data.length - 1;
-
-  console.log(isPreviousDisabled);
-  console.log(isNextDisabled);
- 
+      // Update correct answers array
+      const dataa = await fetch(`http://localhost:8000/user//correct/answers/${userData._id}`, {
+        method: "PUT",
+        body: JSON.stringify(val),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const resp = await dataa.json();
+      console.log(resp);
+    } else {
+      val = {
+        userId: updateduser._id,
+        totalSubmissions: updateduser.totalSubmissions + 1,
+        score: updateduser.score,
+        correctAns: updateduser.correctAns,
+        wrongAns: updateduser.wrongAns + 1,
+        submittedQuestions: {
+          question: allQuestions[currentQuestion]._id,
+          correctAns: false,
+          date: todaysdate
+        }
+      }
+      const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
+        method: "PUT",
+        body: JSON.stringify(val),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const res = await data.json();
+      console.log(res);
+    }
+  };
 
   return (
     <div>
       <Header />
       <div className="detail-side">
         <div className="que-side">
-        <div className="detail-one">
-          <div className="line-one">
-            <div className="main-detail">
-              <div className="detail-title ">{data[currentQuestionIndex].id}</div>
-              <div className="detail-title settitle ">{data[currentQuestionIndex].title}</div>
-            </div>
-            <div className="detail-icons">
-              <div className="icon-line1">
-                <BsFillCalculatorFill size={18}/>
-                <AiOutlineMail size={23}/>
-                <GrNote size={17}/>
-                <AiOutlineLike size={23} color="green"/>
+          <div className="detail-one">
+            <div className="line-one">
+              <div className="main-detail">
+                <div className="detail-title">{allQuestions && allQuestions[currentQuestion].uniqueId}</div>
+                <div className="detail-title">{allQuestions && allQuestions[currentQuestion].title}</div>
               </div>
-              <div className="icon-line2">
-                <DiJavascript1 size={20}/>
-                <RiLightbulbFlashLine size={20}/>
-                <RiWindowLine size={20}/>
-                <AiOutlineDislike size={20} color="red"/>
+              <div className="detail-icons">
+                <div className="icon-line1">
+                  <BsFillCalculatorFill size={18} />
+                  <AiOutlineMail size={23} />
+                  <GrNote size={17} />
+                  <AiOutlineLike size={23} color="green" />
+                </div>
+                <div className="icon-line2">
+                  <DiJavascript1 size={20} />
+                  <RiLightbulbFlashLine size={20} />
+                  <RiWindowLine size={20} />
+                  <AiOutlineDislike size={20} color="red" />
+                </div>
               </div>
+            </div>
+
+            <div className="line-two">
+              <p className="que-descr">{allQuestions && allQuestions[currentQuestion].question}</p>
+            </div>
+            <p className="answer">Your Answer</p>
+            {
+              allQuestions && allQuestions[currentQuestion].answerType === "text"
+                ?
+                <div className="answer">
+                  <input type="text" className="ans-field" onChange={(e) => setAnswer(e.target.value)} />
+                </div>
+                :
+                <div className="options">
+                  {allQuestions && allQuestions[currentQuestion].options.map((option, i) => (
+                    <div className="disp-radio" key={i}>
+                      <input type="radio" value={option} name="option" onChange={() => setAnswer(option)} />
+                      <p className="input-pin">{option}</p>
+                    </div>
+                  ))}
+                </div>
+            }
+
+            <div className="align-btn">
+              <button className="submit" onClick={ansSubmitHandler}>Submit</button>
+              {
+                showAns && <button className="show">Show Answer</button>
+              }
             </div>
           </div>
 
-          <div className="line-two">
-            <p className="que-descr">{data[currentQuestionIndex].description}</p>
+          <div className="buttons">
+            <button className="prev" onClick={handlePrevious}>
+              <IoIosArrowBack fontSize={20} />
+              Prev</button>
+            <p className="nums">1/120</p>
+            <button className="next" onClick={handleNext}>Next
+              <IoIosArrowForward fontSize={20} />
+            </button>
           </div>
-          <p className="answer">Your Answer</p>
-          {
-            data[currentQuestionIndex].ansType==="text"
-            ?
-            <div className="answer">
-                <input type="text" className="ans-field" />
-            </div>    
-            :
-            <div className="options">
-          {data[currentQuestionIndex].options.map((option) => (
-          <div className="disp-radio">
-            <input type="radio" value={option} name="option" onClick={() => handleAnswerOptionClick(option)}/>
-            <p className="input-pin">{option}</p>
-          </div>
-        ))}
-      </div>
-          }  
-
-          <div className="align-btn">
-          <button className="submit">Submit</button>
-          <button className="show">Show Answer</button>
-          </div>
-          
-          
-
         </div>
 
-     <div className="buttons">
-            <button className="prev" 
-                onClick={handlePrevious} disabled={isPreviousDisabled}>
-                <IoIosArrowBack fontSize={20}/>
-                Prev</button>
-        
-        <p className="nums">1/120</p>
-        <button className="next" 
-         onClick={handleNext} disabled={isNextDisabled}>Next
-        <IoIosArrowForward fontSize={20}/>
-        </button>
-      </div>
-      </div>
-
         <div className="detail-two"></div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

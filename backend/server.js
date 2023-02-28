@@ -8,6 +8,7 @@ const app = express();
 // imports
 const authController = require('./routes/auth')
 const questionsController = require('./routes/questions');
+const userController = require('./routes/user');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -26,6 +27,7 @@ app.use(cors({
 
 app.use('/auth',authController);
 app.use('/question',questionsController);
+app.use('/user',userController);
 
 app.listen(port,()=>{
     console.log(`Server is listening at ${port}`);

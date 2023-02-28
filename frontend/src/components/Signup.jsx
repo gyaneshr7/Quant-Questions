@@ -63,12 +63,6 @@ function Signup() {
             <a href="/login" className='sign'>Login</a>
           </div>
         </div>
-        <input className='inputBox' value={email} autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
-        <button type="button" className='logbtn'>Sign Up</button>
-      </div>
-      <div className='last-block'>
-        <a href="/" className='forgot'>Forgot Password</a>
-        <a href="/" className='sign'>Sign Up</a>
       </div>
     </>
   )

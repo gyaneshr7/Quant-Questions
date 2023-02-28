@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import DataTable from 'react-data-table-component';
-
 import "./Questions.css";
 import 'react-dropdown/style.css';
 import cross from '../images/cross.png'
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import DataTable from "react-data-table-component";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
 function Questions() {
   const [searched, setSearched] = useState("");
@@ -317,7 +318,7 @@ function Questions() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default Questions;

@@ -42,6 +42,27 @@ function QueDetail() {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
   };
 
+    const handlePreviousButtonClick = () => {
+    const previousQuestion = currentQuestion - 1;
+    if (previousQuestion >= 0) {
+      setCurrentQuestion(previousQuestion);
+    }
+  };
+
+  const handleNextButtonClick = () => {
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < allQuestions.length) {
+      setCurrentQuestion(nextQuestion);
+    }
+  };
+  
+  const isPreviousDisabled = currentQuestion === 0;
+  const isNextDisabled = allQuestions && currentQuestion === allQuestions.length - 1;
+
+  console.log(isPreviousDisabled);
+  console.log(isNextDisabled);
+ 
+
   const fetchQuestions = async () => {
     const data = await fetch(`http://localhost:8000/question/getallquestions`);
     const res = await data.json();
@@ -156,7 +177,7 @@ function QueDetail() {
           <div className="detail-one">
             <div className="line-one">
               <div className="main-detail">
-                <div className="detail-title">{allQuestions && allQuestions[currentQuestion].uniqueId}</div>
+                <div className="detail-title">{allQuestions && allQuestions[currentQuestion].uniqueId}.</div>
                 <div className="detail-title">{allQuestions && allQuestions[currentQuestion].title}</div>
               </div>
               <div className="detail-icons">
@@ -183,7 +204,7 @@ function QueDetail() {
               allQuestions && allQuestions[currentQuestion].answerType === "text"
                 ?
                 <div className="answer">
-                  <input type="text" className="ans-field" onChange={(e) => setAnswer(e.target.value)} />
+                  <input type="textarea" className="ans-field" onChange={(e) => setAnswer(e.target.value)} />
                 </div>
                 :
                 <div className="options">
@@ -205,11 +226,13 @@ function QueDetail() {
           </div>
 
           <div className="buttons">
-            <button className="prev" onClick={handlePrevious}>
+            <button className="prev"
+            //  onClick={handlePrevious}
+             onClick={handlePreviousButtonClick} disabled={isPreviousDisabled}>
               <IoIosArrowBack fontSize={20} />
               Prev</button>
-            <p className="nums">1/120</p>
-            <button className="next" onClick={handleNext}>Next
+            <p className="nums">{allQuestions && allQuestions[currentQuestion].uniqueId}/{allQuestions && allQuestions.length}</p>
+            <button className="next" onClick={handleNextButtonClick} disabled={isNextDisabled}>Next
               <IoIosArrowForward fontSize={20} />
             </button>
           </div>

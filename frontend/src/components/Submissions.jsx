@@ -42,9 +42,9 @@ const tableData = submittedQuestions && submittedQuestions.slice(startIndex, end
                 <thead className='table-head'>
                     <tr height="1%">
                     <th width="2%">Date Submitted</th>
-                    <th  width="4%">Question</th>
+                    <th  width="5%">Question</th>
                     <th  width="2%">Correct?</th>
-                    <th  width="0.1%">Difficulty</th>
+                    <th  width="1%">Difficulty</th>
                     <th  width="1%">Category</th>
                     </tr>
                 </thead>

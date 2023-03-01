@@ -5,16 +5,20 @@
 .main{
     display:flex;
     width:100%;
+    justify-content: space-between;
 }
 
 .right{
     display: flex;
     position: relative;
-    left:1000px;
     gap:6px;
-    top:15px;
+    top:13px;
+    padding-right: 40px;
 }
-
+.ques-user{
+    position: absolute;
+    left:-120px;
+}
 .logo{
     margin-left: 50px;
 }
@@ -35,6 +39,56 @@
 
 .hamburger{
     display: none;
+}
+
+.user-block{
+    background-color: white;
+    border:1px solid rgb(202, 200, 200);
+    width:220px;
+    height:220px;
+    position: absolute;
+    top:45px;
+    left:-170px;
+    text-align: left;
+    gap:7px;
+    display:flex;
+    padding-top:15px;
+    flex-direction: column;
+    cursor:pointer;
+    overflow: hidden;
+}
+.mylinks{
+    text-decoration: none;
+    color: black;
+}
+.gap-user{
+    display:flex;
+    gap:10px;
+    font-size: 17px;
+    padding-left:20px;
+    font-family: "Roboto-Condensed",sans-serif;
+    color:black;
+}
+.curs{
+    cursor:pointer;
+}
+.subm{
+    position: relative;
+    left:-7px;
+}
+.icon-user{
+    position:relative;
+    top:3px;
+}
+.my-sub{
+    position: relative;
+    left:-3px;
+}
+.gap-user:hover{
+    background-color: rgb(196, 195, 195);
+    width:220px;
+    /* height:30px; */
+    /* padding:2px; */
 }
 
 @media screen and (max-width:540px) {

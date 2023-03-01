@@ -44,7 +44,8 @@
 }
 
 .cross{
-    margin-left: 2px;
+    position: relative;
+    left:6px;
 }
 .free{
     background-color: rgb(2, 2, 96);

@@ -13,11 +13,15 @@ function Dashboard() {
   const [opt4, setOpt4] = useState('');
   const [answer, setAnswer] = useState([]);
   const [selectedFirms,setSelectedFirms]=useState();
+  const firms=['Tower Research Capital','Global Atlantic','Nomura','RBC','Bank'];
+  const divisions = ['Technology','Risk Management','Sales','Analytics'];
+  const position=['Trader','Develop','Analyst','Intern']
+  const tags=['c++','C','java','Javascript'];
 
   // add questions to db
   const submitHandler = async () => {
     let val = '';
-    if (anstype == 'mcq') {
+    if (anstype === 'mcq') {
       val = {
         title: title,
         question: question,
@@ -25,7 +29,11 @@ function Dashboard() {
         difficulty: difficulty,
         category: category,
         answerType: anstype,
-        options: [opt1, opt2, opt3, opt4]
+        options: [opt1, opt2, opt3, opt4],
+        firms:firms,
+        divisions:divisions,
+        position:position,
+        tags:tags
       }
     } else {
       val = {
@@ -35,18 +43,27 @@ function Dashboard() {
         difficulty: difficulty,
         category: category,
         answerType: anstype,
+        firms:firms,
+        divisions:divisions,
+        position:position,
+        tags:tags
       }
     }
-    // const data = await fetch("http://localhost:8000/question/add", {
-    //   method: "POST",
-    //   body: JSON.stringify(val),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    //   }
-    // })
-    // const res = await data.json();
-    // console.log(res);
+    const data = await fetch("http://localhost:8000/question/add", {
+      method: "POST",
+      body: JSON.stringify(val),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    const res = await data.json();
+    console.log(res);
     console.log(selectedFirms);
+    setAnsType("");
+    setAnswer("");
+    setTitle("");
+    setQuestion("");
+    setDifficulty("");
   }
 
   const handleFirm = (e) => {

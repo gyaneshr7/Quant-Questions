@@ -44,6 +44,7 @@ function Progress() {
       const res = await data.json();
       console.log(res);
       setUserData(res);
+      console.log(res.submittedQuestions);
       setSubmittedQuestions(res.submittedQuestions.reverse());
       res.submittedQuestions.map((category) => {
         if (category.question.category == 'Brainteasers') {
@@ -82,6 +83,18 @@ function Progress() {
     borderWidth: 0,
   };
 
+  const data1 = {
+    labels: [
+      'No Submissions',
+    ],
+    datasets: [{
+      data:[1],
+      backgroundColor: ['#8da0cb'],
+    }],
+    borderWidth: 0,
+  };
+
+
   return (
     <div>
       <Header />
@@ -89,7 +102,7 @@ function Progress() {
         <div className='categ-head'>Submissions by Category</div>
         <div className='row1-prog'>
           <div className='doughnut'>
-            <Doughnut data={data} />
+         <Doughnut data={submittedQuestions && submittedQuestions.length>0?data:data1} /> 
           </div>
 
           <div className='per-que'>

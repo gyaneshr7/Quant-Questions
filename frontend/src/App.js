@@ -27,7 +27,7 @@ function App() {
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/questions' element={<Questions />}></Route>
           {
-            userRole == 'user' &&
+            userRole === 'user' &&
             <>
               <Route path='/quedetail' element={<QueDetail />}></Route>
               <Route path='/change_password' element={<ChangePassword />}></Route>

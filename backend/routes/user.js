@@ -25,6 +25,7 @@ router.put('/submittedans/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const data = await User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }]);
+        console.log();
         res.status(200).json(data[0]);
     } catch (error) {
         res.status(500).json(error);

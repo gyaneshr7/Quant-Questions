@@ -1,0 +1,225 @@
+.home{
+    background-image: url("https://www.quantquestions.com/static/images/homepage_desktop.jpg");
+    background-size: cover;
+    height:650px;
+    background-position: 82% 0%;
+}
+
+.home-head{
+    text-align: center;
+    padding-top: 17%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap:7px;
+}
+
+.ace{
+    font-size: 56px;
+    font-family: "Campton-Bold",Helvetica, sans-serif;
+    color:#ffee66;
+    font-weight: 800;
+}
+
+.sub-head{
+    color:rgb(245,245,245);
+    padding-left: 180px;
+    padding-right: 180px;
+    font-weight: 300!important;
+    font-size: 20px;
+    font-family: "Roboto",sans-serif;
+}
+
+.create-acc{
+    color:#000;
+    font-weight: 700!important;
+    background-color: #18d796;
+    width:200px;
+    border-radius: 5px;
+    border:1px solid #18d796;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.create-acc:hover{
+    background-color: #7bf3ed;
+    border: 1px solid #7bf3ed;
+}
+
+.services{
+    background-color: white;
+    /* height:350px; */
+}
+
+.services2{
+    background-color: white;
+    /* height:450px; */
+}
+.home-serv{
+    display: flex;
+    gap:110px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.myhome-serv{
+    display: flex;
+    gap:110px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 40px;
+    padding-top: 20px;
+}
+.col-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width:400px;
+}
+
+
+
+.col-home img{
+    object-fit: cover;
+    width:150px;
+    height:150px;
+}
+
+.serv-head{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+}
+
+.col-home p{
+    font-family: 'Roboto-Condensed',sans-serif;
+    font-size: 16px;
+}
+
+
+.third{
+background-color: #212156!important;
+text-align:center;
+}
+
+.over{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    justify-content: center;
+    color:white;
+    padding-top:50px;
+}
+
+
+.over-head{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color:black;
+    padding-top:50px;
+}
+.acc{
+    color:#000;
+    font-weight: 700!important;
+    background-color: #18d796;
+    width:200px;
+    border-radius: 5px;
+    border:1px solid #18d796;
+    margin-top: 30px;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.prac1{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap:150px;
+    margin-top: 50px;
+}
+
+.prac2{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap:150px;
+}
+
+.prac-part1{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    height:250px;
+    width:180px;
+}
+
+.prac-head{
+    text-decoration: underline;
+    font-size: 16px;
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 800;
+}
+
+.myserv-head{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 700;
+}
+
+.footer{
+    background-color: rgb(248, 249, 250);
+}
+
+.all-foots{
+    display: flex;
+    gap:20px;
+    padding: 30px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.all-foots a{
+    text-decoration: none;
+    color:#464a4c;
+    font-family: 'Roboto-Condensed',sans-serif;
+    font-size:13.6px;
+}
+
+.all-foots a:hover{
+    text-decoration: underline;
+}
+
+.names{
+    display: flex;
+    gap:150px;
+    justify-content: center;
+    color:white;
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+
+.name1{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+
+.name-main{
+    font-family: 'Campton-Bold',helvetica,sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.named1{
+    position: relative;
+    left:-30px;
+}
+
+.name-disc{
+    font-size: 18px;
+}

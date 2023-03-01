@@ -8,8 +8,8 @@ import { ImCross } from "react-icons/im";
 
 function Progress() {
   const user = JSON.parse(localStorage.getItem('quantuser'));
-  const [userdata,setUserData] =useState();
-  const [questions,setQuestions] =useState();
+  const [userdata, setUserData] = useState();
+  const [questions, setQuestions] = useState();
   const [submittedQuestions, setSubmittedQuestions] = useState();
   const [brainteasers, setBrainTeasers] = useState([]);
   const [math, setMath] = useState([]);
@@ -17,14 +17,32 @@ function Progress() {
   const [finance, setFinance] = useState([]);
   const [derivatives, setDerivatives] = useState([]);
   let correctSubmissions = [];
+  let uniqueCorrectSubmissions = [];
+  let uniqueAttemptedQuestions = [];
   submittedQuestions && submittedQuestions.map((question) => {
-    var findItem = correctSubmissions.find((x) => x._id === question._id);
-    if (!findItem) correctSubmissions.push(question);
+    if (question.correctAns) {
+      correctSubmissions.push(question)
+    }
   })
+  if (correctSubmissions.length > 0) {
+    correctSubmissions.map((item) => {
+      var findItem = uniqueCorrectSubmissions.find((x) => x._id === item._id);
+      if (!findItem) uniqueCorrectSubmissions.push(item);
+    });
+  }
+  submittedQuestions && submittedQuestions.map((item) => {
+    var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
+    if (!findItem) {
+      console.log(item);
+      uniqueAttemptedQuestions.push(item)
+    };
+  })
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
       const res = await data.json();
+      console.log(res);
       setUserData(res);
       setSubmittedQuestions(res.submittedQuestions.reverse());
       res.submittedQuestions.map((category) => {
@@ -77,12 +95,12 @@ function Progress() {
           <div className='per-que'>
             <div className='all-solved'>
               <div className='col-sub'>
-                <div><span className='give-nums'>{userdata && userdata.correctAns}</span>/{questions && questions.length}</div>
+                <div><span className='give-nums'>{userdata && userdata.correctAnswers && userdata.correctAnswers.length}</span>/{questions && questions.length}</div>
                 <div className='my-sub'>questions solved</div>
               </div>
 
               <div className='col-sub'>
-                <div><span className='give-nums'>4</span>/83</div>
+                <div><span className='give-nums'>{uniqueAttemptedQuestions && uniqueAttemptedQuestions.length}</span>/{questions && questions.length}</div>
                 <div className='my-sub'>attempted questions</div>
               </div>
 
@@ -95,7 +113,7 @@ function Progress() {
               </div>
 
               <div className='col-sub'>
-                <div className='percent-sub'>33.33%</div>
+                <div className='percent-sub'>{userdata && ((userdata.correctAnswers.length/userdata.totalSubmissions)*100).toFixed(2)}%</div>
                 <div className='my-sub'>acceptance rate</div>
               </div>
             </div>
@@ -117,15 +135,15 @@ function Progress() {
             </thead>
 
             {
-              correctSubmissions.length > 0 ?
+              uniqueCorrectSubmissions.length > 0 ?
                 <tbody>
-                  {correctSubmissions.slice(0, 11).map((data) => (
+                  {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
                     <tr>
                       <td className="que-co">{data.date}</td>
                       <td>{data.question.title}</td>
                       <td>
                         {
-                          <TiTick color="green" size={25} />
+                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} color="red" />
                         }
                       </td>
                       <td>{data.question.difficulty}</td>

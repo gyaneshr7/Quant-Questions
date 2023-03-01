@@ -1,145 +1,25 @@
-import React ,{ useState }from 'react'
+import React ,{ useEffect, useState }from 'react'
 import Header from './Header';
 import './Submissions.css';
 import {ImCross} from 'react-icons/im';
 import {TiTick} from 'react-icons/ti';
 function Submissions() {
-        
-const data = [
-    {
-        submit: '1 day ago',
-        que: 'Fibonacci',
-        correct:"correct",
-        difficulty: 'easy',
-        category:"Math"
-    },
-    {
-      submit: '1 day ago',
-      que: 'Fibonacci',
-      correct:"wrong",
-      difficulty: 'hard',
-      category:"Math"
-  },    {
-    submit: '1 day ago',
-    que: 'Fibonacci',
-    correct:"correct",
-    difficulty: 'medium',
-    category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'hard',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'hard',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"correct",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'medium',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'medium',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"correct",
-  difficulty: 'medium',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'hard',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'hard',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"correct",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'hard',
-  category:"Math"
-},    {
-  submit: '1 day ago',
-  que: 'Fibonacci',
-  correct:"wrong",
-  difficulty: 'easy',
-  category:"Math"
-}
-]
+const [submittedQuestions,setSubmittedQuestions]=useState();
+const user = JSON.parse(localStorage.getItem("quantuser"));
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
+      const res = await data.json();
+      setSubmittedQuestions(res.submittedQuestions.reverse());
+    }
+    fetchData();
+  }, [])
+
 
 const itemsPerPage=10;
 const [currentPage, setCurrentPage] = useState(1);
 
-const totalPages = Math.ceil(data.length / itemsPerPage);
+const totalPages = Math.ceil(60 / itemsPerPage);
 
 const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -148,7 +28,7 @@ const handlePageChange = (pageNumber) => {
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 
-const tableData = data.slice(startIndex, endIndex);
+const tableData = submittedQuestions && submittedQuestions.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -169,24 +49,24 @@ const tableData = data.slice(startIndex, endIndex);
                     </tr>
                 </thead>
                 <tbody className='tablebody'>
-                    {tableData.map((data) => (
+                    {tableData && tableData.map((data) => (
                        <tr height="1%" >
-                       <td className='set'>{data.submit}</td>
-                       <td className='quest set'>{data.que}</td>
+                       <td className='set'>{data.date}</td>
+                       <td className='quest set'>{data.question && data.question.title}</td>
                        <td>
                         {
-                          data.correct==='correct'?<TiTick color="green" size={25} className="tick"/>:<ImCross size={15} color="red"/>
+                          data.correctAns ?<TiTick color="green" size={25} className="tick"/>:<ImCross size={15} color="red"/>
                         }
                        </td>
                        <td>
                            <p
                                className={
-                                   data.difficulty==="easy"?"success":data.difficulty==='hard'?"danger" :"medium"
+                                   data.question && data.question.difficulty==="easy"?"success":data.question && data.question.difficulty==='hard'?"danger" :"medium"
                                }>
-                               {data.difficulty}    
+                               {data.question && data.question.difficulty}    
                            </p>
                        </td>
-                       <td className='quest set-categ'>{data.category}</td>
+                       <td className='quest set-categ'>{data.question && data.question.category}</td>
                    </tr>
                     ))}
                 </tbody>

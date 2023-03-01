@@ -79,4 +79,14 @@ router.get('/get/random/question', async (req, res) => {
     }
 })
 
+// Fetch questions by firm
+router.get('/firms/:id/:firm', async (req, res) => {
+    try {
+        const data = await User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }]);
+        res.status(200).json(data[0]);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 module.exports = router;

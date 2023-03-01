@@ -13,7 +13,11 @@ const questionsSchema = mongoose.Schema(
         accepted:{type:String},
         answerType:{type:String,enum:['mcq','text']},
         options:[{type:String}],
-        category:{type:String}
+        category:{type:String},
+        firm:[{type:String}],
+        divisions:[{type:String}],
+        position:[{type:String}],
+        tags:[{type:String}],
     }
 )
 questionsSchema.plugin(AutoIncrement, {inc_field: 'uniqueId'});

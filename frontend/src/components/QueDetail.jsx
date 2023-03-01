@@ -36,12 +36,10 @@ function QueDetail() {
 
   const handleNext = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
-    console.log(currentQuestionIndex);
   };
 
   const handlePrevious = () => {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
-    console.log(currentQuestionIndex);
   };
 
   const fetchQuestions = async () => {
@@ -77,65 +75,76 @@ function QueDetail() {
     } else {
       score = 2
     }
-    setShowAns(true)
-    let val;
-    if (answer == allQuestions[currentQuestion].answer) {
-      console.log("correctanswer");
-      val = {
-        userId: updateduser._id,
-        score: updateduser.score + score,
-        totalSubmissions: updateduser.totalSubmissions + 1,
-        correctAns: updateduser.correctAns + 1,
-        wrongAns: updateduser.wrongAns,
-        submittedQuestions: {
-          question: allQuestions[currentQuestion]._id,
-          correctAns: true,
-          date: todaysdate
+    if (answer) {
+      setShowAns(true)
+      let val;
+      if (answer == allQuestions[currentQuestion].answer) {
+        console.log("correctanswer");
+        val = {
+          userId: updateduser._id,
+          score: updateduser.score + score,
+          totalSubmissions: updateduser.totalSubmissions + 1,
+          correctAns: updateduser.correctAns + 1,
+          wrongAns: updateduser.wrongAns,
+          submittedQuestions: {
+            question: allQuestions[currentQuestion]._id,
+            correctAns: true,
+            date: todaysdate
+          }
         }
-      }
-      // update user
-      const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
-        method: "PUT",
-        body: JSON.stringify(val),
-        headers: {
-          "Content-type": "application/json"
-        }
-      })
-      const res = await data.json();
-      console.log(res);
+        // update user with submission and correct answers data
+        const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
+          method: "PUT",
+          body: JSON.stringify(val),
+          headers: {
+            "Content-type": "application/json"
+          }
+        })
+        const res = await data.json();
+        console.log(res);
 
-      // Update correct answers array
-      const dataa = await fetch(`http://localhost:8000/user//correct/answers/${userData._id}`, {
-        method: "PUT",
-        body: JSON.stringify(val),
-        headers: {
-          "Content-type": "application/json"
+        const value = {
+          question: allQuestions[currentQuestion]._id
         }
-      })
-      const resp = await dataa.json();
-      console.log(resp);
-    } else {
-      val = {
-        userId: updateduser._id,
-        totalSubmissions: updateduser.totalSubmissions + 1,
-        score: updateduser.score,
-        correctAns: updateduser.correctAns,
-        wrongAns: updateduser.wrongAns + 1,
-        submittedQuestions: {
-          question: allQuestions[currentQuestion]._id,
-          correctAns: false,
-          date: todaysdate
+
+        // Update correct answers array
+        const matched = updateduser.correctAnswers.some((element) => {
+          return element.question == allQuestions[currentQuestion]._id;
+        })
+        if (!matched) {
+          const dataa = await fetch(`http://localhost:8000/user/correct/answers/${userData._id}`, {
+            method: "PUT",
+            body: JSON.stringify(value),
+            headers: {
+              "Content-type": "application/json"
+            }
+          })
+          const resp = await dataa.json();
+          console.log(resp);
         }
+      } else {
+        val = {
+          userId: updateduser._id,
+          totalSubmissions: updateduser.totalSubmissions + 1,
+          score: updateduser.score,
+          correctAns: updateduser.correctAns,
+          wrongAns: updateduser.wrongAns + 1,
+          submittedQuestions: {
+            question: allQuestions[currentQuestion]._id,
+            correctAns: false,
+            date: todaysdate
+          }
+        }
+        const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
+          method: "PUT",
+          body: JSON.stringify(val),
+          headers: {
+            "Content-type": "application/json"
+          }
+        })
+        const res = await data.json();
+        console.log(res);
       }
-      const data = await fetch(`http://localhost:8000/user/submittedans/${userData._id}`, {
-        method: "PUT",
-        body: JSON.stringify(val),
-        headers: {
-          "Content-type": "application/json"
-        }
-      })
-      const res = await data.json();
-      console.log(res);
     }
   };
 

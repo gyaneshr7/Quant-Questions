@@ -12,7 +12,7 @@ function Dashboard() {
   const [opt3, setOpt3] = useState('');
   const [opt4, setOpt4] = useState('');
   const [answer, setAnswer] = useState([]);
-
+  const [selectedFirms,setSelectedFirms]=useState();
 
   // add questions to db
   const submitHandler = async () => {
@@ -37,15 +37,25 @@ function Dashboard() {
         answerType: anstype,
       }
     }
-    const data = await fetch("http://localhost:8000/question/add", {
-      method: "POST",
-      body: JSON.stringify(val),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-    const res = await data.json();
-    console.log(res);
+    // const data = await fetch("http://localhost:8000/question/add", {
+    //   method: "POST",
+    //   body: JSON.stringify(val),
+    //   headers: {
+    //     "Content-type": "application/json; charset=UTF-8"
+    //   }
+    // })
+    // const res = await data.json();
+    // console.log(res);
+    console.log(selectedFirms);
+  }
+
+  const handleFirm = (e) => {
+    let target = e.target
+    let name = target.name
+    let value = Array.from(target.selectedOptions, option => option.value);
+    setSelectedFirms({
+      [name]: value
+    });
   }
 
   return (
@@ -83,6 +93,17 @@ function Dashboard() {
               </option>
               <option value="mcq">Mcq</option>
               <option value="text">Text</option>
+            </select>
+
+            <select name="firm" multiple={true} className="opt-font" onChange={handleFirm}>
+              <option value="none" selected disabled hidden>
+                Firm
+              </option>
+              <option value="mcq">Mcq</option>
+              <option value="t1">T1</option>
+              <option value="t2">T2</option>
+              <option value="t3">T3</option>
+              <option value="t4">Text</option>
             </select>
           </div>
 

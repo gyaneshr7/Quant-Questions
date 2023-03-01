@@ -44,17 +44,24 @@ router.get('/get/all/attempted/question/:id', async (req, res) => {
 // update unique correct answers of a user
 router.put('/correct/answers/:id', async (req, res) => {
     try {
-        console.log(req.body);
         const data = await User.findOneAndUpdate({ _id: req.params.id }, {
-            $push: { correctAnswers: req.body.correctAnswers},
+            $push: { correctAnswers: req.body},
         },{new:true}).populate('submittedQuestions');
-        console.log(data);
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error);
     }
 })
 
+// delete array elements of correct Answers
+router.put('/delete/correct/answers/:id', async (req, res) => {
+    try {
+        const result = await User.updateMany({ _id: req.params.id },{ "$pull": { "submittedQuestions": {  } }} )
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(401).json(error);
+    }
+})
 
 
 module.exports = router;

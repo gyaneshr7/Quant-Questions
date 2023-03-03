@@ -10,7 +10,7 @@ router.post('/add', async (req, res) => {
         const question = await Questions.create(req.body);
         res.status(500).json(question);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json(error);  
     }
 })
 
@@ -84,6 +84,20 @@ router.get('/firms/:id/:firm', async (req, res) => {
     try {
         const data = await User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }]);
         res.status(200).json(data[0]);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+router.put('/updateans/:id', async (req, res) => {
+    try {
+        console.log(req.body);
+        const data = await Questions.findOneAndUpdate({ _id: req.params.id }, {
+            submission:req.body.submission,
+            accepted:req.body.accepted
+        },{new:true})
+        console.log(data);
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error);
     }

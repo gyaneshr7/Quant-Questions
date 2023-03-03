@@ -75,12 +75,17 @@ function Dashboard() {
     });
   }
 
+  const handleLogout = () => {
+    localStorage.setItem("quantuser", null)
+    window.location.href = '/'
+  }
   return (
     <div>
       <div className="dash">
         <div className="dash-left">
           <div className="dash-head">Dashboard</div>
-          <div className="add-que">Add Questions</div>
+          <div className="add-que">Add Questions</div> <br /> 
+          <div className="add-que" onClick={handleLogout}>Logout</div>
         </div>
         <div className="dash-right">
           <div className="first-row">

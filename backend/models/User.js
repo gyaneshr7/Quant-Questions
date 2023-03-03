@@ -20,6 +20,12 @@ const userSchema = mongoose.Schema(
                 correctAns:{type:Boolean},
                 date:{type:String}
             }
+        ],
+        currentAttempted:[
+            {
+                questionId:{type:String},
+                status:{type:String}
+            }
         ]
     }
 )

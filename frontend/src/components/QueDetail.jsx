@@ -34,21 +34,12 @@ function QueDetail() {
   const yyyy = today.getFullYear();
   let mm = today.getMonth() + 1; // Months start at 0!
   let dd = today.getDate();
-
-  if (dd < 10) dd = "0" + dd;
-  if (mm < 10) mm = "0" + mm;
-
-  const todaysdate = dd + "/" + mm + "/" + yyyy;
-
-  const handleNext = () => {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
-  };
-
-  const handlePrevious = () => {
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
-  };
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
+  const todaysdate = dd + '/' + mm + '/' + yyyy;
 
   const handlePreviousButtonClick = () => {
+    setShowAns(false)
     const previousQuestion = currentQuestion - 1;
     if (previousQuestion >= 0) {
       setCurrentQuestion(previousQuestion);
@@ -56,6 +47,7 @@ function QueDetail() {
   };
 
   const handleNextButtonClick = () => {
+    setShowAns(false)
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < allQuestions.length) {
       setCurrentQuestion(nextQuestion);
@@ -65,9 +57,6 @@ function QueDetail() {
   const isPreviousDisabled = currentQuestion === 0;
   const isNextDisabled =
     allQuestions && currentQuestion === allQuestions.length - 1;
-
-  console.log(isPreviousDisabled);
-  console.log(isNextDisabled);
 
   const fetchQuestions = async () => {
     const data = await fetch(`http://localhost:8000/question/getallquestions`);
@@ -90,9 +79,14 @@ function QueDetail() {
   useEffect(() => {
     fetchQuestions();
     fetchUser();
-  }, [submit]);
+  }, [answer])
 
   const ansSubmitHandler = async () => {
+    if (!user) {
+      alert("Please Login!");
+      window.location.href = '/login';
+      return;
+    }
     const a = await fetch(`http://localhost:8000/user/${user.id}`);
     const updateduser = await a.json();
     let score;
@@ -103,10 +97,18 @@ function QueDetail() {
     } else {
       score = 2;
     }
+    let quesSubmission=0;
+    let quesAcceptance=0;
+    let status;
     if (answer) {
-      setShowAns(true);
+      quesSubmission = 1;
+      setShowAns(true)
+      setAnswer("");
       let val;
+      console.log(answer, allQuestions[currentQuestion].answer);
       if (answer == allQuestions[currentQuestion].answer) {
+        status="correct";
+        quesAcceptance = 1;
         console.log("correctanswer");
         val = {
           userId: updateduser._id,
@@ -132,31 +134,8 @@ function QueDetail() {
           }
         );
         const res = await data.json();
-        console.log(res);
-
-        const value = {
-          question: allQuestions[currentQuestion]._id,
-        };
-
-        // Update correct answers array
-        const matched = updateduser.correctAnswers.some((element) => {
-          return element.question == allQuestions[currentQuestion]._id;
-        });
-        if (!matched) {
-          const dataa = await fetch(
-            `http://localhost:8000/user/correct/answers/${userData._id}`,
-            {
-              method: "PUT",
-              body: JSON.stringify(value),
-              headers: {
-                "Content-type": "application/json",
-              },
-            }
-          );
-          const resp = await dataa.json();
-          console.log(resp);
-        }
       } else {
+        status="wrong";
         val = {
           userId: updateduser._id,
           totalSubmissions: updateduser.totalSubmissions + 1,
@@ -180,8 +159,38 @@ function QueDetail() {
           }
         );
         const res = await data.json();
-        console.log(res);
       }
+      
+      const quesValue = {
+        submission: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].submission + quesSubmission,
+        accepted: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].accepted + quesAcceptance
+      }
+      
+      // update question for submissions and acceptance
+      const updateQues = await fetch(`http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`, {
+        method: "PUT",
+        body: JSON.stringify(quesValue),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const updatedResp = await updateQues.json();
+      console.log(updatedResp,"updatedresp");
+
+      // update current question status
+      const userUpdation={
+        questionId:allQuestions[currentQuestion]._id,
+        status:status,
+      }
+      const updateUser = await fetch(`http://localhost:8000/user/update/ans/status/${userData._id}/${allQuestions[currentQuestion]._id}`, {
+        method: "PUT",
+        body: JSON.stringify(userUpdation),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const updatedUserResp = await updateUser.json();
+      console.log(updatedUserResp);
     }
   };
 
@@ -241,31 +250,22 @@ function QueDetail() {
               </p>
             </div>
             <p className="answer">Your Answer</p>
-            {allQuestions &&
-            allQuestions[currentQuestion].answerType === "text" ? (
-              <div className="answer">
-                <input
-                  type="textarea"
-                  className="ans-field"
-                  onChange={(e) => setAnswer(e.target.value)}
-                />
-              </div>
-            ) : (
-              <div className="options">
-                {allQuestions &&
-                  allQuestions[currentQuestion].options.map((option, i) => (
-                    <div className="disp-radio" key={i}>
-                      <input
-                        type="radio"
-                        value={option}
-                        name="option"
-                        onChange={() => setAnswer(option)}
-                      />
+            {
+              allQuestions && allQuestions[currentQuestion].answerType === "text"
+                ?
+                <div className="answer">
+                  <input type="textarea" value={answer} className="ans-field" onChange={(e) => setAnswer(e.target.value)} />
+                </div>
+                :
+                <div className="options">
+                  {allQuestions && allQuestions[currentQuestion].options.map((option, i) => (
+                    option != '' && <div className="disp-radio" key={i}>
+                      <input type="radio" value={option} name="option" onChange={() => setAnswer(option)} />
                       <p className="input-pin">{option}</p>
                     </div>
                   ))}
               </div>
-            )}
+            }
 
             <div className="align-btn">
               <button className="submit" onClick={ansSubmitHandler}>
@@ -276,12 +276,9 @@ function QueDetail() {
           </div>
 
           <div className="buttons">
-            <button
-              className="prev"
+            <button className="prev"
               //  onClick={handlePrevious}
-              onClick={handlePreviousButtonClick}
-              disabled={isPreviousDisabled}
-            >
+              onClick={handlePreviousButtonClick} disabled={isPreviousDisabled}>
               <IoIosArrowBack fontSize={20} />
               Prev
             </button>

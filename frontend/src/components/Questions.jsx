@@ -4,14 +4,15 @@ import cross from "../images/cross.png";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { ImCross } from "react-icons/im";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { ImCross } from 'react-icons/im';
 import { GrNotes } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa";
 import { GrUserManager } from "react-icons/gr";
 import { FaTags } from "react-icons/fa";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import progress from "../images/progress.png";
+import progressimg from "../images/progress.png";
 
 function Questions() {
   const [searched, setSearched] = useState("");
@@ -19,34 +20,34 @@ function Questions() {
   const [enableSearch, setEnableSearch] = useState(false);
   const [difficultyVal, setDifficultyVal] = useState("");
   const [selected, setSelected] = useState();
-
+  const [userData, setUserData] = useState();
   const [categoryVal, setCategoryVal] = useState("");
   let [random, setRandom] = useState();
-
   const [data, setData] = useState();
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
-  const firms = [
-    "Tower Research Capital",
-    "Global Atlantic",
-    "Nomura",
-    "RBC",
-    "Bank",
-    "Tower Research Capital",
-    "Global Atlantic",
-    "Nomura",
-    "RBC",
-    "Bank",
-    "Nomura",
-    "RBC",
-    "Bank",
-    'Tower Research Capital','Global Atlantic','Nomura','RBC','Bank',
-    'Tower Research Capital','Global Atlantic','Nomura','RBC','Bank'
-  ];
-  const divisions = ["Technology", "Risk Management", "Sales", "Analytics"];
-  const position = ["Trader", "Develop", "Analyst", "Intern"];
-  const tags = ["c++", "C", "java", "Javascript"];
+  var firm = ''; let position = ''; let division = ''; let tag = '';
+  const [firmData, setFirmData] = useState();
+  const [firmVal, setFirmVal] = useState('');
+  const [divisionVal, setDivisionVal] = useState('');
+  const [positionVal, setPositionVal] = useState('');
+  const [tagVal, setTagVal] = useState('');
+  const [editable, setEditable] = useState(false);
+
+  const correct = [], wrong = [];
+  userData && userData.currentAttempted.map((data) => {
+    if (data.status == 'correct') {
+      correct.push(data);
+    } else {
+      wrong.push(data);
+    }
+  })
+
+  const firms = ['Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank']
+  const divisions = ['Technology', 'Risk Management', 'Sales', 'Analytics'];
+  const positions = ['Trader', 'Develop', 'Analyst', 'Intern']
+  const tags = ['c++', 'C', 'java', 'Javascript'];
 
   // colums of the table
   const columnlogin = [
@@ -67,7 +68,7 @@ function Questions() {
               color: "#0378a6",
               fontWeight: 600,
               cursor: "pointer",
-              textAlign: "left",
+              textAlign: "left"
             }}
           >
             {row.title}
@@ -81,13 +82,10 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Difficulty</div>,
       selector: (row) => row.difficulty,
       cell: (row) => (
+
         <div
           className={
-            row.difficulty === "easy"
-              ? "success1"
-              : row.difficulty === "hard"
-              ? "danger1"
-              : "medium1"
+            row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
           }
         >
           {row.difficulty}
@@ -100,7 +98,12 @@ function Questions() {
       selector: (row) => row.accept,
       cell: (row) => (
         <div style={{ fontSize: 15 }}>
-          {(row.accepted / row.submission) * 100}
+          {
+            !isNaN((row.accepted / row.submission) * 100) ? ((row.accepted / row.submission) * 100).toFixed(0, 2) : '---'
+          }
+          {
+            !isNaN((row.accepted / row.submission) * 100) ? '%' : '---'
+          }
         </div>
       ),
       sortable: true,
@@ -118,12 +121,20 @@ function Questions() {
             color: "white",
           }}
         >
-          {row.score}
+          {
+            userData && userData.currentAttempted.some(data => data.questionId == row._id) ?
+              userData && userData.currentAttempted.map((data) => (
+                data.questionId == row._id &&
+                data.status
+              ))
+              : 'unsolved'
+          }
         </div>
       ),
       sortable: true,
     },
   ];
+
   const columnlogout = [
     {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>#</div>,
@@ -174,17 +185,23 @@ function Questions() {
       selector: (row) => row.accept,
       cell: (row) => (
         <div style={{ fontSize: 15 }}>
-          {(row.accepted / row.submission) * 100}
+          {
+            !isNaN((row.accepted / row.submission) * 100) ? ((row.accepted / row.submission) * 100).toFixed(0, 2) : '---'
+          }
+          {
+            !isNaN((row.accepted / row.submission) * 100) ? '%' : '---'
+          }
         </div>
       ),
       sortable: true,
     },
   ];
+
   const fetchQuestions = async () => {
     const data = await fetch(`${url}/getallquestions`);
     const res = await data.json();
     random = res && Math.floor(Math.random() * res.length);
-    setRandom(random, "askjvhgas");
+    setRandom(random);
     setData(res);
   };
 
@@ -206,6 +223,116 @@ function Questions() {
     const res = await data.json();
     setSearched(res);
   };
+  const fetchUser = async () => {
+    const data = await fetch(`http://localhost:8000/user/${user.id}`);
+    const res = await data.json();
+    setUserData(res);
+  }
+  const handleFilters = () => {
+    setCategoryVal("");
+    setDifficultyVal("");
+
+    console.log(firmVal, "firm");
+    console.log(divisionVal, 'division');
+    const array = [];
+    if (firmVal.length > 0 && divisionVal.length > 0 && positionVal.length > 0 && tagVal.length > 0) {
+      data.map((ques) => {
+        if (ques.firms.includes(firmVal) && ques.divisions.includes(divisionVal) && ques.position.includes(positionVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    } else if ((positionVal.length > 0 && divisionVal.length>0 && firmVal.length>0)){
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) && ques.divisions.includes(divisionVal) && ques.firms.includes(firmVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    } else if(positionVal.length > 0 && firmVal.length>0 && tagVal.length>0){
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) && ques.firms.includes(firmVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(positionVal.length>0 && divisionVal.length>0 && tagVal.length>0){
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) && ques.divisions.includes(divisionVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(divisionVal.length>0 && firmVal.length>0 && tagVal.length>0) {
+      data.map((ques) => {
+        if (ques.firms.includes(firmVal) && ques.divisions.includes(divisionVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(positionVal.length > 0 && divisionVal.length>0 ) {
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) && ques.divisions.includes(divisionVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(positionVal.length>0 && firmVal.length>0) {
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) && ques.firms.includes(firmVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(positionVal.length>0 && tagVal.length>0) {
+      data.map((ques) => {
+        if (ques.position.includes(positionVal) &&  ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(divisionVal.length>0 && firmVal.length>0 ) {
+      data.map((ques) => {
+        if (ques.firms.includes(firmVal) && ques.divisions.includes(divisionVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(divisionVal.length>0 && tagVal.length>0) {
+      data.map((ques) => {
+        if (ques.divisions.includes(divisionVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    }else if(firmVal.length>0 && tagVal.length>0) {
+      data.map((ques) => {
+        if (ques.firms.includes(firmVal) && ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array);
+      setFirmData(array)
+    } else if (firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) {
+      data.map((ques) => {
+        if (ques.firms.includes(firmVal) || ques.divisions.includes(divisionVal) || ques.position.includes(positionVal) || ques.tags.includes(tagVal)) {
+          array.push(ques);
+        }
+      })
+      console.log(array, "kkkoikiki");
+      setFirmData(array)
+    }
+  }
 
   useEffect(() => {
     if (categoryVal.length > 0 && difficultyVal.length > 0) {
@@ -216,8 +343,13 @@ function Questions() {
       fetchDiffQues(difficultyVal);
     } else {
       fetchQuestions();
+      fetchUser();
     }
-  }, [categoryVal, difficultyVal, enableSearch, searchval]);
+
+    if (firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) {
+      handleFilters();
+    }
+  }, [categoryVal, difficultyVal, enableSearch, searchval, firmVal, divisionVal, positionVal, tagVal]);
 
   // search questions
   const matched = [];
@@ -257,7 +389,32 @@ function Questions() {
       setDifficultyVal("");
     } else if (value == "category") {
       setCategoryVal("");
+    } else if (value == 'firm') {
+      setFirmVal("");
+    } else if (value == 'division') {
+      setDivisionVal("");
+    } else if (value == 'position') {
+      setPositionVal("");
+    } else if (value == 'tag') {
+      setTagVal("");
     }
+  };
+
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  const piedata = {
+    labels: ['Todo', 'Solved', 'Attempted'],
+    datasets: [
+      {
+        label: '',
+        data: [data && data.length, correct.length, wrong.length],
+        backgroundColor: [
+          '#66c2a5',
+          '#8da0cb',
+          'rgb(81, 80, 80)'
+        ],
+        borderWidth: 1,
+      },
+    ],
   };
 
   return (
@@ -283,15 +440,7 @@ function Questions() {
               </div>
             </div>
 
-            <hr
-              style={{
-                height: "0.7px",
-                borderwidth: "0",
-                color: "rgb(148, 148, 148)",
-                backgroundcolor: "rgb(148, 148, 148)",
-                marginTop: "15px",
-              }}
-            />
+            <hr style={{ height: "0.7px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} />
 
             <div className="div2">
               <div className="find">
@@ -309,8 +458,9 @@ function Questions() {
                   required
                   style={{ border: "none" }}
                   onChange={(e) => setCategoryVal(e.target.value)}
+                  value="Category"
                 >
-                  <option value="none" selected disabled hidden>
+                  <option value="Category" selected disabled hidden>
                     Category
                   </option>
                   <option value="Brainteasers">Brainteasers</option>
@@ -321,82 +471,86 @@ function Questions() {
                 </select>
 
                 <select
-                  name="gender"
+                  name="difficulty"
                   required
                   style={{ border: "none" }}
                   onChange={(e) => setDifficultyVal(e.target.value)}
+                  value="Difficulty"
                 >
-                  <option value="none" selected disabled hidden>
+                  <option value="Difficulty" selected disabled hidden>
                     Difficulty
                   </option>
                   <option value="medium">Medium</option>
                   <option value="easy">Easy</option>
                   <option value="hard">Hard</option>
                 </select>
+
               </div>
             </div>
-            {categoryVal && difficultyVal && (
+            {categoryVal && difficultyVal &&
               <>
                 <div className="category-class">
-                  <ImCross
-                    size={15}
-                    className="crossed-khushi"
-                    onClick={() => handleCross("category")}
-                    color="white"
-                  />
+
+                  <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("category")} color="white" />
                   {categoryVal}
                 </div>
                 <div className="category-class">
-                  <ImCross
-                    size={15}
-                    className="crossed-khushi"
-                    onClick={() => handleCross("difficult")}
-                    color="white"
-                  />
+
+                  <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("difficult")} color="white" />
                   {difficultyVal}
                 </div>
               </>
-            )}
-            {categoryVal && !difficultyVal && (
+            }
+            {categoryVal && !difficultyVal &&
               <>
                 <div className="category-class">
-                  <ImCross
-                    size={15}
-                    className="crossed-khushi"
-                    onClick={() => handleCross("category")}
-                    color="white"
-                  />
+                  <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("category")} color="white" />
 
                   {categoryVal}
                 </div>
               </>
-            )}
+            }
             {difficultyVal && !categoryVal && (
               <>
                 <div className="category-class">
-                  <ImCross
-                    size={15}
-                    className="crossed-khushi"
-                    onClick={() => handleCross("difficult")}
-                    color="white"
-                  />
+
+                  <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("difficult")} color="white" />
                   {difficultyVal}
                 </div>
               </>
             )}
+            {
+              firmVal &&
+              <div className="category-class">
+                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("firm")} color="white" />
+                {firmVal}
+              </div>
+            }
+            {
+              divisionVal &&
+              <div className="category-class">
+                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("division")} color="white" />
+                {divisionVal}
+              </div>
+            }
+            {
+              positionVal &&
+              <div className="category-class">
+                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("position")} color="white" />
+                {positionVal}
+              </div>
+            }{
+              tagVal &&
+              <div className="category-class">
+                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("tag")} color="white" />
+                {tagVal}
+              </div>
+            }
 
-            <hr
-              style={{
-                height: "0.5px",
-                borderwidth: "0",
-                color: "rgb(148, 148, 148)",
-                backgroundcolor: "rgb(148, 148, 148)",
-                marginTop: "15px",
-              }}
-            />
+            <hr style={{ height: "0.5px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} />
 
             <div className="div3">
-              {!difficultyVal && !categoryVal && !enableSearch && (
+              {!difficultyVal && !categoryVal && !enableSearch && !firmVal.length > 0 && !divisionVal.length > 0 && !positionVal.length > 0 && !tagVal.length > 0 && (
                 <DataTable
                   columns={user ? columnlogin : columnlogout}
                   data={data}
@@ -448,35 +602,47 @@ function Questions() {
                     paginationPerPage={10}
                   />
                 )}
+              {(firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) &&
+                <DataTable
+                  columns={user ? columnlogin : columnlogout}
+                  data={firmData}
+                  striped={true}
+                  highlightOnHover={true}
+                  responsive={true}
+                  pagination={true}
+                  paginationDefaultPage={1}
+                  paginationPerPage={10}
+                />
+              }
             </div>
           </div>
 
           <div className="quest-right-block">
             <div className="quest-progress-head">
-              <img src={progress} alt="" />
+              <img src={progressimg} alt="" />
               <div className="first-prog">Progress</div>
             </div>
 
             <div className="progress-chart">
-              {/* <Pie data={data}/> */}
-            <hr style={{ height: "1px", borderwidth: "0", color: "gray", backgroundcolor: "gray", marginTop: "15px" }} />
+              <Pie data={piedata} />
+              <hr style={{ height: "1px", borderwidth: "0", color: "gray", backgroundcolor: "gray", marginTop: "15px" }} />
               <div className="prog-define">
                 <div className="define-prog prog1 prog-text">
                   <p>Todo</p>
-                  <p style={{ textAlign: "center" }}>7</p>
+                  <p style={{ textAlign: "center" }}>{data && data.length}</p>
                 </div>
 
                 <div className="define-prog prog2 prog-text">
                   <p>Solved</p>
-                  <p style={{ textAlign: "center" }}>3</p>
+                  <p style={{ textAlign: "center" }}>{correct.length}</p>
                 </div>
 
                 <div className="define-prog prog3 prog-text">
                   <p>Attempted</p>
-                  <p style={{ textAlign: "center" }}>1</p>
+                  <p style={{ textAlign: "center" }}>{wrong.length}</p>
                 </div>
               </div>
-              </div>
+            </div>
             <div className="firms-block">
               <div className="firm-head">
                 <GrNotes />
@@ -485,7 +651,7 @@ function Questions() {
 
               <div className="main-firms">
                 {firms.map((item) => (
-                  <div className="all-firms">
+                  <div className="all-firms" value={item} onClick={() => setFirmVal(item)}>
                     <div className="firm-item">{item}<span className="num-firm">56</span></div>
                   </div>
                 ))}
@@ -499,8 +665,8 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {firms.map((item) => (
-                  <div className="all-firms">
+                {divisions.map((item) => (
+                  <div className="all-firms" onClick={() => setDivisionVal(item)}>
                     <div className="firm-item">{item}<span className="num-firm">56</span></div>
                   </div>
                 ))}
@@ -509,13 +675,13 @@ function Questions() {
 
             <div className="firms-block">
               <div className="firm-head">
-                <GrUserManager/>
+                <GrUserManager />
                 <div className="myfirm">Positions</div>
               </div>
 
               <div className="main-firms">
-                {firms.map((item) => (
-                  <div className="all-firms">
+                {positions.map((item) => (
+                  <div className="all-firms" onClick={() => setPositionVal(item)}>
                     <div className="firm-item">{item}<span className="num-firm">56</span></div>
                   </div>
                 ))}
@@ -529,8 +695,8 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {firms.map((item) => (
-                  <div className="all-firms">
+                {tags.map((item) => (
+                  <div className="all-firms" onClick={() => setTagVal(item)}>
                     <div className="firm-item">{item}<span className="num-firm">56</span></div>
                   </div>
                 ))}
@@ -540,6 +706,7 @@ function Questions() {
 
           </div>
         </div>
+
       </div>
     </>
   );

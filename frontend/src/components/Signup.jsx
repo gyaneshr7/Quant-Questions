@@ -20,7 +20,8 @@ function Signup() {
     const val = {
       name: name,
       email: email,
-      password: password
+      password: password,
+      role:"user"
     }
     try {
       const data = await fetch(`${URL}/register`, {
@@ -32,6 +33,7 @@ function Signup() {
       })
       const user = await data.json();
       alert(user);
+      window.location.href='/login'
     } catch (error) {
       console.log(error);
     }

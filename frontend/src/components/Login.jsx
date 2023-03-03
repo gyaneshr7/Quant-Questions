@@ -15,10 +15,10 @@ function Login() {
   const URL ='http://localhost:8000/auth'
 
   const handleLogin=async ()=>{
-    console.log(email,password);
     const val ={
       email:email,
-      password:password
+      password:password,
+      role:"user"
     }
     try {
       const data = await fetch(`${URL}/login`, {
@@ -30,7 +30,9 @@ function Login() {
       })
       const user = await data.json();
       console.log(user);
-      if(user!='wrong email or password'){
+      if(user=='wrong email or password' ||  user=='Not a valid user!'){
+        alert(user);
+      }else{
         localStorage.setItem("quantuser",JSON.stringify(user));
         window.location.href='/questions'
       }
@@ -61,7 +63,7 @@ function Login() {
           <button type="button" className='logbtn' onClick={handleLogin}>Log In</button>
         </div>
         <div className='last-block'>
-          <a href="/" className='forgot'>Forgot Password</a>
+          <a href="#" className='forgot'>Create an account </a>
           <a href="/signup" className='sign'>Sign Up</a>
         </div>
       </div>

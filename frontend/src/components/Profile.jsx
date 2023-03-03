@@ -9,28 +9,35 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 function Profile() {
-  const [userData,setUserData]=useState();
-  const [questions,setQuestions]=useState();
-  const [submittedQuestions,setSubmittedQuestions] = useState();
+  const [userData, setUserData] = useState();
+  const [questions, setQuestions] = useState();
+  const [submittedQuestions, setSubmittedQuestions] = useState();
+  const [scores, setScores] = useState([]);
+  const [rank,setRank]=useState([]);
   const user = JSON.parse(localStorage.getItem("quantuser"));
-  const uniqueAttemptedQuestions=[];
-  const uniquesubmitttedQuestions=[];
-  submittedQuestions && submittedQuestions.map((item) => {
-    var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
-    if (!findItem) uniqueAttemptedQuestions.push(item)
+
+  const correct = [], wrong = [];
+  userData && userData.currentAttempted.map((data) => {
+    if (data.status == 'correct') {
+      correct.push(data);
+    } else {
+      wrong.push(data);
+    }
   })
 
-  submittedQuestions && submittedQuestions.map((item) => {
-    var findItem = uniquesubmitttedQuestions.find((x) => x.question._id === item.question._id);
-    if (!findItem) uniquesubmitttedQuestions.push(item)
-  })
 
   useEffect(() => {
+    let score = [];
+    scores.length > 0 &&
+      scores.map(data => {
+        console.log(data.score);
+        score.push(data.score)
+      })
+    setRank(score.sort());
     const fetchData = async () => {
 
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
       const res = await data.json();
-      console.log(res.submittedQuestions,"lkjhgfd");
       setUserData(res);
       setSubmittedQuestions(res.submittedQuestions.reverse());
     }
@@ -38,20 +45,26 @@ function Profile() {
       const data = await fetch(`http://localhost:8000/question/getallquestions`);
       const res = await data.json();
       setQuestions(res);
+    }
+    const fetchScore = async () => {
+      const data = await fetch(`http://localhost:8000/user/get/scores`);
+      const res = await data.json();
+      setScores(res);
       console.log(res);
     }
     fetchData();
     fetchQuestions();
+    fetchScore();
   }, [])
 
   ChartJS.register(ArcElement, Tooltip, Legend);
 
   const data = {
-    labels: ['Todo','Solved','Attempted'],
+    labels: ['Todo', 'Solved', 'Attempted'],
     datasets: [
       {
         label: '',
-        data: [questions && questions.length, userData && userData.correctAnswers.length, uniqueAttemptedQuestions && uniqueAttemptedQuestions.length],
+        data: [questions && questions.length, correct.length > 0 && correct.length, wrong && wrong.length],
         backgroundColor: [
           '#66c2a5',
           '#8da0cb',
@@ -61,20 +74,7 @@ function Profile() {
       },
     ],
   };
-
-  // const data = [
-  //   {
-  //     que: "Fibonacci",
-  //     correct: "correct",
-  //     date: "1 day ago",
-  //   },
-  //   {
-  //     que: "Fibonacci",
-  //     correct: "wrong",
-  //     date: "1 day ago",
-  //   },
-
-  // ];
+  
   return (
     <div>
       <Header />
@@ -94,14 +94,13 @@ function Profile() {
             </div>
           </div>
           <div className="settings">
-            <div className="pro">Settings</div>
+            <div className="pro">Performance</div>
             <div className="p-pro">
               <div>
-                Allow firms/headhunters to contact me:
-                <ImCross className="cross" size={13} color="red" />
+                Score : {userData && userData.score}
               </div>
-              <div className="free-disp">
-                Subscription:<p className="free"> Free!</p>
+              <div>
+                Highest Score : {rank.length>0 && rank[0]}
               </div>
             </div>
           </div>
@@ -125,12 +124,12 @@ function Profile() {
 
                 <div className="define-prog prog2">
                   <p>Solved</p>
-                  <p style={{ textAlign: "center" }}>{userData && userData.correctAnswers.length}</p>
+                  <p style={{ textAlign: "center" }}>{correct && correct.length}</p>
                 </div>
 
                 <div className="define-prog prog3">
                   <p>Attempted</p>
-                  <p style={{ textAlign: "center" }}>{uniqueAttemptedQuestions && uniqueAttemptedQuestions.length}</p>
+                  <p style={{ textAlign: "center" }}>{wrong && wrong.length}</p>
                 </div>
               </div>
             </div>
@@ -150,7 +149,7 @@ function Profile() {
                   </tr>
                 </thead>
                 <tbody>
-                  {submittedQuestions && submittedQuestions.slice(0,11).map((data) => (
+                  {submittedQuestions && submittedQuestions.slice(0, 11).map((data) => (
                     <tr>
                       <td className="que-co">{data.question.title}</td>
                       <td>

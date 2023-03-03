@@ -39,6 +39,7 @@ router.post("/login", async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+    const role = req.body.role;
     console.log(email, password);
     const user = await User.aggregate([{ $match: { email: email } }]);
     console.log(user);
@@ -46,6 +47,8 @@ router.post("/login", async (req, res) => {
       res.status(401).json("wrong email or password");
     } else if (user[0].password != password) {
       res.status(401).json("wrong email or password")
+    }else if (user[0].role != role) {
+      res.status(401).json("Not a valid user!")
     } else {
       const userDetails = {
         id: user[0]._id,

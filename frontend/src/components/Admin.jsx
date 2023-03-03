@@ -7,8 +7,37 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 function Admin() {
   const [eye, setEye] = useState(true);
-  const[name,setName]=useState("");
+  const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
+  const URL = 'http://localhost:8000/auth'
+
+  const submitHandler=async ()=>{
+    const val={
+      email:email,
+      password:password,
+      role:"admin"
+    }
+    console.log(val);
+    try {
+      const data = await fetch(`${URL}/login`, {
+        method: "POST",
+        body: JSON.stringify(val),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      const user = await data.json();
+      console.log(user);
+      if(user=='wrong email or password' ||  user=='Not a valid user!'){
+        alert(user);
+      }else{
+        localStorage.setItem("quantuser",JSON.stringify(user));
+        window.location.href='/dashboard'
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div>
@@ -19,11 +48,11 @@ function Admin() {
         <div className="login">
           <input
             className="inputAdd"
-            value={name}
+            value={email}
             autoComplete="off"
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             type="text"
-            placeholder="Username"
+            placeholder="Email Address"
           />
           <div className="passwordfield">
             <input
@@ -43,7 +72,7 @@ function Admin() {
             </div>
           </div>
 
-          <button type="button" className="logbtn">
+          <button type="button" className="logbtn" onClick={submitHandler}>
             Log In
           </button>
         </div>

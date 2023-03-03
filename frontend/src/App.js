@@ -21,20 +21,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/admin' element={<Admin />}></Route>
-          <Route path='/dashboard' element={<Dashboard />}></Route>
           <Route path='/' element={<Home />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/questions' element={<Questions />}></Route>
+          <Route path='/quedetail' element={<QueDetail />}></Route>
           {
             userRole === 'user' &&
             <>
-              <Route path='/quedetail' element={<QueDetail />}></Route>
               <Route path='/change_password' element={<ChangePassword />}></Route>
               <Route path='/submissions' element={<Submissions />}></Route>
               <Route path='/profile' element={<Profile />}></Route>
               <Route path='/progress' element={<Progress />}></Route>
             </>
+          }
+          {
+            userRole==='admin' &&
+            <Route path='/dashboard' element={<Dashboard />}></Route>
           }
         </Routes>
       </BrowserRouter>

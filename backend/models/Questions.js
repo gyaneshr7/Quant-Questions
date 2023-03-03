@@ -9,15 +9,15 @@ const questionsSchema = mongoose.Schema(
         answer:{type:String},
         difficulty:{type:String},
         date:{type:String},
-        submission:{type:String},
-        accepted:{type:String},
+        submission:{type:Number,default:0},
+        accepted:{type:Number,default:0},
         answerType:{type:String,enum:['mcq','text']},
         options:[{type:String}],
         category:{type:String},
         firms:[{type:String}],
         divisions:[{type:String}],
         position:[{type:String}],
-        tags:[{type:String}]
+        tags:[{type:String}],
     }
 )
 questionsSchema.plugin(AutoIncrement, {inc_field: 'uniqueId'});

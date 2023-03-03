@@ -37,7 +37,14 @@ function Progress() {
       uniqueAttemptedQuestions.push(item)
     };
   })
-
+  const correct = [], wrong = [];
+  userdata && userdata.currentAttempted.map((data) => {
+    if (data.status == 'correct') {
+      correct.push(data);
+    } else {
+      wrong.push(data);
+    }
+  })
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
@@ -108,12 +115,12 @@ function Progress() {
           <div className='per-que'>
             <div className='all-solved'>
               <div className='col-sub'>
-                <div><span className='give-nums'>{userdata && userdata.correctAnswers && userdata.correctAnswers.length}</span>/{questions && questions.length}</div>
+                <div><span className='give-nums'>{correct.length>0 ? correct.length:0}</span>/{questions && questions.length}</div>
                 <div className='my-sub'>questions solved</div>
               </div>
 
               <div className='col-sub'>
-                <div><span className='give-nums'>{uniqueAttemptedQuestions && uniqueAttemptedQuestions.length}</span>/{questions && questions.length}</div>
+                <div><span className='give-nums'>{wrong.length>0 ? wrong.length:0}</span>/{questions && questions.length}</div>
                 <div className='my-sub'>attempted questions</div>
               </div>
 
@@ -126,7 +133,7 @@ function Progress() {
               </div>
 
               <div className='col-sub'>
-                <div className='percent-sub'>{userdata && ((userdata.correctAnswers.length/userdata.totalSubmissions)*100).toFixed(2)}%</div>
+                <div className='percent-sub'>{userdata && ((correct.length>0 && correct.length/userdata.totalSubmissions)*100).toFixed(2)}%</div>
                 <div className='my-sub'>acceptance rate</div>
               </div>
             </div>

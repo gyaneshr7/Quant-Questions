@@ -4,16 +4,19 @@ import cross from "../images/cross.png";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { IoMdArrowDropdown } from "react-icons/io";
-import {ImCross} from 'react-icons/im';
+import { ImCross } from "react-icons/im";
+import { GrNotes } from "react-icons/gr";
+import { FaUsers } from "react-icons/fa";
+import { GrUserManager } from "react-icons/gr";
+import { FaTags } from "react-icons/fa";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+import progress from "../images/progress.png";
+
 function Questions() {
   const [searched, setSearched] = useState("");
   const [searchval, setSearchVal] = useState("");
   const [enableSearch, setEnableSearch] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
-  const [open4, setOpen4] = useState(false);
   const [difficultyVal, setDifficultyVal] = useState("");
   const [selected, setSelected] = useState();
 
@@ -23,6 +26,27 @@ function Questions() {
   const [data, setData] = useState();
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
+
+  const firms = [
+    "Tower Research Capital",
+    "Global Atlantic",
+    "Nomura",
+    "RBC",
+    "Bank",
+    "Tower Research Capital",
+    "Global Atlantic",
+    "Nomura",
+    "RBC",
+    "Bank",
+    "Nomura",
+    "RBC",
+    "Bank",
+    'Tower Research Capital','Global Atlantic','Nomura','RBC','Bank',
+    'Tower Research Capital','Global Atlantic','Nomura','RBC','Bank'
+  ];
+  const divisions = ["Technology", "Risk Management", "Sales", "Analytics"];
+  const position = ["Trader", "Develop", "Analyst", "Intern"];
+  const tags = ["c++", "C", "java", "Javascript"];
 
   // colums of the table
   const columnlogin = [
@@ -43,7 +67,7 @@ function Questions() {
               color: "#0378a6",
               fontWeight: 600,
               cursor: "pointer",
-              textAlign:"left"
+              textAlign: "left",
             }}
           >
             {row.title}
@@ -57,11 +81,14 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Difficulty</div>,
       selector: (row) => row.difficulty,
       cell: (row) => (
-        
         <div
-        className={
-          row.difficulty==="easy"?"success1":row.difficulty==='hard'?"danger1" :"medium1"
-         }
+          className={
+            row.difficulty === "easy"
+              ? "success1"
+              : row.difficulty === "hard"
+              ? "danger1"
+              : "medium1"
+          }
         >
           {row.difficulty}
         </div>
@@ -237,124 +264,142 @@ function Questions() {
     <>
       <Header />
       <div>
-        <div className="quest-block">
-          <div className="div1">
-            <div className="first-left">
-              <div className="solved">0/83 Solved</div>
-              <div className="easy">Easy 0</div>
-              <div className="mymedium">Medium 0</div>
-              <div className="hard">Hard 0</div>
-            </div>
-            <div className="random-side">
-              <Link
-                to="/quedetail"
-                state={{ id: random && data[random].uniqueId }}
-              >
-                <button className="random">Random Q</button>
-              </Link>
-            </div>
-          </div>
-
-          <hr style={{height:"0.7px",borderwidth:"0",color:"rgb(148, 148, 148)",backgroundcolor:"rgb(148, 148, 148)",marginTop:"15px"}}/>
-
-          <div className="div2">
-            <div className="find">
-              <input
-                type="text"
-                value={searchval}
-                onChange={searchHandler}
-                placeholder="Search questions..."
-                className="search"
-              />
-            </div>
-            <div className="any">
-
-              <select
-                name="category"
-                required
-                style={{ border: "none" }}
-                onChange={(e) => setCategoryVal(e.target.value)}
-              >
-                <option value="none" selected disabled hidden>
-                  Category
-                </option>
-                <option value="Brainteasers">Brainteasers</option>
-                <option value="Derivatives">Derivatives</option>
-                <option value="Finance">Finance</option>
-                <option value="Math">Math</option>
-                <option value="NonQuant">NonQuant</option>
-              </select>
-
-              <select
-                name="gender"
-                required
-                style={{ border: "none" }}
-                onChange={(e) => setDifficultyVal(e.target.value)}
-              >
-                <option value="none" selected disabled hidden>
-                  Difficulty
-                </option>
-                <option value="medium">Medium</option>
-                <option value="easy">Easy</option>
-                <option value="hard">Hard</option>
-              </select>
-
-            </div>
-          </div>
-          {categoryVal && difficultyVal && 
-            <>
-              <div className="category-class">
-                
-                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("category")} color="white"/>
-                {categoryVal}
+        <div className="quest-two">
+          <div className="quest-block">
+            <div className="div1">
+              <div className="first-left">
+                <div className="solved">0/83 Solved</div>
+                <div className="easy">Easy 0</div>
+                <div className="mymedium">Medium 0</div>
+                <div className="hard">Hard 0</div>
               </div>
-              <div className="category-class">
-               
-                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("difficult")} color="white"/>
-                {difficultyVal}
+              <div className="random-side">
+                <Link
+                  to="/quedetail"
+                  state={{ id: random && data[random].uniqueId }}
+                >
+                  <button className="random">Random Q</button>
+                </Link>
               </div>
-            </>
-          }
-          {categoryVal && !difficultyVal && 
-            <>
-              <div className="category-class">
-              <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("category")} color="white"/>
-                
-                {categoryVal}
-              </div>
-            </>
-          }
-          {difficultyVal && !categoryVal && (
-            <>
-              <div className="category-class">
-          
-                <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("difficult")} color="white"/>
-                {difficultyVal}
-              </div>
-            </>
-          )}
+            </div>
 
-          <hr style={{height:"0.5px",borderwidth:"0",color:"rgb(148, 148, 148)",backgroundcolor:"rgb(148, 148, 148)",marginTop:"15px"}}/>
+            <hr
+              style={{
+                height: "0.7px",
+                borderwidth: "0",
+                color: "rgb(148, 148, 148)",
+                backgroundcolor: "rgb(148, 148, 148)",
+                marginTop: "15px",
+              }}
+            />
 
-          <div className="div3">
-            {!difficultyVal && !categoryVal && !enableSearch && (
-              <DataTable
-                columns={user ? columnlogin : columnlogout}
-                data={data}
-                striped={true}
-                highlightOnHover={true}
-                responsive={true}
-                pagination={true}
-                paginationDefaultPage={1}
-                paginationPerPage={10}
-              />
+            <div className="div2">
+              <div className="find">
+                <input
+                  type="text"
+                  value={searchval}
+                  onChange={searchHandler}
+                  placeholder="Search questions..."
+                  className="search"
+                />
+              </div>
+              <div className="any">
+                <select
+                  name="category"
+                  required
+                  style={{ border: "none" }}
+                  onChange={(e) => setCategoryVal(e.target.value)}
+                >
+                  <option value="none" selected disabled hidden>
+                    Category
+                  </option>
+                  <option value="Brainteasers">Brainteasers</option>
+                  <option value="Derivatives">Derivatives</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Math">Math</option>
+                  <option value="NonQuant">NonQuant</option>
+                </select>
+
+                <select
+                  name="gender"
+                  required
+                  style={{ border: "none" }}
+                  onChange={(e) => setDifficultyVal(e.target.value)}
+                >
+                  <option value="none" selected disabled hidden>
+                    Difficulty
+                  </option>
+                  <option value="medium">Medium</option>
+                  <option value="easy">Easy</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+            {categoryVal && difficultyVal && (
+              <>
+                <div className="category-class">
+                  <ImCross
+                    size={15}
+                    className="crossed-khushi"
+                    onClick={() => handleCross("category")}
+                    color="white"
+                  />
+                  {categoryVal}
+                </div>
+                <div className="category-class">
+                  <ImCross
+                    size={15}
+                    className="crossed-khushi"
+                    onClick={() => handleCross("difficult")}
+                    color="white"
+                  />
+                  {difficultyVal}
+                </div>
+              </>
             )}
-            {enableSearch &&
-              categoryVal.length < 1 &&
-              difficultyVal.length < 1 && (
+            {categoryVal && !difficultyVal && (
+              <>
+                <div className="category-class">
+                  <ImCross
+                    size={15}
+                    className="crossed-khushi"
+                    onClick={() => handleCross("category")}
+                    color="white"
+                  />
+
+                  {categoryVal}
+                </div>
+              </>
+            )}
+            {difficultyVal && !categoryVal && (
+              <>
+                <div className="category-class">
+                  <ImCross
+                    size={15}
+                    className="crossed-khushi"
+                    onClick={() => handleCross("difficult")}
+                    color="white"
+                  />
+                  {difficultyVal}
+                </div>
+              </>
+            )}
+
+            <hr
+              style={{
+                height: "0.5px",
+                borderwidth: "0",
+                color: "rgb(148, 148, 148)",
+                backgroundcolor: "rgb(148, 148, 148)",
+                marginTop: "15px",
+              }}
+            />
+
+            <div className="div3">
+              {!difficultyVal && !categoryVal && !enableSearch && (
                 <DataTable
                   columns={user ? columnlogin : columnlogout}
-                  data={searched}
+                  data={data}
                   striped={true}
                   highlightOnHover={true}
                   responsive={true}
@@ -363,32 +408,136 @@ function Questions() {
                   paginationPerPage={10}
                 />
               )}
-            {(categoryVal.length > 0 || difficultyVal.length > 0) &&
-              !enableSearch && (
-                <DataTable
-                  columns={user ? columnlogin : columnlogout}
-                  data={searched}
-                  striped={true}
-                  highlightOnHover={true}
-                  responsive={true}
-                  pagination={true}
-                  paginationDefaultPage={1}
-                  paginationPerPage={10}
-                />
-              )}
-            {(categoryVal.length > 0 || difficultyVal.length > 0) &&
-              enableSearch && (
-                <DataTable
-                  columns={user ? columnlogin : columnlogout}
-                  data={selected}
-                  striped={true}
-                  highlightOnHover={true}
-                  responsive={true}
-                  pagination={true}
-                  paginationDefaultPage={1}
-                  paginationPerPage={10}
-                />
-              )}
+              {enableSearch &&
+                categoryVal.length < 1 &&
+                difficultyVal.length < 1 && (
+                  <DataTable
+                    columns={user ? columnlogin : columnlogout}
+                    data={searched}
+                    striped={true}
+                    highlightOnHover={true}
+                    responsive={true}
+                    pagination={true}
+                    paginationDefaultPage={1}
+                    paginationPerPage={10}
+                  />
+                )}
+              {(categoryVal.length > 0 || difficultyVal.length > 0) &&
+                !enableSearch && (
+                  <DataTable
+                    columns={user ? columnlogin : columnlogout}
+                    data={searched}
+                    striped={true}
+                    highlightOnHover={true}
+                    responsive={true}
+                    pagination={true}
+                    paginationDefaultPage={1}
+                    paginationPerPage={10}
+                  />
+                )}
+              {(categoryVal.length > 0 || difficultyVal.length > 0) &&
+                enableSearch && (
+                  <DataTable
+                    columns={user ? columnlogin : columnlogout}
+                    data={selected}
+                    striped={true}
+                    highlightOnHover={true}
+                    responsive={true}
+                    pagination={true}
+                    paginationDefaultPage={1}
+                    paginationPerPage={10}
+                  />
+                )}
+            </div>
+          </div>
+
+          <div className="quest-right-block">
+            <div className="quest-progress-head">
+              <img src={progress} alt="" />
+              <div className="first-prog">Progress</div>
+            </div>
+
+            <div className="progress-chart">
+              {/* <Pie data={data}/> */}
+            <hr style={{ height: "1px", borderwidth: "0", color: "gray", backgroundcolor: "gray", marginTop: "15px" }} />
+              <div className="prog-define">
+                <div className="define-prog prog1 prog-text">
+                  <p>Todo</p>
+                  <p style={{ textAlign: "center" }}>7</p>
+                </div>
+
+                <div className="define-prog prog2 prog-text">
+                  <p>Solved</p>
+                  <p style={{ textAlign: "center" }}>3</p>
+                </div>
+
+                <div className="define-prog prog3 prog-text">
+                  <p>Attempted</p>
+                  <p style={{ textAlign: "center" }}>1</p>
+                </div>
+              </div>
+              </div>
+            <div className="firms-block">
+              <div className="firm-head">
+                <GrNotes />
+                <div className="myfirm">Firms</div>
+              </div>
+
+              <div className="main-firms">
+                {firms.map((item) => (
+                  <div className="all-firms">
+                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="firms-block">
+              <div className="firm-head">
+                <FaUsers />
+                <div className="myfirm">Divisions</div>
+              </div>
+
+              <div className="main-firms">
+                {firms.map((item) => (
+                  <div className="all-firms">
+                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="firms-block">
+              <div className="firm-head">
+                <GrUserManager/>
+                <div className="myfirm">Positions</div>
+              </div>
+
+              <div className="main-firms">
+                {firms.map((item) => (
+                  <div className="all-firms">
+                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="firms-block">
+              <div className="firm-head">
+                <FaTags />
+                <div className="myfirm">Tags</div>
+              </div>
+
+              <div className="main-firms">
+                {firms.map((item) => (
+                  <div className="all-firms">
+                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>

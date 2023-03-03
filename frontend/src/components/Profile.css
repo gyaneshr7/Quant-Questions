@@ -1,6 +1,7 @@
 .profile-box{
     width:1000px;
     margin:auto;
+    padding-bottom: 30px;
 }
 
 .second-box{
@@ -27,7 +28,7 @@
 .p-pro{
     padding-left:40px;
     display: flex;
-    gap:5px;
+    /* gap:5px; */
     flex-direction: column;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -45,7 +46,7 @@
 
 .cross{
     position: relative;
-    left:6px;
+    left:5px;
 }
 .free{
     background-color: rgb(2, 2, 96);
@@ -73,6 +74,8 @@
 }
 .table-size td{
     padding:6px;
+    font-size: 13px;
+    font-family: "Roboto-Condensed",sans-serif;
 }
 .table-size th{
     padding:6px;
@@ -92,13 +95,11 @@
 }
 
 .que-co{
-    color:#007bff;
     cursor: pointer;
 }
 
 .que-co:hover{
     text-decoration: underline;
-    color:rgb(2, 2, 95);
 }
 
 .define-prog{
@@ -120,4 +121,9 @@
 
 .prog3{
 color:rgb(81, 80, 80);
+}
+
+.pro-give{
+    display: flex;
+    gap:3px;
 }

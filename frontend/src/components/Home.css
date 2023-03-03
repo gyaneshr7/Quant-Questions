@@ -24,8 +24,9 @@
 
 .sub-head{
     color:rgb(245,245,245);
-    padding-left: 180px;
-    padding-right: 180px;
+    text-align: center;
+    justify-content: center;
+    width:750px;
     font-weight: 300!important;
     font-size: 20px;
     font-family: "Roboto",sans-serif;
@@ -172,6 +173,10 @@ text-align:center;
 
 .footer{
     background-color: rgb(248, 249, 250);
+    /* position:fixed;
+    left:0;
+    bottom:0;
+    right:0;  */
 }
 
 .all-foots{
@@ -222,4 +227,118 @@ text-align:center;
 
 .name-disc{
     font-size: 18px;
+}
+
+
+
+@media screen and (max-width:540px){
+    .home{
+        height:490px;
+        width: 100%;
+    }
+    .ace{
+        font-size: 30px;
+        text-align: center;
+        justify-content: center;
+        margin-top: 50px;
+    }
+    .sub-head{
+        font-size: 15px;
+        justify-content: center;
+        text-align: center;
+        width:300px;
+        margin-top: 20px;
+    }
+
+    .create-acc{
+        margin-top: 40px;
+    }
+
+    .services{
+        justify-content: center;
+        text-align: center;
+        align-items:center;
+    }
+    .home-serv{
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding-left: 0px;
+        padding-right: 0px;
+        gap:1px;
+        padding-bottom:50px;
+    }
+
+    .col-home{
+        justify-content:center;
+        text-align:center;
+    }
+    .col-home p{
+        width:280px;
+    }
+
+    .col-home img{
+        object-fit: cover;
+        width:110px;
+        height:110px;
+    }
+
+    .over,.over-head{
+        font-size: 23px;
+    }
+
+    .prac1{
+        display:flex;
+        flex-wrap: wrap;
+        gap:10px;
+    }
+
+    .prac-part1{
+        height:200px;
+        width:140px;
+    }
+    .prac2{
+        display:flex;
+        flex-wrap: wrap;
+        gap:1px;
+        padding-top:46px;
+        /* margin-top:5px; */
+    }
+
+
+    .names{
+        display:flex;
+        flex-direction: column;
+        gap:40px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .named1{
+        position: relative;
+        left:3px;
+    }
+    .name1{
+        gap:1px;
+    }
+    .name-disc{
+        width:250px;
+    }
+
+    .myhome-serv{
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0px;
+        text-align: center;
+        justify-content: center;
+        gap:1px;
+    }
+
+    .all-foots a{
+        font-size: 10px;
+    }
+
 }

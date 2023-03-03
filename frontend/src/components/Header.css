@@ -93,8 +93,9 @@
 
 @media screen and (max-width:540px) {
     .logo{
-       position:relative;
-       left:-45px;
+       margin-left:3px;
+       /* width:200px; */
+       /* height:140px; */
     }
 
     .right{
@@ -102,14 +103,20 @@
     }
 
     .hamburger{
-        display: block;
+        display: flex;
     }
 
     .ham-icon{
         position:relative;
-        top:20px;
-        left:30px;
+        top:16px;
+        left:-10px;
+        /* position:absolute; */
+        /* padding-top: 20px; */
+        z-index: 99;
+        /* overflow: hidden; */
+        /* padding-right: 20px; */
         color:black;
+        overflow-x:hidden;
     }
     .que-btn{
         width:300px;
@@ -117,17 +124,30 @@
     }
     .mobile-right{
         gap:9px;
-        background-color:transparent;
+        /* background-color:white; */
         display:flex;
         flex-direction: column;
-        position:relative;
-        top:40px;
-        left:-250px;
-        padding-bottom: 50px;
+        position:absolute;
+        /* left:35px; */
+        /* top:70px; */
+        /* position:relative; */
+        top:75px;
+        left:15px;
+        /* gap:0; */
+        /* padding-bottom: 60px; */
+        /* overflow:hidden; */
+        /* padding-right:350px; */
+        /* padding-top:40px; */
         align-items: center;
-        margin-right: 40px;
+        /* margin-right: 40px; */
     }
 
+    .que-btn{
+        background-color: white;
+        border: 1px solid white;
+    }
+
+    
     .show-menu{
         display: block;
     }

@@ -152,14 +152,19 @@ function Progress() {
                 <tbody>
                   {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
                     <tr>
-                      <td className="que-co">{data.date}</td>
-                      <td>{data.question.title}</td>
+                      <td>{data.date}</td>
+                      <td className="que-co">{data.question.title}</td>
                       <td>
                         {
-                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} color="red" />
+                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15}  color="red" />
                         }
                       </td>
-                      <td>{data.question.difficulty}</td>
+                      <td>
+                      <p
+                      className={
+                        data.question.difficulty === "easy" ? "success" : data.question.difficulty === 'hard' ? "danger" : "medium"
+                      }>
+                        {data.question.difficulty}</p></td>
                       <td>{data.question.category}</td>
                     </tr>
                   ))
@@ -189,20 +194,22 @@ function Progress() {
                 <th>Category</th>
               </tr>
             </thead>
-            <tbody>
+            {
+              submittedQuestions && submittedQuestions.length>0 ?
+              <tbody>
               {submittedQuestions && submittedQuestions.slice(0, 31).map((data) => (
                 <tr>
-                  <td className="que-co">{data.date}</td>
-                  <td>{data.question.title}</td>
+                  <td>{data.date}</td>
+                  <td className="que-co">{data.question.title}</td>
                   <td>
                     {
-                      data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} color="red" />
+                      data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} className="imcross" color="red" />
                     }
                   </td>
                   <td>
                     <p
                       className={
-                        data.question.difficulty === "easy" ? "success" : data.difficulty === 'hard' ? "danger" : "medium"
+                        data.question.difficulty === "easy" ? "success" : data.question.difficulty === 'hard' ? "danger" : "medium"
                       }>
                       {data.question.difficulty}
                     </p>
@@ -211,7 +218,14 @@ function Progress() {
                 </tr>
               ))}
 
-            </tbody>
+            </tbody>:
+            <tbody>
+            <tr>
+              <td className='no-data' colspan='5'>No recent submissions</td>
+            </tr>
+          </tbody>
+            }
+            
           </table>
         </div>
       </div>

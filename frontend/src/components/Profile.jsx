@@ -85,12 +85,12 @@ function Profile() {
           <div className="profile">
             <div className="pro">Profile</div>
             <div className="p-pro">
-              <div>Name: {userData && userData.name}</div>
-              <div>Email: {userData && userData.email}</div>
-              <div>Background:</div>
-              <div>Degree:</div>
-              <div>Certifications:</div>
-              <div>Resume Keywords:</div>
+              <div className="pro-give"><p style={{fontWeight:600}}>Name:</p>{userData && userData.name} </div>
+              <div className="pro-give"><p style={{fontWeight:600}}>Email:</p> {userData && userData.email}</div>
+              <div><p style={{fontWeight:600}}>Background:</p></div>
+              <div><p style={{fontWeight:600}}>Degree:</p></div>
+              <div><p style={{fontWeight:600}}>Certifications:</p></div>
+              <div><p style={{fontWeight:600}}>Resume Keywords:</p></div>
             </div>
           </div>
           <div className="settings">
@@ -155,7 +155,7 @@ function Profile() {
                       <td className="que-co">{data.question.title}</td>
                       <td>
                         {
-                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} color="red" />
+                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross className="imcross" size={15} color="red" />
                         }
                       </td>
                       <td>{data.date}</td>

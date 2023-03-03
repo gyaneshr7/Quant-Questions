@@ -75,7 +75,7 @@ function Header() {
         }
 
         <div className="hamburger">
-          <div className="ham-icon" onClick={() => setShow(!show)}><GiHamburgerMenu /></div>
+          <div className="ham-icon" onClick={() => setShow(!show)}><GiHamburgerMenu size="30" /></div>
           <div className={show ? 'show-menu' : 'hide-menu'}>
             {loc === "/login" ? (
               <div className="mobile-right">

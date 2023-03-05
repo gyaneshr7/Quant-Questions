@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Dashboard.css';
+import Multiselect from 'multiselect-react-dropdown';
 
 function Dashboard() {
   const [title, setTitle] = useState("");
@@ -12,11 +13,38 @@ function Dashboard() {
   const [opt3, setOpt3] = useState('');
   const [opt4, setOpt4] = useState('');
   const [answer, setAnswer] = useState([]);
-  const [selectedFirms,setSelectedFirms]=useState();
-  const firms=['Tower Research Capital','Global Atlantic','Nomura','RBC','Bank'];
-  const divisions = ['Technology','Risk Management','Sales','Analytics'];
-  const position=['Trader','Develop','Analyst','Intern']
-  const tags=['c++','C','java','Javascript'];
+  const [selectedFirms, setSelectedFirms] = useState();
+  // const firms = ['Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank'];
+  // const divisions = ['Technology', 'Risk Management', 'Sales', 'Analytics'];
+  // const position = ['Trader', 'Develop', 'Analyst', 'Intern']
+  // const tags = ['c++', 'C', 'java', 'Javascript'];
+  const [firms, setFirms] = useState([]);
+  const [divisions, setDivisions] = useState([]);
+  const [positions, setPositions] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [answerTypes, setAnswerTypes] = useState([]);
+
+  const [firmEdit, setFirmEdit] = useState(false);
+  const [edit, setEdit] = useState(false);
+
+  const [firmVal, setFirmVal] = useState();
+
+
+  let firmNames = [], divisionNames = [], positionNames = [], tagNames = [];
+  firms.length > 0 && firms.map((data) => {
+    firmNames.push(data.name);
+  })
+  divisions && divisions.map((data) => {
+    divisionNames.push(data.name)
+  })
+  positions && positions.map((data) => {
+    positionNames.push(data.name)
+  })
+  tags && tags.map((data) => {
+    tagNames.push(data.name)
+  })
+
 
   // add questions to db
   const submitHandler = async () => {
@@ -30,10 +58,10 @@ function Dashboard() {
         category: category,
         answerType: anstype,
         options: [opt1, opt2, opt3, opt4],
-        firms:firms,
-        divisions:divisions,
-        position:position,
-        tags:tags
+        firms: firms,
+        divisions: divisions,
+        position: positions,
+        tags: tags
       }
     } else {
       val = {
@@ -43,10 +71,10 @@ function Dashboard() {
         difficulty: difficulty,
         category: category,
         answerType: anstype,
-        firms:firms,
-        divisions:divisions,
-        position:position,
-        tags:tags
+        firms: firms,
+        divisions: divisions,
+        position: positions,
+        tags: tags
       }
     }
     const data = await fetch("http://localhost:8000/question/add", {
@@ -66,6 +94,19 @@ function Dashboard() {
     setDifficulty("");
   }
 
+  useEffect(() => {
+    const fetchcategories = async () => {
+      const data = await fetch('http://localhost:8000/category/getcategories');
+      const res = await data.json();
+      console.log(res);
+      setFirms(res.firms);
+      setDivisions(res.divisions)
+      setPositions(res.positions)
+      setTags(res.tags)
+    }
+    fetchcategories();
+  }, [firmEdit])
+
   const handleFirm = (e) => {
     let target = e.target
     let name = target.name
@@ -79,12 +120,35 @@ function Dashboard() {
     localStorage.setItem("quantuser", null)
     window.location.href = '/'
   }
+
+  const submitCategory = async (name) => {
+    if (name == 'firms') {
+      if (firmVal) {
+        const val={
+          value:firmVal
+        }
+        const data = await fetch(`http://localhost:8000/category/addcategory/${name}`, {
+          method: "PUT",
+          body: JSON.stringify(val),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+        const res = await data.json();
+        console.log(res);
+        setFirmEdit(false);
+        setFirmVal('');
+      }
+    }
+  }
+
+
   return (
     <div>
       <div className="dash">
         <div className="dash-left">
           <div className="dash-head">Dashboard</div>
-          <div className="add-que">Add Questions</div> <br /> 
+          <div className="add-que">Add Questions</div> <br />
           <div className="add-que" onClick={handleLogout}>Logout</div>
         </div>
         <div className="dash-right">
@@ -99,7 +163,7 @@ function Dashboard() {
               <option value="Math">Math</option>
               <option value="NonQuant">NonQuant</option>
             </select>
-
+            <img src="/addicon.png" alt="" className="add-icon-img" />
             <select name="difficulty" className="opt-font" required onChange={(e) => setDifficulty(e.target.value)}>
               <option value="none" selected disabled hidden>
                 Difficulty
@@ -108,6 +172,7 @@ function Dashboard() {
               <option value="easy">Easy</option>
               <option value="hard">Hard</option>
             </select>
+            <img src="/addicon.png" alt="" className="add-icon-img" />
 
             <select name="anstype" className="opt-font" onChange={(e) => setAnsType(e.target.value)} >
               <option value="none" selected disabled hidden>
@@ -116,17 +181,110 @@ function Dashboard() {
               <option value="mcq">Mcq</option>
               <option value="text">Text</option>
             </select>
+            <img src="/addicon.png" alt="" className="add-icon-img" />
 
-            <select name="firm" multiple={true} className="opt-font" onChange={handleFirm}>
-              <option value="none" selected disabled hidden>
-                Firm
-              </option>
-              <option value="mcq">Mcq</option>
-              <option value="t1">T1</option>
-              <option value="t2">T2</option>
-              <option value="t3">T3</option>
-              <option value="t4">Text</option>
-            </select>
+          </div>
+
+          <div className="second-row">
+            <div className="wrapper">
+              <div class="d-flex flex-row align-items-center mb-4 multi-placeholder">
+                {!firmEdit && <div class="form-outline flex-fill mb-0">
+                  <Multiselect
+                    placeholder="Firms"
+                    displayValue=""
+                    isObject={false}
+                    onKeyPressFn={function noRefCheck() { }}
+                    onRemove={function noRefCheck() { }}
+                    onSearch={function noRefCheck() { }}
+                    onSelect={function noRefCheck() { }}
+                    options={firmNames}
+                    selectedValues={{}}
+                  />
+                </div>}
+                {
+                  firmEdit &&
+                  <input type="text" placeholder="Add Firm" onChange={(e) => setFirmVal(e.target.value)} />
+                }
+              </div>
+              {!firmEdit && <img src="/addicon.png" alt="" className="add-icon-img" onClick={() => { setFirmEdit(true); console.log("fjvbjhrvjk"); }} />}
+              {firmEdit && <button className="add" onClick={() => submitCategory('firms')}>Add</button>}
+              {firmEdit && <img src="/cross.png" alt="" className="cross-icon-img" onClick={() => { setFirmEdit(false); console.log("fjvbjhrvjk"); }} />}
+            </div>
+
+            <div className="wrapper">
+              <div class="d-flex flex-row align-items-center mb-4 multi-placeholder">
+
+                <div class="form-outline flex-fill mb-0">
+                  <Multiselect
+                    placeholder="Divisions"
+                    displayValue=""
+                    isObject={false}
+                    onKeyPressFn={function noRefCheck() { }}
+                    onRemove={function noRefCheck() { }}
+                    onSearch={function noRefCheck() { }}
+                    onSelect={function noRefCheck() { }}
+                    options={divisionNames}
+                    selectedValues={{}}
+                  />
+                </div>
+                {
+                  edit &&
+                  <input type="text" placeholder="Add Firm" />
+                }
+              </div>
+              <img src="/addicon.png" alt="" className="add-icon-img" onClick={() => { setEdit(true); console.log("fjvbjhrvjk"); }} />
+
+            </div>
+
+            <div className="wrapper">
+              <div class="d-flex flex-row align-items-center mb-4 multi-placeholder">
+
+                <div class="form-outline flex-fill mb-0">
+                  <Multiselect
+                    placeholder="Positions"
+                    displayValue=""
+                    isObject={false}
+                    onKeyPressFn={function noRefCheck() { }}
+                    onRemove={function noRefCheck() { }}
+                    onSearch={function noRefCheck() { }}
+                    onSelect={function noRefCheck() { }}
+                    options={positionNames}
+                    selectedValues={{}}
+                  />
+                </div>
+                {
+                  edit &&
+                  <input type="text" placeholder="Add Firm" />
+                }
+              </div>
+              <img src="/addicon.png" alt="" className="add-icon-img" onClick={() => { setEdit(true); console.log("fjvbjhrvjk"); }} />
+
+            </div>
+
+            <div className="wrapper">
+              <div class="d-flex flex-row align-items-center mb-4 multi-placeholder">
+
+                <div class="form-outline flex-fill mb-0">
+                  <Multiselect
+                    placeholder="Tags"
+                    displayValue=""
+                    isObject={false}
+                    onKeyPressFn={function noRefCheck() { }}
+                    onRemove={function noRefCheck() { }}
+                    onSearch={function noRefCheck() { }}
+                    onSelect={function noRefCheck() { }}
+                    options={tagNames}
+                    selectedValues={{}}
+                  />
+                </div>
+                {
+                  edit &&
+                  <input type="text" placeholder="Add Firm" />
+                }
+              </div>
+              <img src="/addicon.png" alt="" className="add-icon-img" onClick={() => { setEdit(true); console.log("fjvbjhrvjk"); }} />
+
+            </div>
           </div>
 
 

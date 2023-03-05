@@ -88,19 +88,30 @@
     left:10px;
 }
 
+.having{
+    display: flex;
+    justify-content: center;
+    gap:60px;
+}
 
 @media screen and (max-width:540px){
    .login-page{
     width:300px;
     margin-top: 50px;
-    height:480px;
+    /* height:450px; */
    }  
    
    .inputBox{
     width:240px;
+    padding:2px;
    }
 
    .logbtn{
     width:240px;
    }
+   
+.eyePassword{
+    top:12px;
+    left:-40px;
+}
 }

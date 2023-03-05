@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import logo2 from '../images/logo2.png'
 import './Login.css'
+import Footer from './Footer';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
@@ -69,6 +71,7 @@ function Login() {
       </div>
 
     </div>
+    {/* <Footer/> */}
     </>
   )
 }

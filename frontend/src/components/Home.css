@@ -337,8 +337,21 @@ text-align:center;
         gap:1px;
     }
 
-    .all-foots a{
-        font-size: 10px;
+    /* .my-text{
+        text-align: left;
+        justify-content: left;
+    } */
+
+    .footer{
+        display: none;
     }
+    .all-foots a{
+        font-size: 13px;
+    }
+
+    .mobile-footer{
+        display: flex;
+    }
+
 
 }

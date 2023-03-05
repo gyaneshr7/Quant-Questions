@@ -12,8 +12,7 @@ function Profile() {
   const [userData, setUserData] = useState();
   const [questions, setQuestions] = useState();
   const [submittedQuestions, setSubmittedQuestions] = useState();
-  const [scores, setScores] = useState([]);
-  const [rank,setRank]=useState([]);
+  const [rank, setRank] = useState([]);
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
   const correct = [], wrong = [];
@@ -28,12 +27,6 @@ function Profile() {
 
   useEffect(() => {
     let score = [];
-    scores.length > 0 &&
-      scores.map(data => {
-        console.log(data.score);
-        score.push(data.score)
-      })
-    setRank(score.sort());
     const fetchData = async () => {
 
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
@@ -49,8 +42,11 @@ function Profile() {
     const fetchScore = async () => {
       const data = await fetch(`http://localhost:8000/user/get/scores`);
       const res = await data.json();
-      setScores(res);
       console.log(res);
+      res && res.map(data => {
+        score.push(data.score)
+      })
+      setRank(score.sort());
     }
     fetchData();
     fetchQuestions();
@@ -58,7 +54,6 @@ function Profile() {
   }, [])
 
   ChartJS.register(ArcElement, Tooltip, Legend);
-
   const data = {
     labels: ['Todo', 'Solved', 'Attempted'],
     datasets: [
@@ -85,12 +80,12 @@ function Profile() {
           <div className="profile">
             <div className="pro">Profile</div>
             <div className="p-pro">
-              <div className="pro-give"><p style={{fontWeight:600}}>Name:</p>{userData && userData.name} </div>
-              <div className="pro-give"><p style={{fontWeight:600}}>Email:</p> {userData && userData.email}</div>
-              <div><p style={{fontWeight:600}}>Background:</p></div>
-              <div><p style={{fontWeight:600}}>Degree:</p></div>
-              <div><p style={{fontWeight:600}}>Certifications:</p></div>
-              <div><p style={{fontWeight:600}}>Resume Keywords:</p></div>
+              <div className="pro-give"><p style={{ fontWeight: 600 }}>Name:</p>{userData && userData.name} </div>
+              <div className="pro-give"><p style={{ fontWeight: 600 }}>Email:</p> {userData && userData.email}</div>
+              <div><p style={{ fontWeight: 600 }}>Background:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Degree:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Certifications:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Resume Keywords:</p></div>
             </div>
           </div>
           <div className="settings">
@@ -100,7 +95,7 @@ function Profile() {
                 Score : {userData && userData.score}
               </div>
               <div>
-                Highest Score : {rank.length>0 && rank[0]}
+                Highest Score : {rank.length > 0 && rank[0]}
               </div>
             </div>
           </div>

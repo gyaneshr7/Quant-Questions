@@ -23,7 +23,7 @@ function Home() {
             prepare you with real quant interview questions from top firms to
             help you land a job.
           </div>
-          <button className="create-acc">Create a Free Account</button>
+          <button className="create-acc" onClick={()=>window.location.href='/signup'}>Create a Free Account</button>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ function Home() {
 
       <div className="third">
         <div className="over">Over 1,500 quants train on Quant Questions.</div>
-        <button className="acc">Create a Free Account</button>
+        <button className="acc" onClick={()=>window.location.href='/signup'}>Create a Free Account</button>
       </div>
 
       <div className="practice">
@@ -163,7 +163,7 @@ function Home() {
           <div className="col-home">
             <img src={who1} alt="" />
             <div className="myserv-head">Undergraduates in STEM majors</div>
-            <p>
+            <p className="my-text">
               You are majoring in engineering, applied math or computer science
               and have taken a few courses in finance, operations research or
               economics. Get your career off to the best possible start by
@@ -174,7 +174,7 @@ function Home() {
           <div className="col-home">
             <img src={who2} alt="" />
             <div className="myserv-head">Graduate students & PhD candidates</div>
-            <p>
+            <p className="my-text">
               You are getting your masters in financial engineering, math
               finance, computational finance, data science or analytics and are
               actively preparing for quant interviews. Or maybe you are getting
@@ -186,7 +186,7 @@ function Home() {
           <div className="col-home">
             <img src={who3} alt="" />
             <div className="myserv-head">Early career quant professionals</div>
-            <p>
+            <p className="my-text">
               You went through this quant interview rodeo once before and you
               know how much of a headache it is. And now that you have been
               working, you have since forgotten all about those brainteasers,
@@ -197,12 +197,23 @@ function Home() {
         </div>
       </div>
 
-      <div className="footer">
+      <div className="footer web-footer">
          <div className="all-foots">
           <a href="/">&copy;Quant Questions</a>
           <a href="/">Contact Us</a>
           <a href="/">Terms</a>
           <a href="/">Privacy Policy</a>
+          <a href="/">Blogs</a>
+          <a href="/">FAQs</a>
+         </div>
+      </div>
+
+      <div className="footer mobile-footer">
+         <div className="all-foots">
+          <a href='/'>Home</a>
+          <a href="/">Contact</a>
+          <a href="/">Terms</a>
+          <a href="/">Privacy</a>
           <a href="/">Blogs</a>
           <a href="/">FAQs</a>
          </div>

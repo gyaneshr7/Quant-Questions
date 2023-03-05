@@ -270,7 +270,7 @@
   }
   .main-firms{
      width:250px;
-     height: 200px;
+     max-height: 200px;
      background-color: white;
      display: flex;
      flex-direction:row;
@@ -278,6 +278,10 @@
      gap:5px;
      overflow-y: scroll;
      margin-top: 10px;
+  }
+
+  .main-firms::-webkit-scrollbar {
+    display: none;
   }
 
   .firm-item{
@@ -299,16 +303,37 @@
 
 
 
+.mobile-view{
+  display: none;
+}
 
 
+.same-line-categ{
+  display: flex;
+  gap:5px;
+}
 
-
+.same-line-firm{
+  display: flex;
+  gap:5px;
+}
 
 @media screen and (max-width:540px){
+
+  .web-view{
+    display: none;
+  }
+
+  .mobile-view{
+    display: flex;
+  }
     .quest-block{
         width:400px;
     }
 
+    .find{
+      margin-top: 25px;
+    }
     .first-left{
         margin-left: 7px;
     }
@@ -330,10 +355,31 @@
     }
 
     .search{
-        width:300px;
+        width:350px;
+        margin-right: 8px;
     }
 
     .any{
         margin-top: 20px;
+        justify-content: left;
+        /* gap:153px; */
+        width:350px;
+        margin-left: 5.7%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .same-line-categ{
+      margin-left:5.8%;
+      margin-top: 10px;
+    }
+
+    .div3{
+      width:300px;
+    }
+
+    .same-line-firm{
+      display: flex;
+      margin-left: 5%;
     }
 }

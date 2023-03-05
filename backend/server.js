@@ -9,6 +9,7 @@ const app = express();
 const authController = require('./routes/auth')
 const questionsController = require('./routes/questions');
 const userController = require('./routes/user');
+const categoryController = require('./routes/category');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -28,6 +29,7 @@ app.use(cors({
 app.use('/auth',authController);
 app.use('/question',questionsController);
 app.use('/user',userController);
+app.use('/category',categoryController);
 
 app.listen(port,()=>{
     console.log(`Server is listening at ${port}`);

@@ -17,18 +17,17 @@ import { FaTags } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 
 function QueDetail() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const location = useLocation();
   const [userData, setUserData] = useState();
   const [currentQuestion, setCurrentQuestion] = useState();
   const [allQuestions, setAllquestions] = useState();
   const [showAns, setShowAns] = useState(false);
-  const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState();
-  const [submit, setSubmit] = useState();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
+  const [correctAns, setCorrectAns] = useState();
+  const [wrongAns, setWrongAns] = useState();
   const user = JSON.parse(localStorage.getItem("quantuser"));
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -40,6 +39,8 @@ function QueDetail() {
 
   const handlePreviousButtonClick = () => {
     setShowAns(false)
+    setCorrectAns(false);
+    setWrongAns(false)
     const previousQuestion = currentQuestion - 1;
     if (previousQuestion >= 0) {
       setCurrentQuestion(previousQuestion);
@@ -48,11 +49,14 @@ function QueDetail() {
 
   const handleNextButtonClick = () => {
     setShowAns(false)
+    setCorrectAns(false);
+    setWrongAns(false)
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < allQuestions.length) {
       setCurrentQuestion(nextQuestion);
     }
   };
+  let status;
 
   const isPreviousDisabled = currentQuestion === 0;
   const isNextDisabled =
@@ -79,7 +83,7 @@ function QueDetail() {
   useEffect(() => {
     fetchQuestions();
     fetchUser();
-  }, [answer])
+  }, [])
 
   const ansSubmitHandler = async () => {
     if (!user) {
@@ -97,17 +101,19 @@ function QueDetail() {
     } else {
       score = 2;
     }
-    let quesSubmission=0;
-    let quesAcceptance=0;
+    let quesSubmission = 0;
+    let quesAcceptance = 0;
     let status;
     if (answer) {
       quesSubmission = 1;
-      setShowAns(true)
+      setShowAns(false)
       setAnswer("");
       let val;
       console.log(answer, allQuestions[currentQuestion].answer);
       if (answer == allQuestions[currentQuestion].answer) {
-        status="correct";
+        setCorrectAns(true);
+        setWrongAns(false)
+        status = "correct";
         quesAcceptance = 1;
         console.log("correctanswer");
         val = {
@@ -135,7 +141,9 @@ function QueDetail() {
         );
         const res = await data.json();
       } else {
-        status="wrong";
+        setCorrectAns(false);
+        setWrongAns(true)
+        status = "wrong";
         val = {
           userId: updateduser._id,
           totalSubmissions: updateduser.totalSubmissions + 1,
@@ -160,12 +168,12 @@ function QueDetail() {
         );
         const res = await data.json();
       }
-      
+
       const quesValue = {
         submission: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].submission + quesSubmission,
         accepted: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].accepted + quesAcceptance
       }
-      
+
       // update question for submissions and acceptance
       const updateQues = await fetch(`http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`, {
         method: "PUT",
@@ -175,12 +183,12 @@ function QueDetail() {
         }
       })
       const updatedResp = await updateQues.json();
-      console.log(updatedResp,"updatedresp");
+      console.log(updatedResp, "updatedresp");
 
       // update current question status
-      const userUpdation={
-        questionId:allQuestions[currentQuestion]._id,
-        status:status,
+      const userUpdation = {
+        questionId: allQuestions[currentQuestion]._id,
+        status: status,
       }
       const updateUser = await fetch(`http://localhost:8000/user/update/ans/status/${userData._id}/${allQuestions[currentQuestion]._id}`, {
         method: "PUT",
@@ -194,7 +202,7 @@ function QueDetail() {
     }
   };
 
-  
+
   const firms = [
     "Tower Research Capital",
     "Global Atlantic",
@@ -211,7 +219,7 @@ function QueDetail() {
     "Bank",
   ];
 
-  const tags = ["Maths","Bayes Theorem", "C", "java", "Javascript"];
+  const tags = ["Maths", "Bayes Theorem", "C", "java", "Javascript"];
 
   return (
     <div>
@@ -229,7 +237,7 @@ function QueDetail() {
                 </div>
               </div>
               <div className="detail-icons">
-                <div className="icon-line1">
+                {/* <div className="icon-line1">
                   <BsFillCalculatorFill size={18} />
                   <AiOutlineMail size={23} />
                   <GrNote size={17} />
@@ -240,7 +248,7 @@ function QueDetail() {
                   <RiLightbulbFlashLine size={20} />
                   <RiWindowLine size={20} />
                   <AiOutlineDislike size={20} color="red" />
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -254,24 +262,34 @@ function QueDetail() {
               allQuestions && allQuestions[currentQuestion].answerType === "text"
                 ?
                 <div className="answer">
-                  <input type="textarea" value={answer} className="ans-field" onChange={(e) => setAnswer(e.target.value)} />
+                  <input type="textarea" value={answer} className="ans-field" onChange={(e) => { setAnswer(e.target.value); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
                 </div>
                 :
                 <div className="options">
                   {allQuestions && allQuestions[currentQuestion].options.map((option, i) => (
                     option != '' && <div className="disp-radio" key={i}>
-                      <input type="radio" value={option} name="option" onChange={() => setAnswer(option)} />
+                      <input type="radio" value={option} name="option" onChange={() => { setAnswer(option); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
                       <p className="input-pin">{option}</p>
                     </div>
                   ))}
-              </div>
+                </div>
             }
 
             <div className="align-btn">
               <button className="submit" onClick={ansSubmitHandler}>
                 Submit
               </button>
-              {showAns && <button className="show">Show Answer</button>}
+              {correctAns && <p style={{ color: 'green', paddingTop: '10px' }}>Correct Answer</p>}
+              {wrongAns &&
+                <>
+                  <button className="show" onClick={() => setShowAns(true)}>Show Answer</button>
+                  <p style={{ color: 'red', paddingTop: '10px' }}>Wrong Answer</p>
+                </>
+              }
+            </div>
+            <div>
+              {showAns &&
+                <span style={{ marginLeft: '-660px', fontSize: '20px' }}>Answer :  {allQuestions[currentQuestion].answer}</span>}
             </div>
           </div>
 
@@ -309,7 +327,14 @@ function QueDetail() {
             {open1 && (
               <div className="detail-block">
                 <div className="my-detail">
-                  <div className="status-detail">Status</div><div className="solving">solved</div>
+                  <div className="status-detail">Status</div><div className="solving">
+                    {
+                      userData && userData.currentAttempted.map(data => (
+                        data.questionId == allQuestions[currentQuestion]._id) &&
+                        data.status
+                      )
+                    }
+                  </div>
                 </div>
                 <div className="my-detail">
                   <div className="status-detail">Difficulty</div>
@@ -318,18 +343,18 @@ function QueDetail() {
                       allQuestions[currentQuestion].difficulty === "easy"
                         ? "success-de"
                         : allQuestions[currentQuestion].difficulty === "hard"
-                        ? "danger-de"
-                        : "medium-de"
+                          ? "danger-de"
+                          : "medium-de"
                     }
                   >
                     {allQuestions[currentQuestion].difficulty}
                   </div>
                 </div>
                 <div className="my-detail">
-                  <div className="status-detail">Submitted</div><div>100</div>
+                  <div className="status-detail">Submitted</div><div>{allQuestions[currentQuestion].submission}</div>
                 </div>
                 <div className="my-detail">
-                  <div className="status-detail">Accepted</div><div>50</div>
+                  <div className="status-detail">Accepted</div><div>{allQuestions[currentQuestion].accepted}</div>
                 </div>
               </div>
             )}
@@ -345,7 +370,10 @@ function QueDetail() {
             </div>
             {open2 && (
               <div className="main-tags">
-                {tags.map((item) => (
+                <div className="all-firms">
+                  <div className="tag-item">{allQuestions[currentQuestion].category}</div>
+                </div>
+                {allQuestions[currentQuestion].tags.map((item) => (
                   <div className="all-firms">
                     <div className="tag-item">{item}</div>
                   </div>
@@ -362,8 +390,8 @@ function QueDetail() {
               <IoMdArrowDropdown className="drop-detail" size="20" />
             </div>
             {open3 && (
-                <div className="main-tags">
-                {firms.map((item) => (
+              <div className="main-tags">
+                {allQuestions[currentQuestion].firms.map((item) => (
                   <div className="all-firms">
                     <div className="tag-item">{item}</div>
                   </div>

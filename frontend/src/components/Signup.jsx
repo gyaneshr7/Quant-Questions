@@ -7,6 +7,7 @@ import {
   faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
 import Header from './Header';
+import Footer from './Footer';
 
 function Signup() {
   const [eye, setEye] = useState(true);
@@ -60,12 +61,13 @@ function Signup() {
             <input className='inputBox' value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
             <button type="button" className='logbtn' onClick={handlesignup}>Sign Up</button>
           </div>
-          <div className='last-block'>
+          <div className='last-block having'>
             <a href="/" className='forgot'>Having an account ?</a>
             <a href="/login" className='sign'>Login</a>
           </div>
         </div>
       </div>
+      {/* <Footer/> */}
     </>
   )
 }

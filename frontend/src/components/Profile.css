@@ -127,3 +127,20 @@ color:rgb(81, 80, 80);
     display: flex;
     gap:3px;
 }
+
+
+@media screen and (max-width:540px){
+   .second-box{
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      /* margin-left: 3%; */
+   }
+
+   .profile{
+    margin-left: 3%;
+    width:300px;
+   }
+   
+   
+}

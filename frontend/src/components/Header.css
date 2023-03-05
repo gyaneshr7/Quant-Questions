@@ -45,7 +45,7 @@
     background-color: white;
     border:1px solid rgb(202, 200, 200);
     width:220px;
-    height:220px;
+    height:fit-content;
     position: absolute;
     top:45px;
     left:-170px;
@@ -53,6 +53,7 @@
     gap:7px;
     display:flex;
     padding-top:15px;
+    padding-bottom: 10px;
     flex-direction: column;
     cursor:pointer;
     overflow: hidden;
@@ -91,6 +92,9 @@
     /* padding:2px; */
 }
 
+.user-right{
+    display: none;
+}
 @media screen and (max-width:540px) {
     .logo{
        margin-left:3px;
@@ -100,6 +104,12 @@
 
     .right{
         display: none;
+    }
+
+    .user-right{
+        display: flex;
+        position: relative;
+        left:26px;
     }
 
     .hamburger{
@@ -132,7 +142,7 @@
         /* top:70px; */
         /* position:relative; */
         top:75px;
-        left:15px;
+        left:42px;
         /* gap:0; */
         /* padding-bottom: 60px; */
         /* overflow:hidden; */

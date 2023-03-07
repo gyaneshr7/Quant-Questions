@@ -61,8 +61,8 @@ function Profile() {
         label: '',
         data: [questions && questions.length, correct.length > 0 && correct.length, wrong && wrong.length],
         backgroundColor: [
-          '#66c2a5',
           '#8da0cb',
+          '#66c2a5',
           'rgb(81, 80, 80)'
         ],
         borderWidth: 1,
@@ -88,7 +88,7 @@ function Profile() {
               <div><p style={{ fontWeight: 600 }}>Resume Keywords:</p></div>
             </div>
           </div>
-          <div className="settings">
+          {/* <div className="settings">
             <div className="pro">Performance</div>
             <div className="p-pro">
               <div>
@@ -98,11 +98,8 @@ function Profile() {
                 Highest Score : {rank.length > 0 && rank[0]}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="second-box">
-          <div className="profile">
+          </div> */}
+         <div className="profile">
             <div className="pro">
               <GiProgression className="prog" />
               Progress
@@ -128,7 +125,37 @@ function Profile() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
+        </div>
+
+        <div className="second-box">
+          {/* <div className="profile">
+            <div className="pro">
+              <GiProgression className="prog" />
+              Progress
+            </div>
+            <div className="pie-size" >
+              <Pie data={data}
+              />
+              <hr style={{ height: "1px", borderwidth: "0", color: "gray", backgroundcolor: "gray", marginTop: "15px" }} />
+              <div className="defined">
+                <div className="define-prog prog1">
+                  <p>Todo</p>
+                  <p style={{ textAlign: "center" }}>{questions && questions.length}</p>
+                </div>
+
+                <div className="define-prog prog2">
+                  <p>Solved</p>
+                  <p style={{ textAlign: "center" }}>{correct && correct.length}</p>
+                </div>
+
+                <div className="define-prog prog3">
+                  <p>Attempted</p>
+                  <p style={{ textAlign: "center" }}>{wrong && wrong.length}</p>
+                </div>
+              </div>
+            </div>
+          </div> */}
           <div className="settings">
             <div className="pro">
               <img className="prog" src={progress} alt="" />

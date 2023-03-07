@@ -74,6 +74,7 @@ function Progress() {
     }
     fetchData();
     fetchQuestions();
+    // fetchCategory();
   }, [])
 
   ChartJS.register(ArcElement, Tooltip, Legend);
@@ -116,12 +117,12 @@ function Progress() {
             <div className='all-solved'>
               <div className='col-sub'>
                 <div><span className='give-nums'>{correct.length>0 ? correct.length:0}</span>/{questions && questions.length}</div>
-                <div className='my-sub'>questions solved</div>
+                <div className='my-sub'>Solved Questions</div>
               </div>
 
               <div className='col-sub'>
                 <div><span className='give-nums'>{wrong.length>0 ? wrong.length:0}</span>/{questions && questions.length}</div>
-                <div className='my-sub'>attempted questions</div>
+                <div className='my-sub'>Attempted Questions</div>
               </div>
 
             </div>
@@ -129,12 +130,12 @@ function Progress() {
             <div className='total-sub'>
               <div className='col-sub'>
                 <div className='num-sub'>{userdata && userdata.totalSubmissions}</div>
-                <div className='my-sub'>total submissions</div>
+                <div className='my-sub'>Total Submissions</div>
               </div>
 
               <div className='col-sub'>
                 <div className='percent-sub'>{userdata && ((correct.length>0 && correct.length/userdata.totalSubmissions)*100).toFixed(2)}%</div>
-                <div className='my-sub'>acceptance rate</div>
+                <div className='my-sub'>Acceptance Rate</div>
               </div>
             </div>
           </div>
@@ -147,8 +148,8 @@ function Progress() {
             <thead className='table-head'>
               <tr>
                 <th>Date Submitted</th>
-                <th>Question</th>
-                <th>Correct?</th>
+                <th>Questions</th>
+                <th>Correct</th>
                 <th>Difficulty</th>
                 <th>Category</th>
               </tr>
@@ -195,8 +196,8 @@ function Progress() {
             <thead className='table-head'>
               <tr>
                 <th>Date Submitted</th>
-                <th>Question</th>
-                <th>Correct?</th>
+                <th>Questions</th>
+                <th>Correct</th>
                 <th>Difficulty</th>
                 <th>Category</th>
               </tr>

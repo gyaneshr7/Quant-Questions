@@ -112,15 +112,18 @@
 }
 
 .prog1{
-   color:#66c2a5;
+    color:#7a9ceb;
+    font-weight: 500;
 }
 
 .prog2{
-  color:#8da0cb;
+  color:#66c2a5;
+  font-weight: 500;
 }
 
 .prog3{
 color:rgb(81, 80, 80);
+font-weight: 500;
 }
 
 .pro-give{

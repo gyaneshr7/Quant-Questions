@@ -38,18 +38,14 @@ function Submissions() {
 
   const totalPages = Math.ceil(submittedQuestions && submittedQuestions.length / itemsPerPage);
 
-  // const handlePageChange = (pageNumber) => {
-  //     setCurrentPage(pageNumber);
-  // };
-
   return (
     <div>
       <Header />
       <div className="sub">
-        <div className="search-submit">
+        {/* <div className="search-submit">
           <label style={{ marginRight: "5px" }}>Search:</label>
           <input type="text" />
-        </div>
+        </div> */}
         <div className="whole-table">
           <table className="mytable table-striped">
             <thead className="table-head">

@@ -57,7 +57,6 @@ function QueDetail() {
     }
   };
   let status;
-
   const isPreviousDisabled = currentQuestion === 0;
   const isNextDisabled =
     allQuestions && currentQuestion === allQuestions.length - 1;
@@ -170,10 +169,10 @@ function QueDetail() {
       }
 
       const quesValue = {
-        submission: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].submission + quesSubmission,
-        accepted: allQuestions[currentQuestion].submission && allQuestions[currentQuestion].accepted + quesAcceptance
+        submission:  allQuestions[currentQuestion].submission + quesSubmission,
+        accepted:  allQuestions[currentQuestion].accepted + quesAcceptance
       }
-
+      console.log(allQuestions[currentQuestion].submission,allQuestions[currentQuestion].accepted,quesValue,"lksjdhfjagwuf");
       // update question for submissions and acceptance
       const updateQues = await fetch(`http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`, {
         method: "PUT",
@@ -230,10 +229,10 @@ function QueDetail() {
             <div className="line-one">
               <div className="main-detail">
                 <div className="detail-title">
-                  {allQuestions && allQuestions[currentQuestion].uniqueId}.
+                  {allQuestions && allQuestions[currentQuestion].uniqueId}. 
                 </div>
                 <div className="detail-title">
-                  {allQuestions && allQuestions[currentQuestion].title}
+                  { allQuestions && allQuestions[currentQuestion].title}
                 </div>
               </div>
               <div className="detail-icons">
@@ -259,7 +258,7 @@ function QueDetail() {
             </div>
             <p className="answer">Your Answer</p>
             {
-              allQuestions && allQuestions[currentQuestion].answerType === "text"
+              allQuestions && allQuestions[currentQuestion].answerType === "Text"
                 ?
                 <div className="answer">
                   <input type="textarea" value={answer} className="ans-field" onChange={(e) => { setAnswer(e.target.value); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
@@ -279,17 +278,17 @@ function QueDetail() {
               <button className="submit" onClick={ansSubmitHandler}>
                 Submit
               </button>
-              {correctAns && <p style={{ color: 'green', paddingTop: '10px' }}>Correct Answer</p>}
+              {correctAns && <p style={{ color: 'green', paddingTop: '10px',  fontSize: '20px' }}>Correct Answer</p>}
               {wrongAns &&
                 <>
                   <button className="show" onClick={() => setShowAns(true)}>Show Answer</button>
-                  <p style={{ color: 'red', paddingTop: '10px' }}>Wrong Answer</p>
+                  <p style={{ color: 'red', paddingTop: '10px', fontSize: '20px' }}>Wrong Answer</p>
                 </>
               }
             </div>
             <div>
               {showAns &&
-                <span style={{ marginLeft: '-660px', fontSize: '20px' }}>Answer :  {allQuestions[currentQuestion].answer}</span>}
+                <div className="show-ans">Correct Answer :  {allQuestions[currentQuestion].answer}</div>}
             </div>
           </div>
 

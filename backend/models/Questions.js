@@ -11,7 +11,7 @@ const questionsSchema = mongoose.Schema(
         date:{type:String},
         submission:{type:Number,default:0},
         accepted:{type:Number,default:0},
-        answerType:{type:String,enum:['mcq','text']},
+        answerType:{type:String},
         options:[{type:String}],
         category:{type:String},
         firms:[{type:String}],

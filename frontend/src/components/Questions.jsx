@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Questions.css";
-import cross from "../images/cross.png";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { ImCross } from 'react-icons/im';
 import { GrNotes } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa";
@@ -13,7 +11,6 @@ import { FaTags } from "react-icons/fa";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import progressimg from "../images/progress.png";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 function Questions() {
   const [searched, setSearched] = useState("");
@@ -34,6 +31,7 @@ function Questions() {
   const [positionVal, setPositionVal] = useState('');
   const [tagVal, setTagVal] = useState('');
   const [reset, setReset] = useState(false);
+  const [categories, setCategories] = useState();
 
   const correct = [], wrong = [];
   userData && userData.currentAttempted.map((data) => {
@@ -55,13 +53,13 @@ function Questions() {
     }
   })
 
-  const firms = ['Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-    'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-    'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-    'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank']
-  const divisions = ['Technology', 'Risk Management', 'Sales', 'Analytics'];
-  const positions = ['Trader', 'Develop', 'Analyst', 'Intern']
-  const tags = ['c++', 'C', 'java', 'Javascript'];
+  // const firms = ['Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
+  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
+  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
+  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank']
+  // const divisions = ['Technology', 'Risk Management', 'Sales', 'Analytics'];
+  // const positions = ['Trader', 'Develop', 'Analyst', 'Intern']
+  // const tags = ['c++', 'C', 'java', 'Javascript'];
 
   // colums of the table
   const columnlogin = [
@@ -329,6 +327,14 @@ function Questions() {
     const res = await data.json();
     setUserData(res);
   }
+
+  const fetchCategory = async () => {
+    const data = await fetch(`http://localhost:8000/category/getcategories`);
+    const res = await data.json();
+    setCategories(res);
+  };
+
+
   const handleFilters = () => {
     const array = [];
     if (firmVal.length > 0 && divisionVal.length > 0 && positionVal.length > 0 && tagVal.length > 0) {
@@ -411,6 +417,7 @@ function Questions() {
     } else if (firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) {
       data.map((ques) => {
         if (ques.firms.includes(firmVal) || ques.divisions.includes(divisionVal) || ques.position.includes(positionVal) || ques.tags.includes(tagVal)) {
+          console.log(ques);
           array.push(ques);
         }
       })
@@ -467,9 +474,7 @@ function Questions() {
       setSearchVal('');
       setEnableSearch(false);
     }
-    // if (reset) {
-    //   setFirmVal('');
-    // }
+    fetchCategory();
   }, [categoryVal, difficultyVal, searchval, reset, firmVal, divisionVal, positionVal, tagVal]);
 
   // search questions
@@ -527,8 +532,8 @@ function Questions() {
         label: '',
         data: [data && data.length, correct.length, wrong.length],
         backgroundColor: [
-          '#66c2a5',
           '#8da0cb',
+          '#66c2a5',
           'rgb(81, 80, 80)'
         ],
         borderWidth: 1,
@@ -584,11 +589,16 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Category
                   </option>
-                  <option value="Brainteasers">Brainteasers</option>
-                  <option value="Derivatives">Derivatives</option>
+                  {
+                    categories && categories.category.map((category) => (
+                      <option value={category.name}>{category.name}</option>
+                    ))
+                  }
+
+                  {/* <option value="Derivatives">Derivatives</option>
                   <option value="Finance">Finance</option>
                   <option value="Math">Math</option>
-                  <option value="NonQuant">NonQuant</option>
+                  <option value="NonQuant">NonQuant</option> */}
                 </select>
 
                 <select
@@ -785,9 +795,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {firms.map((item) => (
-                  <div className="all-firms" value={item} onClick={() => setFirmVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.firms.map((item) => (
+                  item.count >0 && <div className="all-firms" value={item.name} onClick={() => setFirmVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -800,9 +810,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {divisions.map((item) => (
-                  <div className="all-firms" onClick={() => setDivisionVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.divisions.map((item) => (
+                  item.count>0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -815,9 +825,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {positions.map((item) => (
-                  <div className="all-firms" onClick={() => setPositionVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.positions.map((item) => (
+                  item.count>0 && <div className="all-firms" onClick={() => setPositionVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -830,9 +840,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {tags.map((item) => (
-                  <div className="all-firms" onClick={() => setTagVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.tags.map((item) => (
+                  item.count>0 && <div className="all-firms" onClick={() => setTagVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -847,24 +857,6 @@ function Questions() {
       <div className="mobile-view">
         <div className="quest-two">
           <div className="quest-block">
-            {/* <div className="div1">
-              <div className="first-left">
-                <div className="solved">0/83 Solved</div>
-                <div className="easy">Easy 0</div>
-                <div className="mymedium">Medium 0</div>
-                <div className="hard">Hard 0</div>
-              </div>
-              <div className="random-side">
-                <Link
-                  to="/quedetail"
-                  state={{ id: random && data[random].uniqueId }}
-                >
-                  <button className="random">Random Q</button>
-                </Link>
-              </div>
-            </div> */}
-
-            {/* <hr style={{ height: "0.7px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} /> */}
 
             <div className="div2">
               <div className="find">
@@ -887,11 +879,11 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Category
                   </option>
-                  <option value="Brainteasers">Brainteasers</option>
-                  <option value="Derivatives">Derivatives</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Math">Math</option>
-                  <option value="NonQuant">NonQuant</option>
+                  {
+                    categories && categories.category.map((category) => (
+                      <option value={category.name}>{category.name}</option>
+                    ))
+                  }
                 </select>
 
                 <select
@@ -922,9 +914,9 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Firms
                   </option>
-                  {firms.map((item) => (
-                    <option value={item} onClick={() => setFirmVal(item)}>
-                      <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  {categories && categories.firms.map((item) => (
+                    <option value={item} onClick={() => setFirmVal(item.name)}>
+                      <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                     </option>
                   ))}
 
@@ -940,9 +932,9 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Divisions
                   </option>
-                  {divisions.map((item) => (
-                    <option value={item} onClick={() => setDivisionVal(item)}>
-                      <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  {categories && categories.divisions.map((item) => (
+                    <option value={item} onClick={() => setDivisionVal(item.name.name)}>
+                      <div className="firm-item">{item.name.name}<span className="num-firm">56</span></div>
                     </option>
                   ))}
                 </select>
@@ -957,9 +949,9 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Positions
                   </option>
-                  {positions.map((item) => (
-                    <option value={item} onClick={() => setPositionVal(item)}>
-                      <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  {categories && categories.positions.map((item) => (
+                    <option value={item} onClick={() => setPositionVal(item.name.name)}>
+                      <div className="firm-item">{item.name.name}<span className="num-firm">56</span></div>
                     </option>
                   ))}
                 </select>
@@ -974,9 +966,9 @@ function Questions() {
                   <option value="Category" selected disabled hidden>
                     Tags
                   </option>
-                  {tags.map((item) => (
-                    <option value={item} onClick={() => setTagVal(item)}>
-                      <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                  {categories && categories.tags.map((item) => (
+                    <option value={item} onClick={() => setTagVal(item.name.name)}>
+                      <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                     </option>
                   ))}
                 </select>
@@ -1122,7 +1114,7 @@ function Questions() {
             </div>
           </div>
 
-          <div className="quest-right-block">
+          {/* <div className="quest-right-block">
             <div className="quest-progress-head">
               <img src={progressimg} alt="" />
               <div className="first-prog">Progress</div>
@@ -1155,9 +1147,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {firms.map((item) => (
-                  <div className="all-firms" value={item} onClick={() => setFirmVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.firms.map((item) => (
+                  <div className="all-firms" value={item} onClick={() => setFirmVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                   </div>
                 ))}
               </div>
@@ -1170,9 +1162,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {divisions.map((item) => (
-                  <div className="all-firms" onClick={() => setDivisionVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.divisions.map((item) => (
+                  <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                   </div>
                 ))}
               </div>
@@ -1185,9 +1177,9 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {positions.map((item) => (
-                  <div className="all-firms" onClick={() => setPositionVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.positions.map((item) => (
+                  <div className="all-firms" onClick={() => setPositionVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                   </div>
                 ))}
               </div>
@@ -1200,16 +1192,16 @@ function Questions() {
               </div>
 
               <div className="main-firms">
-                {tags.map((item) => (
-                  <div className="all-firms" onClick={() => setTagVal(item)}>
-                    <div className="firm-item">{item}<span className="num-firm">56</span></div>
+                {categories && categories.tags.map((item) => (
+                  <div className="all-firms" onClick={() => setTagVal(item.name)}>
+                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
                   </div>
                 ))}
               </div>
             </div>
 
 
-          </div>
+          </div> */}
         </div>
 
       </div>

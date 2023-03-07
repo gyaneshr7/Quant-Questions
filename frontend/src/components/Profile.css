@@ -1,12 +1,13 @@
 .profile-box{
-    width:1000px;
-    margin:auto;
     padding-bottom: 30px;
 }
 
 .second-box{
     display: flex;
     margin-top: 30px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     gap:40px;
 }
 
@@ -41,7 +42,7 @@
     border: 1px solid rgb(195, 194, 194);
     text-align: left;
     width:500px;
-    height:40%;
+    margin-bottom: auto;
 }
 
 .cross{
@@ -144,6 +145,35 @@ font-weight: 500;
     margin-left: 3%;
     width:300px;
    }
+
+   .p-pro{
+    padding-bottom: 0px;
+   }
+
+   .all-pro{
+    padding-bottom: 10px;
+   }
+ 
    
-   
+.settings{
+    width:75%;
+    margin-left: 2%;
+    justify-content: center;
+}
+
+.defined{
+    gap:45px;
+}
+.pie-size{
+    width:250px;
+}
+
+.table-size{
+    width:270px;
+    margin-bottom: 20px;
+}
+
+.table-size td{
+    font-size: 10px;
+}
 }

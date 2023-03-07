@@ -229,7 +229,9 @@ text-align:center;
     font-size: 18px;
 }
 
-
+.mobile-footer{
+    display:none;
+}
 
 @media screen and (max-width:540px){
     .home{

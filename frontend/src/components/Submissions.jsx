@@ -42,12 +42,12 @@ function Submissions() {
     <div>
       <Header />
       <div className="sub">
-        {/* <div className="search-submit">
-          <label style={{ marginRight: "5px" }}>Search:</label>
-          <input type="text" />
-        </div> */}
+        <div className="search-submit">
+          {/* <label style={{ marginRight: "5px" }}>Search:</label> */}
+          {/* <input type="text" /> */}
+        </div>
         <div className="whole-table">
-          <table className="mytable table-striped">
+          <table className="mytable table-striped web-table">
             <thead className="table-head">
               <tr height="1%">
                 <th width="2%">Date Submitted</th>
@@ -88,6 +88,53 @@ function Submissions() {
                     </td>
                     <td className="quest set-categ">
                       {data.question && data.question.category}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+
+          <table className="mytable table-striped phone-table">
+            <thead className="table-head">
+              <tr height="1%">
+                {/* <th width="2%">Date Submitted</th> */}
+                <th>Question</th>
+                <th>Correct?</th>
+                <th>Difficulty</th>
+                {/* <th width="1%">Category</th> */}
+              </tr>
+            </thead>
+            <tbody className="tablebody">
+              {tableData &&
+                tableData.map((data) => (
+                  <tr height="1%">
+                    {/* <td className="set">{data.date}</td> */}
+                    <td className="quest set que-co">
+                      {data.question && data.question.title}
+                    </td>
+                    <td>
+                      {data.correctAns ? (
+                        <TiTick color="green" size={25} className="tick" />
+                      ) : (
+                        <ImCross size={15} color="red" />
+                      )}
+                    </td>
+                    <td>
+                      <p
+                        className={
+                          data.question && data.question.difficulty === "easy"
+                            ? "success"
+                            : data.question &&
+                              data.question.difficulty === "hard"
+                            ? "danger"
+                            : "medium"
+                        }
+                      >
+                        {data.question && data.question.difficulty}
+                      </p>
+                    </td>
+                    <td className="quest set-categ">
+                      {/* {data.question && data.question.category} */}
                     </td>
                   </tr>
                 ))}

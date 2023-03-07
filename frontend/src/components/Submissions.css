@@ -1,9 +1,10 @@
 .whole-table{
     margin-top: 30px;
 }
+
 .mytable{
     width: 1000px;
-    margin: auto;
+    /* margin: auto; */
 }
 .table-head{
     border-top: 1px solid rgb(154, 154, 154);
@@ -120,4 +121,32 @@ td{
 .sub{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.phone-table{
+    display: none;
+}
+
+@media screen and (max-width:540px){
+ .web-table{
+    display: none;
+ }
+
+ .phone-table{
+    display: block;
+ }
+
+ .mytable{
+    width:350px;
+ }
+
+ .mytable td{
+    font-size: 14px;
+ }
+ .whole-table{
+    justify-content: center;
+ }
 }

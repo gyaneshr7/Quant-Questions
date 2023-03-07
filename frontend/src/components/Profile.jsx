@@ -74,7 +74,7 @@ function Profile() {
     <div>
       <Header />
       <div className="profile-box">
-        <div className="last"></div>
+        {/* <div className="last"></div> */}
 
         <div className="second-box">
           <div className="profile">
@@ -91,11 +91,11 @@ function Profile() {
           {/* <div className="settings">
             <div className="pro">Performance</div>
             <div className="p-pro">
-              <div>
-                Score : {userData && userData.score}
+              <div className="pro-give">
+              <p style={{ fontWeight: 600 }}> Score :</p> {userData && userData.score}
               </div>
-              <div>
-                Highest Score : {rank.length > 0 && rank[0]}
+              <div className="pro-give">
+              <p style={{ fontWeight: 600 }}> Highest Score : </p>{rank.length > 0 && rank[0]}
               </div>
             </div>
           </div> */}

@@ -331,6 +331,10 @@
         width:400px;
     }
 
+    .quest-two{
+      flex-direction: column;
+      gap:0px;
+    }
     .find{
       margin-top: 25px;
     }
@@ -381,5 +385,15 @@
     .same-line-firm{
       display: flex;
       margin-left: 5%;
+    }
+
+    .quest-progress-head{
+      margin-left: 25px;
+    }
+
+    .div3{
+      padding-bottom: 10px;
+      padding-left: 30px;
+      width:370px;
     }
 }

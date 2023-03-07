@@ -107,6 +107,7 @@ function Progress() {
     <div>
       <Header />
       <div className='prog-page'>
+        <div className='row2-prog'>
         <div className='categ-head'>Submissions by Category</div>
         <div className='row1-prog'>
           <div className='doughnut'>
@@ -140,11 +141,12 @@ function Progress() {
             </div>
           </div>
         </div>
+        </div>
 
         <div className='row2-prog'>
           <div className='recent'>Most Recent 10 Correct Submissions</div>
 
-          <table className="table-sub table-striped">
+          <table className="table-sub table-striped web-table">
             <thead className='table-head'>
               <tr>
                 <th>Date Submitted</th>
@@ -187,12 +189,57 @@ function Progress() {
             }
 
           </table>
+
+
+          <table className="table-sub table-striped phone-table">
+            <thead className='table-head'>
+              <tr>
+                {/* <th>Date Submitted</th> */}
+                <th>Question</th>
+                <th>Correct?</th>
+                <th>Difficulty</th>
+                {/* <th>Category</th> */}
+              </tr>
+            </thead>
+
+            {
+              uniqueCorrectSubmissions.length > 0 ?
+                <tbody>
+                  {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
+                    <tr>
+                      {/* <td>{data.date}</td> */}
+                      <td className="que-co">{data.question.title}</td>
+                      <td>
+                        {
+                          data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15}  color="red" />
+                        }
+                      </td>
+                      <td>
+                      <p
+                      className={
+                        data.question.difficulty === "easy" ? "success" : data.question.difficulty === 'hard' ? "danger" : "medium"
+                      }>
+                        {data.question.difficulty}</p></td>
+                      {/* <td>{data.question.category}</td> */}
+                    </tr>
+                  ))
+                  }
+                </tbody>
+                :
+                <tbody>
+                  <tr>
+                    <td className='no-data' colspan='5'>No recent submissions</td>
+                  </tr>
+                </tbody>
+            }
+
+          </table>
         </div>
 
         <div className='row3-prog'>
           <div className='recent'>Most Recent 30 Submissions</div>
 
-          <table className="table-sub table-striped">
+          <table className="table-sub table-striped web-table">
             <thead className='table-head'>
               <tr>
                 <th>Date Submitted</th>
@@ -223,6 +270,50 @@ function Progress() {
                     </p>
                   </td>
                   <td>{data.question.category}</td>
+                </tr>
+              ))}
+
+            </tbody>:
+            <tbody>
+            <tr>
+              <td className='no-data' colspan='5'>No recent submissions</td>
+            </tr>
+          </tbody>
+            }
+            
+          </table>
+
+          <table className="table-sub table-striped phone-table">
+            <thead className='table-head'>
+              <tr>
+                {/* <th>Date Submitted</th> */}
+                <th>Question</th>
+                <th>Correct?</th>
+                <th>Difficulty</th>
+                {/* <th>Category</th> */}
+              </tr>
+            </thead>
+            {
+              submittedQuestions && submittedQuestions.length>0 ?
+              <tbody>
+              {submittedQuestions && submittedQuestions.slice(0, 31).map((data) => (
+                <tr>
+                  {/* <td>{data.date}</td> */}
+                  <td className="que-co">{data.question.title}</td>
+                  <td>
+                    {
+                      data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} className="imcross" color="red" />
+                    }
+                  </td>
+                  <td>
+                    <p
+                      className={
+                        data.question.difficulty === "easy" ? "success" : data.question.difficulty === 'hard' ? "danger" : "medium"
+                      }>
+                      {data.question.difficulty}
+                    </p>
+                  </td>
+                  {/* <td>{data.question.category}</td> */}
                 </tr>
               ))}
 

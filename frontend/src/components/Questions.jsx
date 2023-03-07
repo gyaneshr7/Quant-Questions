@@ -857,7 +857,7 @@ function Questions() {
       <div className="mobile-view">
         <div className="quest-two">
           <div className="quest-block">
-
+           
             <div className="div2">
               <div className="find">
                 <input
@@ -1113,6 +1113,7 @@ function Questions() {
               } */}
             </div>
           </div>
+          <hr style={{ height: "0.5px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} />
 
           {/* <div className="quest-right-block">
             <div className="quest-progress-head">

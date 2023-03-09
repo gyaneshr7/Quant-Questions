@@ -88,7 +88,8 @@ function Profile() {
               <div><p style={{ fontWeight: 600 }}>Resume Keywords:</p></div>
             </div>
           </div>
-          {/* <div className="settings">
+
+          <div className="settings">
             <div className="pro">Performance</div>
             <div className="p-pro">
               <div className="pro-give">
@@ -98,8 +99,9 @@ function Profile() {
               <p style={{ fontWeight: 600 }}> Highest Score : </p>{rank.length > 0 && rank[0]}
               </div>
             </div>
-          </div> */}
-         <div className="profile">
+          </div>
+
+         {/* <div className="profile">
             <div className="pro">
               <GiProgression className="prog" />
               Progress
@@ -125,11 +127,11 @@ function Profile() {
                 </div>
               </div>
             </div>
-          </div> 
+          </div>  */}
         </div>
 
         <div className="second-box">
-          {/* <div className="profile">
+          <div className="profile">
             <div className="pro">
               <GiProgression className="prog" />
               Progress
@@ -155,7 +157,7 @@ function Profile() {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <div className="settings">
             <div className="pro">
               <img className="prog" src={progress} alt="" />
@@ -166,12 +168,12 @@ function Profile() {
                 <thead className='table-head'>
                   <tr>
                     <th>Question</th>
-                    <th>Correct?</th>
+                    <th>Correct</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {submittedQuestions && submittedQuestions.slice(0, 11).map((data) => (
+                  {submittedQuestions && submittedQuestions.slice(0, 10).map((data) => (
                     <tr>
                       <td className="que-co">{data.question.title}</td>
                       <td>

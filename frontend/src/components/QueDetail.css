@@ -338,16 +338,25 @@
         margin-left: 0px;
     }
 
+    .ans-field{
+        width:250px;
+    }
+
     .detail-two{
         /* margin-right: 95px; */
     }
 }
 
+.show-my-ans{
+    /* padding-left: 40px; */
+    font-size: 20px;
+    display: flex;
+    gap:5px;
+}
 .show-ans{
     text-align: justify;
-    padding-left: 40px;
-    padding-bottom: 20px;
-    padding-right: 20px;
-    font-size: 20px;
     color: rgb(54, 180, 54);
+    align-items: left;
+    justify-content: left;
+    width:600px;
 }

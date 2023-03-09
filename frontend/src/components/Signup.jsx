@@ -62,8 +62,8 @@ function Signup() {
             <button type="button" className='logbtn' onClick={handlesignup}>Sign Up</button>
           </div>
           <div className='last-block having'>
-            <a href="/" className='forgot'>Having an account ?</a>
-            <a href="/login" className='sign'>Login</a>
+            <a href="/" className='forgot-pass'>Having an account ?</a>
+            <a href="/login" className='sign-pass'>Login</a>
           </div>
         </div>
       </div>

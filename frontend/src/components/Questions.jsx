@@ -124,22 +124,27 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Status</div>,
       selector: (row) => row.score,
       cell: (row) => (
-        <div
-          style={{
-            fontSize: 15,
-            backgroundColor: "#021775",
-            borderRadius: 11,
-            padding: 3,
-            color: "white",
-          }}
+        <div 
+        // className={
+        //   row.status === "correct" ? "success1" : "danger1"
+        // }
         >
           {
-            userData && userData.currentAttempted.some(data => data.questionId == row._id) ?
+            userData && userData.currentAttempted.some(data => data.questionId === row._id) ?
               userData && userData.currentAttempted.map((data) => (
-                data.questionId == row._id &&
-                data.status
+                <>
+                {
+                  data.questionId === row._id && data.status==='correct' && <div className="correct1">
+                    {data.status}</div>
+                }
+                  {
+                  data.questionId === row._id && data.status==='wrong' && <div className="wrong1">
+                    {data.status}</div>
+                }
+                </>
+                
               ))
-              : 'unsolved'
+              :<div className='unsolved'>Unsolved</div> 
           }
         </div>
       ),
@@ -812,7 +817,7 @@ function Questions() {
               <div className="main-firms">
                 {categories && categories.divisions.map((item) => (
                   item.count>0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
+                    <div className="firm-item">{item.name}<span className="num-divi">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -827,7 +832,7 @@ function Questions() {
               <div className="main-firms">
                 {categories && categories.positions.map((item) => (
                   item.count>0 && <div className="all-firms" onClick={() => setPositionVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
+                    <div className="firm-item">{item.name}<span className="num-pos">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -842,7 +847,7 @@ function Questions() {
               <div className="main-firms">
                 {categories && categories.tags.map((item) => (
                   item.count>0 && <div className="all-firms" onClick={() => setTagVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
+                    <div className="firm-item">{item.name}<span className="num-tag">{item.count}</span></div>
                   </div>
                 ))}
               </div>
@@ -1050,8 +1055,8 @@ function Questions() {
             <div className="div3">
               {!difficultyVal && !categoryVal && !enableSearch && !firmVal.length > 0 && !divisionVal.length > 0 && !positionVal.length > 0 && !tagVal.length > 0 && (
                 <DataTable
-                  columns={user ? columnmobile : columnmobile}
-                  data={tableData}
+                  columns={user ? columnlogin : columnmobile}
+                  data={user ? data : tableData}
                   striped={true}
                   highlightOnHover={true}
                   pagination={true}
@@ -1059,7 +1064,7 @@ function Questions() {
                   paginationPerPage={10}
                 />
               )}
-              {/* {enableSearch &&
+              {enableSearch &&
                 categoryVal.length < 1 &&
                 difficultyVal.length < 1 && (
                   <DataTable
@@ -1072,8 +1077,8 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} */}
-              {/* {(categoryVal.length > 0 || difficultyVal.length > 0) &&
+                )} 
+              {(categoryVal.length > 0 || difficultyVal.length > 0) &&
                 !enableSearch && (
                   <DataTable
                     columns={user ? columnlogin : columnlogout}
@@ -1085,8 +1090,8 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} */}
-              {/* {(categoryVal.length > 0 || difficultyVal.length > 0) &&
+                )} 
+              {(categoryVal.length > 0 || difficultyVal.length > 0) &&
                 enableSearch && (
                   <DataTable
                     columns={user ? columnlogin : columnlogout}
@@ -1098,8 +1103,8 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} */}
-              {/* {(firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) &&
+                )} 
+              {(firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) &&
                 <DataTable
                   columns={user ? columnlogin : columnlogout}
                   data={firmData}
@@ -1110,12 +1115,12 @@ function Questions() {
                   paginationDefaultPage={1}
                   paginationPerPage={10}
                 />
-              } */}
+              }
             </div>
           </div>
           <hr style={{ height: "0.5px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} />
 
-          {/* <div className="quest-right-block">
+          <div className="quest-right-block">
             <div className="quest-progress-head">
               <img src={progressimg} alt="" />
               <div className="first-prog">Progress</div>
@@ -1141,7 +1146,7 @@ function Questions() {
                 </div>
               </div>
             </div>
-            <div className="firms-block">
+            {/* <div className="firms-block">
               <div className="firm-head">
                 <GrNotes />
                 <div className="myfirm">Firms</div>
@@ -1199,10 +1204,10 @@ function Questions() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
 
-          </div> */}
+          </div>
         </div>
 
       </div>

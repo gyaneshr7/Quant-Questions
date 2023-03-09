@@ -65,7 +65,7 @@ function Login() {
           <button type="button" className='logbtn' onClick={handleLogin}>Log In</button>
         </div>
         <div className='last-block'>
-          <a href="#" className='forgot'>Create an account </a>
+          <a href="/signup" className='forgot'>Create an account </a>
           <a href="/signup" className='sign'>Sign Up</a>
         </div>
       </div>

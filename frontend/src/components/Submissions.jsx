@@ -99,7 +99,7 @@ function Submissions() {
               <tr height="1%">
                 {/* <th width="2%">Date Submitted</th> */}
                 <th>Question</th>
-                <th>Correct?</th>
+                <th>Correct</th>
                 <th>Difficulty</th>
                 {/* <th width="1%">Category</th> */}
               </tr>

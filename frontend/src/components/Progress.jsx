@@ -16,6 +16,7 @@ function Progress() {
   const [nonQuant, setNonQuant] = useState([]);
   const [finance, setFinance] = useState([]);
   const [derivatives, setDerivatives] = useState([]);
+  const [marketing, setMarketing] = useState([]);
   let correctSubmissions = [];
   let uniqueCorrectSubmissions = [];
   let uniqueAttemptedQuestions = [];
@@ -65,6 +66,9 @@ function Progress() {
         } else if (category.question.category == 'NonQuant') {
           setNonQuant(arr => [...new Set(arr), category]);
         }
+        else if (category.question.category == 'Marketing') {
+          setMarketing(arr => [...new Set(arr), category]);
+        }
       })
     }
     const fetchQuestions = async () => {
@@ -82,11 +86,11 @@ function Progress() {
     labels: [
       'BrainTeasers',
       'Derivatives',
-      'Math', 'Finance', 'NonQuant'
+      'Math', 'Finance', 'NonQuant',"Marketing"
     ],
     datasets: [{
-      data: [brainteasers && brainteasers.length, derivatives && derivatives.length, math && math.length, finance && finance.length, nonQuant && nonQuant.length],
-      backgroundColor: ['#e78ac3', '#fc8d62', '#8da0cb', '#66c2a5', '#eab676'],
+      data: [brainteasers && brainteasers.length, derivatives && derivatives.length, math && math.length, finance && finance.length, nonQuant && nonQuant.length,marketing && marketing.length],
+      backgroundColor: ['#e78ac3', '#fc8d62', '#8da0cb', '#66c2a5', '#eab676','#82b569'],
     }],
     borderWidth: 0,
   };

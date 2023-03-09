@@ -55,6 +55,27 @@
     justify-content: space-between;
 }
 
+
+.forgot-pass,
+.sign-pass{
+    text-decoration: none;
+    color:rgb(69, 69, 69);
+}
+
+.forgot-pass{
+    position: relative;
+    left:26px;
+}
+
+.sign-pass{
+    position: relative;
+    left:-26px;
+}
+.forgot-pass:hover,
+.sign-pass:hover{
+   text-decoration: underline;
+}
+
 .forgot,
 .sign{
     text-decoration: none;
@@ -114,4 +135,13 @@
     top:12px;
     left:-40px;
 }
+
+.forgot{
+    left:11px;
+}
+
+.sign{
+    left:-10px;
+}
+
 }

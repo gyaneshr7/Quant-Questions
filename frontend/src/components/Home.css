@@ -139,7 +139,7 @@ text-align:center;
     text-align: center;
     justify-content: center;
     align-items: center;
-    gap:150px;
+    gap:120px;
     margin-top: 50px;
 }
 
@@ -148,7 +148,7 @@ text-align:center;
     text-align: center;
     justify-content: center;
     align-items: center;
-    gap:150px;
+    gap:120px;
 }
 
 .prac-part1{
@@ -156,7 +156,7 @@ text-align:center;
     flex-direction: column;
     text-align: left;
     height:250px;
-    width:180px;
+    width:220px;
 }
 
 .prac-head{
@@ -164,6 +164,8 @@ text-align:center;
     font-size: 16px;
     font-family: 'Campton-Bold',helvetica,sans-serif;
     font-weight: 800;
+    display: flex;
+    gap:5px;
 }
 
 .myserv-head{
@@ -298,7 +300,8 @@ text-align:center;
 
     .prac-part1{
         height:200px;
-        width:140px;
+        width:160px;
+        margin-left:15px;
     }
     .prac2{
         display:flex;
@@ -339,10 +342,11 @@ text-align:center;
         gap:1px;
     }
 
-    /* .my-text{
-        text-align: left;
-        justify-content: left;
-    } */
+    .my-text{
+        text-align: justify;
+        justify-content: center;
+        align-items: center;
+    }
 
     .footer{
         display: none;

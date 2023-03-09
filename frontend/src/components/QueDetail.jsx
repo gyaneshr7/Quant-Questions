@@ -55,6 +55,8 @@ function QueDetail() {
     if (nextQuestion < allQuestions.length) {
       setCurrentQuestion(nextQuestion);
     }
+    let allRadio=document.querySelectorAll("#my-radio");
+    allRadio.forEach(value=>value.checked=false);
   };
   let status;
   const isPreviousDisabled = currentQuestion === 0;
@@ -199,6 +201,10 @@ function QueDetail() {
       const updatedUserResp = await updateUser.json();
       console.log(updatedUserResp);
     }
+  
+    // let allRadio=document.querySelectorAll("#my-radio");
+    // allRadio.forEach(value=>value.checked=false);
+  
   };
 
 
@@ -219,6 +225,20 @@ function QueDetail() {
   ];
 
   const tags = ["Maths", "Bayes Theorem", "C", "java", "Javascript"];
+
+// var submitButton = document.querySelector('input[type="submit"]');
+// submitButton.addEventListener('click', function(event) {
+
+//   var radioButtons = document.querySelectorAll('input[type="radio"]');
+
+//   radioButtons.forEach(function(radioButton) {
+
+//     if (radioButton.checked) {
+
+//       radioButton.checked = false;
+//     }
+//   });
+// });
 
   return (
     <div>
@@ -261,13 +281,13 @@ function QueDetail() {
               allQuestions && allQuestions[currentQuestion].answerType === "Text"
                 ?
                 <div className="answer">
-                  <input type="textarea" value={answer} className="ans-field" onChange={(e) => { setAnswer(e.target.value); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
+                  <textarea type="text" value={answer} className="ans-field" onChange={(e) => { setAnswer(e.target.value); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
                 </div>
                 :
                 <div className="options">
                   {allQuestions && allQuestions[currentQuestion].options.map((option, i) => (
-                    option != '' && <div className="disp-radio" key={i}>
-                      <input type="radio" value={option} name="option" onChange={() => { setAnswer(option); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
+                    option !== '' && <div className="disp-radio" key={i}>
+                      <input type="radio" id="my-radio" value={option} name="option" onChange={() => { setAnswer(option); setShowAns(false); setWrongAns(false); setCorrectAns(false) }} />
                       <p className="input-pin">{option}</p>
                     </div>
                   ))}
@@ -275,7 +295,8 @@ function QueDetail() {
             }
 
             <div className="align-btn">
-              <button className="submit" onClick={ansSubmitHandler}>
+              {/* <input type="submit" className="submit" value="Submit" id="submit" onClick={ansSubmitHandler}/> */}
+              <button className="submit" id="submit" onClick={ansSubmitHandler}>
                 Submit
               </button>
               {correctAns && <p style={{ color: 'green', paddingTop: '10px',  fontSize: '20px' }}>Correct Answer</p>}
@@ -288,13 +309,12 @@ function QueDetail() {
             </div>
             <div>
               {showAns &&
-                <div className="show-ans">Correct Answer :  {allQuestions[currentQuestion].answer}</div>}
+                <div className="show-my-ans"><span className="show-ans">Correct Answer:</span>{allQuestions[currentQuestion].answer}</div>}
             </div>
           </div>
 
           <div className="buttons">
             <button className="prev"
-              //  onClick={handlePrevious}
               onClick={handlePreviousButtonClick} disabled={isPreviousDisabled}>
               <IoIosArrowBack fontSize={20} />
               Prev
@@ -326,7 +346,7 @@ function QueDetail() {
             {open1 && (
               <div className="detail-block">
                 <div className="my-detail">
-                  <div className="status-detail">Status</div><div className="solving">
+                  <div className="status-detail">Status:</div><div className="solving">
                     {
                       userData && userData.currentAttempted.map(data => (
                         data.questionId == allQuestions[currentQuestion]._id) &&
@@ -336,7 +356,7 @@ function QueDetail() {
                   </div>
                 </div>
                 <div className="my-detail">
-                  <div className="status-detail">Difficulty</div>
+                  <div className="status-detail">Difficulty:</div>
                   <div
                     className={
                       allQuestions[currentQuestion].difficulty === "easy"
@@ -350,10 +370,10 @@ function QueDetail() {
                   </div>
                 </div>
                 <div className="my-detail">
-                  <div className="status-detail">Submitted</div><div>{allQuestions[currentQuestion].submission}</div>
+                  <div className="status-detail">Submitted:</div><div>{allQuestions[currentQuestion].submission}</div>
                 </div>
                 <div className="my-detail">
-                  <div className="status-detail">Accepted</div><div>{allQuestions[currentQuestion].accepted}</div>
+                  <div className="status-detail">Accepted:</div><div>{allQuestions[currentQuestion].accepted}</div>
                 </div>
               </div>
             )}

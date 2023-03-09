@@ -3,10 +3,20 @@ import Header from './Header';
 import { FaLock } from 'react-icons/fa';
 import './ChangePassword.css';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash
+} from "@fortawesome/free-solid-svg-icons";
+
 function ChangePassword() {
   const [current, setCurrent] = useState("");
   const [newpass, setNewPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [eye, setEye] = useState(true);
+  const [eye1, setEye1] = useState(true);
+  const [eye2, setEye2] = useState(true);
+
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
   const ChangePasswordHandler = async () => {
@@ -29,7 +39,7 @@ function ChangePassword() {
       setCurrent('');
       setNewPass('');
     }else{
-      alert("Enter new password correctly....")
+      alert("Passwords doesn't match")
     }
   }
   return (
@@ -42,15 +52,37 @@ function ChangePassword() {
             <div className='lock'>
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
-                <input className='inputPass' value={current} autoComplete="off" onChange={(e) => setCurrent(e.target.value)} type="password" placeholder='Current Password' />
+                
+                <input className='inputPass' value={current} autoComplete="off" onChange={(e) => setCurrent(e.target.value)} type={eye ? "password" : "text"} placeholder='Current Password' />
+                <div className="pass-eye" onClick={() => setEye(!eye)}>
+              {eye ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </div>
               </div>
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
-                <input className='inputPass' value={newpass} autoComplete="off" onChange={(e) => setNewPass(e.target.value)} type="password" placeholder='New Password' />
+                <input className='inputPass' value={newpass} autoComplete="off" onChange={(e) => setNewPass(e.target.value)} type={eye1 ? "password" : "text"} placeholder='New Password' />
+                <div className="eye-pc" onClick={() => setEye1(!eye1)}>
+              {eye1 ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </div>
               </div>
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
-                <input className='inputPass' value={confirmPassword} autoComplete="off" onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder='Confirm Password' />
+                <input className='inputPass' value={confirmPassword} autoComplete="off" onChange={(e) => setConfirmPassword(e.target.value)} type={eye2 ? "password" : "text"} placeholder='Confirm Password' />
+                <div className="eye-con" onClick={() => setEye2(!eye2)}>
+              {eye2 ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </div>
               </div>
             </div>
             <button type="button" className='passbtn' onClick={ChangePasswordHandler}>Change Password</button>

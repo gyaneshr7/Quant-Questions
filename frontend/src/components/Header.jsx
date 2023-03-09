@@ -32,7 +32,7 @@ function Header() {
     <div className="header">
       <div className="main">
         <div>
-          <Link to="/">
+          <Link to="/questions">
             <img className="logo" src={logo} onClick={() => { setClicked(true) }} alt="" />
           </Link>
         </div>
@@ -78,7 +78,8 @@ function Header() {
           user ?
           <div className="right user-right">
           { loc !== '/questions' && <Link to="/questions">
-            <button className="que-btn ques-user" onClick={() => { setClicked(true) }}>Questions</button>
+            <button className="que-btn ques-user ques-web" onClick={() => { setClicked(true) }}>Questions</button>
+            <button className="ques-mobile" onClick={() => { setClicked(true) }}>Que</button>
           </Link>}
           
           <div onClick={()=>setOpen(!open)}>

@@ -9,7 +9,14 @@ import who2 from "../images/who2.png";
 import who3 from "../images/who3.png";
 import invert from '../images/invert.png';
 import rotate from '../images/rotate.png';
-
+import {GrMoney} from 'react-icons/gr';
+import {FaBalanceScale} from 'react-icons/fa';
+import {GrOptimize} from 'react-icons/gr';
+import {FaDice} from 'react-icons/fa';
+import {AiOutlineBranches} from 'react-icons/ai';
+import {BsGrid3X3Gap} from 'react-icons/bs';
+import {RiLineChartFill} from 'react-icons/ri';
+import {FaPuzzlePiece} from 'react-icons/fa';
 function Home() {
   return (
     <div>
@@ -71,7 +78,7 @@ function Home() {
 
         <div className="prac1">
           <div className="prac-part1">
-            <div className="prac-head">Fixed Income</div>
+            <div className="prac-head"><GrMoney size="20"/>Fixed Income</div>
             <div>Bond Pricing</div>
             <div>Duration/Convexity</div>
             <div>Asset Backed</div>
@@ -80,7 +87,7 @@ function Home() {
           </div>
 
           <div className="prac-part1">
-            <div className="prac-head">Derivatives</div>
+            <div className="prac-head"><GrOptimize size="20"/>Derivatives</div>
             <div>Derivatives</div>
             <div>Pricing</div>
             <div>Options & Futures</div>
@@ -90,7 +97,7 @@ function Home() {
           </div>
 
           <div className="prac-part1">
-            <div className="prac-head">Probability</div>
+            <div className="prac-head"><FaDice size="20"/>Probability</div>
             <div>Expected Value</div>
             <div>Combinatorics</div>
             <div>Markov Chains</div>
@@ -100,7 +107,7 @@ function Home() {
             <div>Statistical Distributions</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head">Computer Science</div>
+            <div className="prac-head"><AiOutlineBranches size="20"/>Computer Science</div>
             <div>Algorithms</div>
             <div>Data Structures</div>
             <div>Numerical Methods</div>
@@ -110,27 +117,27 @@ function Home() {
 
         <div className="prac2">
           <div className="prac-part1">
-            <div className="prac-head">Modelling</div>
+            <div className="prac-head"><BsGrid3X3Gap size="20"/>Modelling</div>
             <div>Econometrics</div>
             <div>Unsupervised learning</div>
             <div>Supervised learning</div>
             <div>Time Series</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head">Risk Management</div>
+            <div className="prac-head"><FaBalanceScale size="20"/>Risk Management</div>
             <div>Credit Risk</div>
             <div>CCAR/DFAST</div>
             <div>Value-at-Risk</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head">Equities</div>
+            <div className="prac-head"><RiLineChartFill size="20"/>Equities</div>
             <div>CAPM</div>
             <div>Factor Investing</div>
             <div>Generating</div>
             <div>Alpha</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head">Other</div>
+            <div className="prac-head"><FaPuzzlePiece size="20"/>Other</div>
             <div>Sequences</div>
             <div>Estimation</div>
             <div>Mental Math</div>

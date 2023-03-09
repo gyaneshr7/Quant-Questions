@@ -65,6 +65,7 @@
 .gap-user{
     display:flex;
     gap:10px;
+    padding:3px;
     font-size: 17px;
     padding-left:20px;
     font-family: "Roboto-Condensed",sans-serif;
@@ -84,28 +85,33 @@
 .my-sub{
     position: relative;
     left:-3px;
+    width:20px;
+    height: 20px;
 }
 .gap-user:hover{
     background-color: rgb(196, 195, 195);
     width:220px;
-    /* height:30px; */
-    /* padding:2px; */
 }
 
 .user-right{
     display: none;
 }
+
+.ques-mobile{
+    display:none;
+}
 @media screen and (max-width:540px) {
     .logo{
        margin-left:3px;
-       /* width:200px; */
-       /* height:140px; */
     }
 
     .right{
         display: none;
     }
 
+    .ques-web{
+        display: none;
+    }
     .user-right{
         display: flex;
         position: relative;
@@ -117,14 +123,10 @@
     }
 
     .ham-icon{
-        position:relative;
-        top:16px;
-        left:-10px;
-        /* position:absolute; */
-        /* padding-top: 20px; */
+        top:17px;
+        left:342px;
+        position:absolute;
         z-index: 99;
-        /* overflow: hidden; */
-        /* padding-right: 20px; */
         color:black;
         overflow-x:hidden;
     }
@@ -134,30 +136,16 @@
     }
     .mobile-right{
         gap:9px;
-        /* background-color:white; */
+        background-color:rgb(248, 249, 250);
+        width:400px;
+        height:100px;
         display:flex;
         flex-direction: column;
-        position:absolute;
-        /* left:35px; */
-        /* top:70px; */
-        /* position:relative; */
-        top:75px;
-        left:42px;
-        /* gap:0; */
-        /* padding-bottom: 60px; */
-        /* overflow:hidden; */
-        /* padding-right:350px; */
-        /* padding-top:40px; */
-        align-items: center;
-        /* margin-right: 40px; */
+        position:relative;
+        top:70px;
+        left:-256px;
     }
 
-    .que-btn{
-        background-color: white;
-        border: 1px solid white;
-    }
-
-    
     .show-menu{
         display: block;
     }
@@ -165,6 +153,28 @@
     .hide-menu{
         display: none;
     }
+
+    .user-block{
+        top:35px;
+        overflow: hidden;
+        z-index:999;
+    }
+
+    .ques-mobile{
+        display: flex;
+        background-color: transparent;
+        font-size: 1rem;
+        padding:3px 8px 3px 8px;
+        border-radius: 4px;
+        border: 1px solid black;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+.ques-mobile:hover{
+    background-color: rgb(1, 1, 66);
+    color: white;
+}
 }
 
 

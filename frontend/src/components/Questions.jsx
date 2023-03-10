@@ -127,11 +127,7 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Status</div>,
       selector: (row) => row._id,
       cell: (row) => (
-        <div 
-        // className={
-        //   row.status === "correct" ? "success1" : "danger1"
-        // }
-        >
+        <div>
           {
             userData && userData.currentAttempted.some(data => data.questionId === row._id) ?
               userData && userData.currentAttempted.map((data) => (
@@ -173,6 +169,7 @@ function Questions() {
               color: "#0378a6",
               fontWeight: 600,
               cursor: "pointer",
+              textAlign: "left"
             }}
           >
             {row.title}
@@ -187,13 +184,9 @@ function Questions() {
       selector: (row) => row.difficulty,
       cell: (row) => (
         <div
-          style={{
-            fontSize: 15,
-            backgroundColor: "#04b521",
-            borderRadius: 11,
-            padding: 3,
-            color: "white",
-          }}
+        className={
+          row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
+        }
         >
           {row.difficulty}
         </div>

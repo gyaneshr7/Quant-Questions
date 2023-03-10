@@ -111,7 +111,7 @@
     /* top:9px; */
     gap:8px;
     padding-bottom: 20px;
-    padding-top: 10px;
+    padding-top: 5px;
 }
 
 .detail-icons{
@@ -305,6 +305,25 @@
     border:1px solid #e1e2e2;
   }
 
+  .show-my-ans{
+    padding-left: 40px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    width:800px;
+    gap:2px;
+    /* text-align: justify; */
+    padding-bottom: 10px;
+}
+
+.correct-ans{
+    text-align: justify;
+}
+.show-ans{
+    color: rgb(54, 180, 54);
+    display: flex;
+}
+
 
 @media screen and (max-width:540px){
     .detail-side{
@@ -347,16 +366,3 @@
     }
 }
 
-.show-my-ans{
-    /* padding-left: 40px; */
-    font-size: 20px;
-    display: flex;
-    gap:5px;
-}
-.show-ans{
-    text-align: justify;
-    color: rgb(54, 180, 54);
-    align-items: left;
-    justify-content: left;
-    width:600px;
-}

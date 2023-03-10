@@ -291,9 +291,9 @@ function QueDetail() {
                 </>
               }
             </div>
-            <div>
+            <div className="show-my-ans">
               {showAns &&
-                <div className="show-my-ans"><span className="show-ans">Correct Answer:</span>{allQuestions[currentQuestion].answer}</div>}
+                <div><div className="show-ans">Correct Answer:</div><div className="correct-ans">{allQuestions[currentQuestion].answer}</div></div>}
             </div>
           </div>
 

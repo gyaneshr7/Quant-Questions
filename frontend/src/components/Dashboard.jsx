@@ -405,8 +405,8 @@ function Dashboard() {
                       Choose Color
                     </button>}
                     {isOpen && (
-                      <div style={{height:"50px",width:"50px",zIndex:99}}>
-                        <ChromePicker
+                      <div style={{height:"50px",width:"50px",zIndex:999}}>
+                      <ChromePicker
                         color={color}
                         onChange={(updatedColor) => setColor(updatedColor.hex)}
                       />

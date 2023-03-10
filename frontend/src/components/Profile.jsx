@@ -96,7 +96,7 @@ function Profile() {
               <p style={{ fontWeight: 600 }}> Score :</p> {userData && userData.score}
               </div>
               <div className="pro-give">
-              <p style={{ fontWeight: 600 }}> Highest Score : </p>{rank.length > 0 && rank[0]}
+              {/* <p style={{ fontWeight: 600 }}> Highest Score : </p>{rank.length > 0 && rank[0]} */}
               </div>
             </div>
           </div>

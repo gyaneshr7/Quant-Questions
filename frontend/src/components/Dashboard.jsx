@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
-import Multiselect from "multiselect-react-dropdown";
 import { AiOutlineLogout } from "react-icons/ai";
 import { IoMdAddCircle } from "react-icons/io";
 import { IoIosRemoveCircle } from "react-icons/io";
 import { FaList } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { ChromePicker } from "react-color";
-function Dashboard() {
-  const [color, setColor] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+import { useLocation } from "react-router-dom";
+import Multiselect from 'multiselect-react-dropdown';
 
+function Dashboard() {
+  const [color, setColor] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [difficulty, setDifficulty] = useState("");
@@ -49,6 +51,7 @@ function Dashboard() {
   const [positionsArray, setPositionsArray] = useState();
   const [tagsArray, setTagsArray] = useState();
 
+
   let firmNames = [],
     divisionNames = [],
     positionNames = [],
@@ -80,22 +83,20 @@ function Dashboard() {
       answerTypeNames.push(data.name);
     });
 
+  // if (user) {
+  // console.log("mbhgfdydsyr");
+  window.history.pushState(null, null, location.href);
+  window.onpopstate = function (event) {
+    window.history.go(1);
+  };
+  // }
+
+
   // add questions to db
   const submitHandler = async () => {
-    let val = "";
-    if (
-      title != "" &&
-      question != "" &&
-      answer != "" &&
-      difficulty != "" &&
-      category != "" &&
-      anstype != "" &&
-      firms != "" &&
-      divisions != "" &&
-      positions != "" &&
-      tags !== ""
-    ) {
-      if (anstype === "Mcq") {
+    let val = '';
+    if (title != '' && question != '' && answer != '' && difficulty != '' && category != '' && anstype != '' && firms != '' && divisions != '' && positions != '' && tags !== '') {
+      if (anstype === 'Mcq') {
         val = {
           title: title,
           question: question,
@@ -140,7 +141,7 @@ function Dashboard() {
       setCategory("");
       setDifficulty("");
     } else {
-      alert("Enter value in all fields...");
+      alert("Enter value in all fields...")
     }
 
     const dataa = await fetch("http://localhost:8000/category/getcategories");
@@ -298,13 +299,16 @@ function Dashboard() {
       }
     } else if (name == "category") {
       if (categoryVal) {
-        console.log(name, categoryVal);
+        console.log(name, categoryVal,color);
         val = {
           value: categoryVal,
-        };
-        addcategory(name, val);
+          color:color
+        }
+        addcategory(name, val)
         setCategoryEdit(false);
         setCategoryVal("");
+        setIsOpen(false);
+        setColor('');
       }
     } else if (name == "answerType") {
       if (answerTypeVal) {
@@ -396,33 +400,29 @@ function Dashboard() {
                         Add
                       </button>
                     )}
+
+                    {categoryEdit && <button className="add" onClick={() => setIsOpen(!isOpen)}>
+                      Choose Color
+                    </button>}
+                    {isOpen && (
+                      <div style={{height:"50px",width:"50px",zIndex:99}}>
+                        <ChromePicker
+                        color={color}
+                        onChange={(updatedColor) => setColor(updatedColor.hex)}
+                      />
+                      </div>
+                    )}
+                    {categoryEdit && color.length>0 && <div style={{backgroundColor:color,width:"30px",height:"30px",borderRadius:"5px"}}></div>}
+
                     {categoryEdit && (
                       <IoIosRemoveCircle
                         className="cross-icon-img"
                         size="25"
                         onClick={() => {
-                          setCategoryEdit(false);
+                          setCategoryEdit(false);setIsOpen(false)
                         }}
                       />
                     )}
-
-                    <button className="add" onClick={() => setIsOpen(!isOpen)}>
-                      Choose Color
-                    </button>
-                    {isOpen && (
-                      <ChromePicker
-                        color={color}
-                        onChange={(updatedColor) => setColor(updatedColor.hex)}
-                      />
-                    )}
-                    {/* <div
-                      style={{
-                        backgroundColor: color,
-                        width: "10px",
-                        height: "10px",
-                      }}
-                    ></div> */}
-
                   </div>
                 </div>
 

@@ -11,6 +11,7 @@ import ChangePassword from './components/ChangePassword';
 import Submissions from './components/Submissions';
 import Profile from './components/Profile';
 import Progress from './components/Progress';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
@@ -26,19 +27,13 @@ function App() {
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/questions' element={<Questions />}></Route>
           <Route path='/quedetail' element={<QueDetail />}></Route>
-          {
-            userRole === 'user' &&
-            <>
-              <Route path='/change_password' element={<ChangePassword />}></Route>
-              <Route path='/submissions' element={<Submissions />}></Route>
-              <Route path='/profile' element={<Profile />}></Route>
-              <Route path='/progress' element={<Progress />}></Route>
-            </>
-          }
-          {
-            userRole==='admin' &&
-            <Route path='/dashboard' element={<Dashboard />}></Route>
-          }
+          
+          <Route path='/change_password' element={userRole === 'user' ? <ChangePassword /> : <ErrorPage />}></Route>
+          <Route path='/submissions' element={userRole === 'user' ? <Submissions /> : <ErrorPage />}></Route>
+          <Route path='/profile' element={userRole === 'user' ? <Profile /> : <ErrorPage />}></Route>
+          <Route path='/progress' element={userRole === 'user' ? <Progress /> : <ErrorPage />}></Route>
+
+          <Route path='/dashboard' element={userRole == 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

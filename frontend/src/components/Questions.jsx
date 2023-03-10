@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Questions.css";
 import Header from "./Header";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { ImCross } from 'react-icons/im';
 import { GrNotes } from "react-icons/gr";
@@ -13,6 +13,7 @@ import { Pie } from "react-chartjs-2";
 import progressimg from "../images/progress.png";
 
 function Questions() {
+  const location=useLocation();
   const [searched, setSearched] = useState("");
   const [searchval, setSearchVal] = useState("");
   const [enableSearch, setEnableSearch] = useState(false);
@@ -24,6 +25,16 @@ function Questions() {
   const [data, setData] = useState();
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
+
+  console.log(user);
+
+  // if (user) {
+  //   console.log("jhvcvhjk");
+  //   window.history.pushState(null, null, location.href);
+  //   window.onpopstate = function(event) {
+  //     window.history.go(1);
+  //   };
+  // }
 
   const [firmData, setFirmData] = useState();
   const [firmVal, setFirmVal] = useState('');
@@ -52,21 +63,13 @@ function Questions() {
       hard.push(ques);
     }
   })
-
-  // const firms = ['Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank',
-  //   'Tower Research Capital', 'Global Atlantic', 'Nomura', 'RBC', 'Bank']
-  // const divisions = ['Technology', 'Risk Management', 'Sales', 'Analytics'];
-  // const positions = ['Trader', 'Develop', 'Analyst', 'Intern']
-  // const tags = ['c++', 'C', 'java', 'Javascript'];
-
+  
   // colums of the table
   const columnlogin = [
     {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>#</div>,
       selector: (row) => row.id,
-      cell: (row) => <div style={{ fontSize: 15 }}>{row.uniqueId}</div>,
+      cell: (row) => <div style={{ fontSize: 15 }}>{row.uniqueId && row.uniqueId}</div>,
       sortable: true,
     },
     {
@@ -122,7 +125,7 @@ function Questions() {
     },
     {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Status</div>,
-      selector: (row) => row.score,
+      selector: (row) => row._id,
       cell: (row) => (
         <div 
         // className={
@@ -322,9 +325,11 @@ function Questions() {
   const fetchQuestions = async () => {
     const data = await fetch(`${url}/getallquestions`);
     const res = await data.json();
-    random = res && Math.floor(Math.random() * res.length);
+    random = res && Math.floor(Math.random() * (res.length)) + 1;
+    console.log(random,"knbvgdtyghjk,");
     setRandom(random);
     setData(res);
+    console.log(res,"ressss");
   };
 
   const fetchUser = async () => {
@@ -564,7 +569,7 @@ function Questions() {
               <div className="random-side">
                 <Link
                   to="/quedetail"
-                  state={{ id: random && data[random].uniqueId }}
+                  state={{ id: random && data[random] && data[random].uniqueId }}
                 >
                   <button className="random">Random Q</button>
                 </Link>

@@ -11,6 +11,11 @@ function Admin() {
   const[password,setPassword]=useState("");
   const URL = 'http://localhost:8000/auth'
 
+  window.history.forward();
+  function noBack() {
+    window.history.forward();
+  }
+
   const submitHandler=async ()=>{
     const val={
       email:email,

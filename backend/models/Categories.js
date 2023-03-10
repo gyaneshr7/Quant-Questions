@@ -4,7 +4,8 @@ const categoriesSchema = mongoose.Schema(
     {
         category:[{
             name:{type:String},
-            count:{type:Number,default:0}
+            count:{type:Number,default:0},
+            color:{type:String}
         }],
         answerType:[{
             name:{type:String},

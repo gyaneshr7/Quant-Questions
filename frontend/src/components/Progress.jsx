@@ -16,10 +16,32 @@ function Progress() {
   const [nonQuant, setNonQuant] = useState([]);
   const [finance, setFinance] = useState([]);
   const [derivatives, setDerivatives] = useState([]);
-  const [marketing, setMarketing] = useState([]);
+  const [categories,setCategories]=useState();
   let correctSubmissions = [];
   let uniqueCorrectSubmissions = [];
   let uniqueAttemptedQuestions = [];
+  let categoryLabels=[];
+  let categoryData=[];
+  let categoryColor=[];
+  categories && categories.map((category)=>{
+    categoryLabels.push(category.name);
+  })
+
+  categories && categories.map((category)=>{
+    categoryColor.push(category.color);
+  })
+
+  categoryLabels.length>0 && 
+  categoryLabels.map((label)=>{
+    let count=0;
+    userdata && userdata.submittedQuestions.map((data)=>{
+      if(data.question.category==label){
+        count++;
+      }
+    })
+    categoryData.push(count);
+  })
+
   submittedQuestions && submittedQuestions.map((question) => {
     if (question.correctAns) {
       correctSubmissions.push(question)
@@ -34,7 +56,6 @@ function Progress() {
   submittedQuestions && submittedQuestions.map((item) => {
     var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
     if (!findItem) {
-      console.log(item);
       uniqueAttemptedQuestions.push(item)
     };
   })
@@ -50,9 +71,8 @@ function Progress() {
     const fetchData = async () => {
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
       const res = await data.json();
-      console.log(res);
       setUserData(res);
-      console.log(res.submittedQuestions);
+      console.log(res,"sldai");
       setSubmittedQuestions(res.submittedQuestions.reverse());
       res.submittedQuestions.map((category) => {
         if (category.question.category == 'Brainteasers') {
@@ -67,10 +87,16 @@ function Progress() {
           setNonQuant(arr => [...new Set(arr), category]);
         }
         else if (category.question.category == 'Marketing') {
-          setMarketing(arr => [...new Set(arr), category]);
+          // setMarketing(arr => [...new Set(arr), category]);
         }
       })
     }
+    const fetchCategory = async () => {
+      const data = await fetch(`http://localhost:8000/category/getcategories`);
+      const res = await data.json();
+      setCategories(res.category);
+    };
+  
     const fetchQuestions = async () => {
       const data = await fetch(`http://localhost:8000/question/getallquestions`);
       const res = await data.json();
@@ -78,19 +104,15 @@ function Progress() {
     }
     fetchData();
     fetchQuestions();
-    // fetchCategory();
+    fetchCategory();
   }, [])
 
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
-    labels: [
-      'BrainTeasers',
-      'Derivatives',
-      'Math', 'Finance', 'NonQuant',"Marketing"
-    ],
+    labels: categoryLabels,
     datasets: [{
-      data: [brainteasers && brainteasers.length, derivatives && derivatives.length, math && math.length, finance && finance.length, nonQuant && nonQuant.length,marketing && marketing.length],
-      backgroundColor: ['#e78ac3', '#fc8d62', '#8da0cb', '#66c2a5', '#eab676','#82b569'],
+      data: categoryData,
+      backgroundColor: categoryColor,
     }],
     borderWidth: 0,
   };
@@ -100,7 +122,7 @@ function Progress() {
       'No Submissions',
     ],
     datasets: [{
-      data:[1],
+      // data:[1],
       backgroundColor: ['#8da0cb'],
     }],
     borderWidth: 0,

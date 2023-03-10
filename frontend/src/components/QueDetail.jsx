@@ -55,8 +55,8 @@ function QueDetail() {
     if (nextQuestion < allQuestions.length) {
       setCurrentQuestion(nextQuestion);
     }
-    let allRadio=document.querySelectorAll("#my-radio");
-    allRadio.forEach(value=>value.checked=false);
+    let allRadio = document.querySelectorAll("#my-radio");
+    allRadio.forEach(value => value.checked = false);
   };
   let status;
   const isPreviousDisabled = currentQuestion === 0;
@@ -68,7 +68,9 @@ function QueDetail() {
     const res = await data.json();
     res &&
       res.map((ques, i) => {
+        console.log(location.state.id, ques.uniqueId);
         if (ques.uniqueId == location.state.id) {
+          console.log("khushi");
           setCurrentQuestion(i);
         }
       });
@@ -171,10 +173,10 @@ function QueDetail() {
       }
 
       const quesValue = {
-        submission:  allQuestions[currentQuestion].submission + quesSubmission,
-        accepted:  allQuestions[currentQuestion].accepted + quesAcceptance
+        submission: allQuestions[currentQuestion].submission + quesSubmission,
+        accepted: allQuestions[currentQuestion].accepted + quesAcceptance
       }
-      console.log(allQuestions[currentQuestion].submission,allQuestions[currentQuestion].accepted,quesValue,"lksjdhfjagwuf");
+      console.log(allQuestions[currentQuestion].submission, allQuestions[currentQuestion].accepted, quesValue, "lksjdhfjagwuf");
       // update question for submissions and acceptance
       const updateQues = await fetch(`http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`, {
         method: "PUT",
@@ -201,10 +203,6 @@ function QueDetail() {
       const updatedUserResp = await updateUser.json();
       console.log(updatedUserResp);
     }
-  
-    // let allRadio=document.querySelectorAll("#my-radio");
-    // allRadio.forEach(value=>value.checked=false);
-  
   };
 
 
@@ -226,20 +224,6 @@ function QueDetail() {
 
   const tags = ["Maths", "Bayes Theorem", "C", "java", "Javascript"];
 
-// var submitButton = document.querySelector('input[type="submit"]');
-// submitButton.addEventListener('click', function(event) {
-
-//   var radioButtons = document.querySelectorAll('input[type="radio"]');
-
-//   radioButtons.forEach(function(radioButton) {
-
-//     if (radioButton.checked) {
-
-//       radioButton.checked = false;
-//     }
-//   });
-// });
-
   return (
     <div>
       <Header />
@@ -249,10 +233,10 @@ function QueDetail() {
             <div className="line-one">
               <div className="main-detail">
                 <div className="detail-title">
-                  {allQuestions && allQuestions[currentQuestion].uniqueId}. 
+                  {allQuestions && allQuestions[currentQuestion].uniqueId}.
                 </div>
                 <div className="detail-title">
-                  { allQuestions && allQuestions[currentQuestion].title}
+                  {allQuestions && allQuestions[currentQuestion].title}
                 </div>
               </div>
               <div className="detail-icons">
@@ -299,7 +283,7 @@ function QueDetail() {
               <button className="submit" id="submit" onClick={ansSubmitHandler}>
                 Submit
               </button>
-              {correctAns && <p style={{ color: 'green', paddingTop: '10px',  fontSize: '20px' }}>Correct Answer</p>}
+              {correctAns && <p style={{ color: 'green', paddingTop: '10px', fontSize: '20px' }}>Correct Answer</p>}
               {wrongAns &&
                 <>
                   <button className="show" onClick={() => setShowAns(true)}>Show Answer</button>
@@ -348,10 +332,21 @@ function QueDetail() {
                 <div className="my-detail">
                   <div className="status-detail">Status:</div><div className="solving">
                     {
-                      userData && userData.currentAttempted.map(data => (
-                        data.questionId == allQuestions[currentQuestion]._id) &&
-                        data.status
-                      )
+                      userData && userData.currentAttempted.some(data => data.questionId === allQuestions[currentQuestion]._id) ?
+                        userData && userData.currentAttempted.map((data) => (
+                          <>
+                            {
+                              data.questionId === allQuestions[currentQuestion]._id && data.status === 'correct' && <div>
+                                {data.status}</div>
+                            }
+                            {
+                              data.questionId === allQuestions[currentQuestion]._id && data.status === 'wrong' && <div>
+                                {data.status}</div>
+                            }
+                          </>
+
+                        ))
+                        : <div>Unsolved</div>
                     }
                   </div>
                 </div>

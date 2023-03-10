@@ -3,9 +3,18 @@ const mongoose = require('mongoose')
 const Category = require('../models/Categories')
 
 router.put('/addcategory/:category', async (req, res) => {
-    const val = {
-        name: req.body.value,
+    let val;
+    if(req.params.category=='category'){
+        val={
+            name:req.body.value,
+            color:req.body.color
+        }
+    }else{
+        val = {
+            name: req.body.value,
+        }
     }
+    console.log(val);
     try {
         const exist = await Category.findOne({});
         if (req.params.category == 'firms') {

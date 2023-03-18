@@ -130,6 +130,12 @@ td{
     display: none;
 }
 
+.no-col-data{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (max-width:540px){
  .web-table{
     display: none;

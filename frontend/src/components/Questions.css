@@ -265,12 +265,12 @@
   }
 
   .prog-text{
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .prog-define{
     display: flex;
-    gap:65px;
+    gap:54px;
   }
   .progress-chart{
     width:250px;

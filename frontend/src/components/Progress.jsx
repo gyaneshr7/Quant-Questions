@@ -122,7 +122,7 @@ function Progress() {
       'No Submissions',
     ],
     datasets: [{
-      // data:[1],
+      data:[1],
       backgroundColor: ['#8da0cb'],
     }],
     borderWidth: 0,

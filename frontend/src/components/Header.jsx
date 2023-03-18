@@ -10,6 +10,7 @@ import { FaChartPie } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 import { FaExchangeAlt } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { FaQuestion } from "react-icons/fa";
 import progress from "../images/progress.png";
 
 function Header() {
@@ -54,6 +55,7 @@ function Header() {
                        <Link to='/progress' className="mylinks"><div className="gap-user"><FaChartPie className="icon-user"/>Progress</div></Link> 
                        <Link to='/submissions' className="mylinks"><div className="gap-user"><img className="icon-user my-sub" src={progress} alt=""/><div className="subm">Submissions</div></div></Link>
                        {/* <div className="gap-user" ><GrNotes className="icon-user"/>Manage Subscriptions</div>  */}
+                       <Link to='/faq' className="mylinks"><div className="gap-user"><FaQuestion className="icon-user"/>FAQs</div></Link>
                        <Link to='/change_password' className="mylinks"><div className="gap-user"><FaExchangeAlt className="icon-user"/>Change Password</div></Link>
                        <Link to='/login' className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
                     </div>

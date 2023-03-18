@@ -58,6 +58,9 @@
     font-weight: 500;
 }
 
+.que-side{
+    padding-bottom: 50px;
+}
 .answer{
     text-align: left;
     margin-left: 40px;
@@ -81,7 +84,7 @@
     border:1px solid #28a745;
     border-radius: 5px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     padding-right: 12px;
     padding-left: 12px;
     padding-top: 6px;
@@ -90,12 +93,25 @@
 
 .submit:hover{
     background-color: #18742d;
+    border:1px solid #18742d;
 }
 
 .show{
     background-color: #007bff;
     color:white;
     border:1px solid #007bff;
+    border-radius: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-weight: 600;
+}
+
+.show:hover{
+    background-color: #0163cb;
+    color:white;
+    border:1px solid #0163cb;
     border-radius: 5px;
     padding-right: 12px;
     padding-left: 12px;
@@ -134,7 +150,7 @@
     margin-top: 8px;
 }
 .buttons{
-    margin-top: 10px;
+    margin-top: 15px;
     /* margin-left:525px; */
     display: flex;
     gap:15px;
@@ -306,24 +322,54 @@
   }
 
   .show-my-ans{
-    padding-left: 40px;
-    font-size: 18px;
-    display: flex;
-    flex-direction: row;
-    width:800px;
-    gap:2px;
-    /* text-align: justify; */
     padding-bottom: 10px;
+}
+
+.ans-show1{
+    display: flex;
+    gap:4px;
+    padding-left: 40px;
 }
 
 .correct-ans{
     text-align: justify;
+    color: black;
+    width:600px;
+    word-wrap: break-word;
+    font-size: 18px;
+    /* font-weight: 600; */
 }
 .show-ans{
     color: rgb(54, 180, 54);
-    display: flex;
+    font-size: 18px;
+    font-weight: 600;
 }
 
+.explain{
+    border:2px dashed rgb(144, 144, 144);
+    /* border-radius: 5px; */
+    margin-left: 40px;
+    margin-bottom: 20px;
+    height:fit-content;
+    display: flex;
+    padding:10px;
+    flex-direction: column;
+    width:760px;
+    gap:7px;
+    margin-top: 20px;
+}
+
+.explain-head{
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.explain-cont{
+    text-align: left;
+    font-size: 16px;
+    width:600px;
+}
 
 @media screen and (max-width:540px){
     .detail-side{

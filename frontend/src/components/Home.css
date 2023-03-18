@@ -1,8 +1,37 @@
-.home{
+/* .home{
     background-image: url("https://www.quantquestions.com/static/images/homepage_desktop.jpg");
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuiY6bxWsVbGJIQ2M3xeSTn9p6xdiNs_9_ujuKrTCzIg&s");
     background-size: cover;
     height:650px;
     background-position: 82% 0%;
+} */
+
+
+.home{
+    position: relative;
+    background-color: #000;
+    height:650px;
+}
+
+.home::before{
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 650px;
+    z-index: 0;
+    opacity: 0.4;
+    /* background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuiY6bxWsVbGJIQ2M3xeSTn9p6xdiNs_9_ujuKrTCzIg&s"); */
+    /* background: url("https://img.freepik.com/premium-vector/group-people-reading-studying-while-sitting-big-books-flat-style-characters-with-books-computer-gaining-knowledge-surrounded-with-pen-pencil-big-lamp_165932-372.jpg?w=740"); */
+    /* background: url("https://i.pinimg.com/originals/51/5c/2b/515c2baf2c684d6ffb6b06be66f411ed.jpg"); */
+    /* background: url("https://img.freepik.com/premium-vector/online-education-business-training-pile-books-woman-student-learning-web-courses-tutorials-by-laptop-educational-web-seminar-internet-classes-e-learning-by-webinar_458444-358.jpg?w=1060"); */
+    /* background: url("https://media.istockphoto.com/id/530748986/photo/student-against-a-big-blackboard-with-mathematical-symbols.jpg?s=612x612&w=0&k=20&c=c_JRqTmXG07-cmgQR6O4hoze0MRF7PWRrrn-q1cusHM="); */
+    /* background: url("https://media.istockphoto.com/id/485671796/vector/handwritten-formulas-and-equations-on-black-background.jpg?s=612x612&w=0&k=20&c=1vFzPWcoLmVMR3Ktwrib4qq2BOUEywknZXwwbCSi7qE="); */
+    background: url("https://media.istockphoto.com/id/1332955524/vector/math-educational-vector-seamless-pattern-with-handwritten-geometry-figures.jpg?s=612x612&w=0&k=20&c=XW-vP9lht8hl9_fiLzlEAcDBnP4M9xu5KYhS2nv3LYU=");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .home-head{
@@ -20,6 +49,8 @@
     font-family: "Campton-Bold",Helvetica, sans-serif;
     color:#ffee66;
     font-weight: 800;
+    z-index: 999;
+
 }
 
 .sub-head{
@@ -29,6 +60,7 @@
     width:750px;
     font-weight: 300!important;
     font-size: 20px;
+    z-index: 999;
     font-family: "Roboto",sans-serif;
 }
 
@@ -40,6 +72,8 @@
     border-radius: 5px;
     border:1px solid #18d796;
     margin-top: 10px;
+    z-index: 999;
+
     padding: 10px;
 }
 

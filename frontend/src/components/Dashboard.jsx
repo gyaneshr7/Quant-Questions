@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
-import { AiOutlineLogout } from "react-icons/ai";
+import { FiLogOut } from "react-icons/fi";
 import { IoMdAddCircle } from "react-icons/io";
 import { IoIosRemoveCircle } from "react-icons/io";
 import { FaList } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { MdLibraryAdd } from "react-icons/md";
 import { ChromePicker } from "react-color";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 
 function Dashboard() {
@@ -45,12 +46,13 @@ function Dashboard() {
   const [tagVal, setTagVal] = useState();
   const [answerTypeVal, setAnswerTypeVal] = useState();
   const [categoryVal, setCategoryVal] = useState();
+  const [explanation, setExplanation] = useState();
 
   const [firmsArray, setFirmsArray] = useState();
   const [divisionsArray, setDivisionsArray] = useState();
   const [positionsArray, setPositionsArray] = useState();
   const [tagsArray, setTagsArray] = useState();
-
+  const[css,setCss]=useState(true);
 
   let firmNames = [],
     divisionNames = [],
@@ -109,6 +111,7 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
+          explanation:explanation
         };
       } else {
         val = {
@@ -122,6 +125,7 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
+          explanation:explanation
         };
       }
       console.log(val);
@@ -140,6 +144,7 @@ function Dashboard() {
       setQuestion("");
       setCategory("");
       setDifficulty("");
+      setExplanation("");
     } else {
       alert("Enter value in all fields...")
     }
@@ -206,7 +211,7 @@ function Dashboard() {
       }
     );
     const res = await data.json();
-    // window.location.href = '/dashboard'
+    window.location.href = '/dashboard'
   };
 
   useEffect(() => {
@@ -240,6 +245,12 @@ function Dashboard() {
   const handleLogout = () => {
     localStorage.setItem("quantuser", null);
     window.location.href = "/";
+    // setCss(true);
+  };
+
+  const handleQues = () => {
+    // window.location.href = "/all-ques";
+    setCss(false);
   };
 
   // send data to backend
@@ -329,14 +340,23 @@ function Dashboard() {
           {/* <div className="dash-head"><img className="quant" src={quant} alt=""/></div> */}
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
-            <div className="add-que">
-              <FaList className="icon-side" />
+            <div className={css?"add-que-hover":"add-que"}>
+              <MdLibraryAdd className="icon-side" />
               Add Questions
             </div>
+
+            <Link to="/all-ques" className={css?"add-que":"add-que-hover"} onClick={handleQues}>
+              <FaList className="icon-side" />
+              All Questions
+            </Link>
+
+            
             <div className="add-que" onClick={handleLogout}>
-              <AiOutlineLogout className="icon-side" />
+              <FiLogOut className="icon-side" />
               Logout
             </div>
+
+            
           </div>
         </div>
 
@@ -775,7 +795,7 @@ function Dashboard() {
                   <textarea
                     type="text"
                     className="quest-input"
-                    placeholder="Enter Question"
+                    placeholder="Enter Answer"
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                   />
@@ -826,10 +846,27 @@ function Dashboard() {
                   />
                 </div>
               )}
+
+              {(anstype === "Mcq" || anstype === "Text") && 
+              (
+                <div className="title">
+                <label className="disp-title">Add Explanation</label>
+                <textarea
+                  className="quest-input"
+                  type="text"
+                  placeholder="Enter Explanation"
+                  value={explanation}
+                  onChange={(e) => setExplanation(e.target.value)}
+                />
+              </div>
+              )}    
+              
+
+              <div className="add-btn-admin">
               <button className="add-btn" onClick={submitHandler}>
                 Add Question
               </button>
-              {/* </div> */}
+              </div>
             </div>
           </div>
         </div>

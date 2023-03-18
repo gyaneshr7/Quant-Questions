@@ -554,7 +554,7 @@ function Questions() {
           <div className="quest-block">
             <div className="div1">
               <div className="first-left">
-                <div className="solved">{correct.length > 0 && correct.length}/{data && data.length} Solved</div>
+                <div className="solved">{correct.length > 0 ? correct.length : "0"}/{data && data.length} Solved</div>
                 <div className="easy">Easy {easy.length > 0 && easy.length}</div>
                 <div className="mymedium">Medium {medium.length > 0 && medium.length}</div>
                 <div className="hard">Hard {hard.length > 0 && hard.length}</div>

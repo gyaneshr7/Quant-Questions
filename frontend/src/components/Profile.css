@@ -18,6 +18,15 @@
     width:500px;
 }
 
+.bar-profile{
+    border-radius: 4px;
+    border: 1px solid rgb(195, 194, 194);
+    text-align: left;
+    width:1040px;
+}
+
+
+
 .pro{
     background-color: rgb(248, 249, 250);
     padding:20px;
@@ -134,6 +143,9 @@ font-weight: 500;
     gap:3px;
 }
 
+.bar{
+    padding:20px;
+}
 
 @media screen and (max-width:540px){
    .second-box{

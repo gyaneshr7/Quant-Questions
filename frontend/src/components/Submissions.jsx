@@ -52,12 +52,14 @@ function Submissions() {
               <tr height="1%">
                 <th width="2%">Date Submitted</th>
                 <th width="5%">Question</th>
-                <th width="2%">Correct?</th>
+                <th width="2%">Correct</th>
                 <th width="1%">Difficulty</th>
                 <th width="1%">Category</th>
               </tr>
             </thead>
-            <tbody className="tablebody">
+            {
+              submittedQuestions && submittedQuestions.length>0 ? 
+              <tbody className="tablebody">
               {tableData &&
                 tableData.map((data) => (
                   <tr height="1%">
@@ -92,6 +94,18 @@ function Submissions() {
                   </tr>
                 ))}
             </tbody>
+              :
+              
+           <tbody>
+            <tr>
+              <td className="no-col-data" colspan="5">
+                No recent submissions
+              </td>
+            </tr>
+          </tbody>
+              
+            } 
+            
           </table>
 
           <table className="mytable table-striped phone-table">
@@ -104,7 +118,9 @@ function Submissions() {
                 {/* <th width="1%">Category</th> */}
               </tr>
             </thead>
-            <tbody className="tablebody">
+            {
+              submittedQuestions && submittedQuestions.length>0 ?
+              <tbody className="tablebody">
               {tableData &&
                 tableData.map((data) => (
                   <tr height="1%">
@@ -139,6 +155,16 @@ function Submissions() {
                   </tr>
                 ))}
             </tbody>
+            :
+            <tbody>
+                    <tr>
+                      <td className="no-data" colspan="5">
+                        No recent submissions
+                      </td>
+                    </tr>
+                  </tbody>
+            }
+            
           </table>
 
           <nav className="d-flex justify-content-center">
@@ -153,8 +179,10 @@ function Submissions() {
                 Prev
               </button>
               <p className="nums">
-                {currentPage}/
-                {totalPages}
+                {
+                  submittedQuestions &&  submittedQuestions.length > 0 ? `${currentPage}/${totalPages}`: "0/0"
+                }
+                
               </p>
               <button
                 onClick={goToNext}

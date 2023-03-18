@@ -57,6 +57,7 @@
     flex-direction: column;
     cursor:pointer;
     overflow: hidden;
+    z-index:111;
 }
 .mylinks{
     text-decoration: none;

@@ -12,6 +12,8 @@ import Submissions from './components/Submissions';
 import Profile from './components/Profile';
 import Progress from './components/Progress';
 import ErrorPage from './components/ErrorPage';
+import FAQ from './components/FAQ';
+import AllQuestions from './components/AllQuestions';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
@@ -32,8 +34,10 @@ function App() {
           <Route path='/submissions' element={userRole === 'user' ? <Submissions /> : <ErrorPage />}></Route>
           <Route path='/profile' element={userRole === 'user' ? <Profile /> : <ErrorPage />}></Route>
           <Route path='/progress' element={userRole === 'user' ? <Progress /> : <ErrorPage />}></Route>
+          <Route path='/faq' element={userRole === 'user' ? <FAQ /> : <ErrorPage />}></Route>
 
-          <Route path='/dashboard' element={userRole == 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
+          <Route path='/dashboard' element={userRole === 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
+          <Route path='/all-ques' element={userRole === 'admin' ? <AllQuestions /> : <ErrorPage />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

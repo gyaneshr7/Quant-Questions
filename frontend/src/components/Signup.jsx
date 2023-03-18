@@ -64,6 +64,7 @@ function Signup() {
           <div className='last-block having'>
             {/* <a href="/" className='forgot-pass'>Having an account ?</a> */}
             <a href="/login" className='sign-pass'>Having an account ? Login</a>
+            {/* <a href="/login" className='forgot-pass'>Having an account ? Login</a> */}
           </div>
         </div>
       </div>

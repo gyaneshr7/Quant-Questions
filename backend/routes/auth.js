@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
       res.status(401).json("wrong email or password");
     } else if (user[0].password != password) {
       res.status(401).json("wrong email or password")
-    }else if (user[0].role != role) {
+    } else if (user[0].role != role) {
       res.status(401).json("Not a valid user!")
     } else {
       const userDetails = {
@@ -68,8 +68,8 @@ router.put("/change/password/:id", async (req, res) => {
     const user = await User.find({ _id: req.params.id });
     if (user.length > 0) {
       if (req.body.currpass == user[0].password) {
-        console.log(req.body.currpass,user[0].password);
-        const updateduser=await User.updateOne({ _id: req.params.id },{password:req.body.newpass},{new:true})
+        console.log(req.body.currpass, user[0].password);
+        const updateduser = await User.updateOne({ _id: req.params.id }, { password: req.body.newpass }, { new: true })
         res.status(200).json("Password Changed Successfully...");
       } else {
         res.status(200).json("Your current password is wrong...");
@@ -81,5 +81,26 @@ router.put("/change/password/:id", async (req, res) => {
     res.status(500).json(error);
   }
 })
+
+
+router.put("/update/new/password/:phoneNo", async (req, res) => {
+  console.log(Number(req.params.phoneNo));
+  try {
+    const user = await User.findOne({ phoneNo: req.params.phoneNo });
+    console.log(user);
+    if (user) {
+        const updateduser = await User.updateOne({ phoneNo: req.params.phoneNo }, { password: req.body.newPass }, { new: true })
+        console.log(updateduser);
+        res.status(200).json("Password Changed Successfully...");
+    } else {
+      res.status(200).json("This user doesn't exists...")
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+})
+
+
+
 
 module.exports = router;

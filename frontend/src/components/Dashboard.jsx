@@ -53,6 +53,7 @@ function Dashboard() {
   const [positionsArray, setPositionsArray] = useState();
   const [tagsArray, setTagsArray] = useState();
   const[css,setCss]=useState(true);
+  const [loading, setLoading] = useState(false);
 
   let firmNames = [],
     divisionNames = [],
@@ -227,7 +228,8 @@ function Dashboard() {
       setAnswerTypes(res.answerType);
     };
     fetchcategories();
-  }, [firmEdit, divisionEdit, positionEdit, tagEdit]);
+    setLoading(false)
+  }, [firmEdit, divisionEdit, positionEdit, tagEdit, loading]);
 
   const selectedFirms = (name) => {
     setFirmsArray(name);
@@ -268,6 +270,7 @@ function Dashboard() {
     );
     const res = await data.json();
     console.log(res);
+    setLoading(true);
   };
 
   const submitCategory = async (name) => {
@@ -310,10 +313,10 @@ function Dashboard() {
       }
     } else if (name == "category") {
       if (categoryVal) {
-        console.log(name, categoryVal,color);
+        console.log(name, categoryVal, color);
         val = {
           value: categoryVal,
-          color:color
+          color: color
         }
         addcategory(name, val)
         setCategoryEdit(false);
@@ -425,21 +428,21 @@ function Dashboard() {
                       Choose Color
                     </button>}
                     {isOpen && (
-                      <div style={{height:"50px",width:"50px",zIndex:999}}>
-                      <ChromePicker
-                        color={color}
-                        onChange={(updatedColor) => setColor(updatedColor.hex)}
-                      />
+                      <div style={{ height: "50px", width: "50px", zIndex: 999 }}>
+                        <ChromePicker
+                          color={color}
+                          onChange={(updatedColor) => setColor(updatedColor.hex)}
+                        />
                       </div>
                     )}
-                    {categoryEdit && color.length>0 && <div style={{backgroundColor:color,width:"30px",height:"30px",borderRadius:"5px"}}></div>}
+                    {categoryEdit && color.length > 0 && <div style={{ backgroundColor: color, width: "30px", height: "30px", borderRadius: "5px" }}></div>}
 
                     {categoryEdit && (
                       <IoIosRemoveCircle
                         className="cross-icon-img"
                         size="25"
                         onClick={() => {
-                          setCategoryEdit(false);setIsOpen(false)
+                          setCategoryEdit(false); setIsOpen(false)
                         }}
                       />
                     )}
@@ -545,9 +548,9 @@ function Dashboard() {
                             placeholder="Firms"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() {}}
-                            onRemove={function noRefCheck() {}}
-                            onSearch={function noRefCheck() {}}
+                            onKeyPressFn={function noRefCheck() { }}
+                            onRemove={function noRefCheck() { }}
+                            onSearch={function noRefCheck() { }}
                             onSelect={selectedFirms}
                             options={firmNames}
                             selectedValues={{}}
@@ -602,9 +605,9 @@ function Dashboard() {
                             placeholder="Divisions"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() {}}
-                            onRemove={function noRefCheck() {}}
-                            onSearch={function noRefCheck() {}}
+                            onKeyPressFn={function noRefCheck() { }}
+                            onRemove={function noRefCheck() { }}
+                            onSearch={function noRefCheck() { }}
                             onSelect={selectedDivisions}
                             options={divisionNames}
                             selectedValues={{}}
@@ -659,9 +662,9 @@ function Dashboard() {
                             placeholder="Position"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() {}}
-                            onRemove={function noRefCheck() {}}
-                            onSearch={function noRefCheck() {}}
+                            onKeyPressFn={function noRefCheck() { }}
+                            onRemove={function noRefCheck() { }}
+                            onSearch={function noRefCheck() { }}
                             onSelect={selectedPositions}
                             options={positionNames}
                             selectedValues={{}}
@@ -716,9 +719,9 @@ function Dashboard() {
                             placeholder="Tags"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() {}}
-                            onRemove={function noRefCheck() {}}
-                            onSearch={function noRefCheck() {}}
+                            onKeyPressFn={function noRefCheck() { }}
+                            onRemove={function noRefCheck() { }}
+                            onSearch={function noRefCheck() { }}
                             onSelect={selectedTags}
                             options={tagNames}
                             selectedValues={{}}

@@ -72,13 +72,14 @@ function Profile() {
     labels: ["Todo", "Solved", "Attempted"],
     datasets: [
       {
-        label: "",
-        data: [
-          questions && questions.length,
-          correct.length > 0 && correct.length,
-          wrong && wrong.length,
+        label: '',
+        data: [questions && questions.length, correct.length > 0 && correct.length, wrong && wrong.length],
+        backgroundColor: [
+          '#3f497f',
+          '#539165',
+          '#f7C04A'
         ],
-        backgroundColor: ["#8da0cb", "#66c2a5", "rgb(81, 80, 80)"],
+        // backgroundColor: ["#8da0cb", "#66c2a5", "rgb(81, 80, 80)"],
         borderWidth: 1,
       },
     ],
@@ -94,21 +95,21 @@ ChartJS.register(
   // Legend
 );
 
-// const options = {
-//   responsive: true,
-//   plugins: {
-//     legend: {
-//       position: 'top',
-//       label:{
-//         fullSize:true
-//       }
-//     },
-//     title: {
-//       display: false,
-//       text: 'Progress in Categories',
-//     },
-//   },
-// };
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'right',
+      label:{
+        fullSize:true
+      }
+    },
+    title: {
+      display: false,
+      text: 'Progress in Categories',
+    },
+  },
+};
 
 
 const labels = ['Probability', 'Profit & Loss', 'Percentage', 'Ages', 'Geometry', 'Area', 'Partnership','Progression','Clocks & Calendar','Chain Rule','Logarithm'];
@@ -134,26 +135,12 @@ const data2 = {
           <div className="profile">
             <div className="pro">Profile</div>
             <div className="p-pro">
-              <div className="pro-give">
-                <p style={{ fontWeight: 600 }}>Name:</p>
-                {userData && userData.name}{" "}
-              </div>
-              <div className="pro-give">
-                <p style={{ fontWeight: 600 }}>Email:</p>{" "}
-                {userData && userData.email}
-              </div>
-              <div>
-                <p style={{ fontWeight: 600 }}>Background:</p>
-              </div>
-              <div>
-                <p style={{ fontWeight: 600 }}>Degree:</p>
-              </div>
-              <div>
-                <p style={{ fontWeight: 600 }}>Certifications:</p>
-              </div>
-              <div>
-                <p style={{ fontWeight: 600 }}>Resume Keywords:</p>
-              </div>
+              <div className="pro-give"><p style={{ fontWeight: 600 }}>Name:</p>{userData && userData.name} </div>
+              <div className="pro-give"><p style={{ fontWeight: 600 }}>Email:</p> {userData && userData.email}</div>
+              {/* <div><p style={{ fontWeight: 600 }}>Background:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Degree:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Certifications:</p></div>
+              <div><p style={{ fontWeight: 600 }}>Resume Keywords:</p></div> */}
             </div>
           </div>
 
@@ -264,7 +251,7 @@ const data2 = {
             <div className="pro">Weakness</div>
 
             <div className="bar">
-            <Bar data={data2} />
+            <Bar data={data2} options={options} />
             </div>
            </div>
         </div>

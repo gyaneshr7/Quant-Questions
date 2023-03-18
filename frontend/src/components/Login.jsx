@@ -55,9 +55,9 @@ function Login() {
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='inputBox' value={email} autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email Address' />
+            <input className='inputBox' value={email}  onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email Address' />
             <div className='passwordfield'>
-              <input className='inputBox' type={eye ? "password" : "text"} autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+              <input className='inputBox' type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
               <div className="eyePassword" onClick={() => setEye(!eye)}>
                 {eye ? (
                   <FontAwesomeIcon icon={faEyeSlash} />
@@ -69,9 +69,9 @@ function Login() {
 
             <button type="button" className='logbtn' onClick={handleLogin}>Log In</button>
           </div>
-          <div className='last-block having'>
-            {/* <a href="#" className='forgot'>Create an account </a> */}
-            <a href="/signup" className='sign'>Don't have an account ? Sign Up</a>
+          <div className='last-block'>
+            <a href="/forgotpassword" className='forgot'>Forgot Password?</a>
+            <a href="/signup" className='sign'>Sign Up</a>
           </div>
         </div>
 

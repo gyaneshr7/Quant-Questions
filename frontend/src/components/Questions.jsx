@@ -26,16 +26,6 @@ function Questions() {
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
-  console.log(user);
-
-  // if (user) {
-  //   console.log("jhvcvhjk");
-  //   window.history.pushState(null, null, location.href);
-  //   window.onpopstate = function(event) {
-  //     window.history.go(1);
-  //   };
-  // }
-
   const [firmData, setFirmData] = useState();
   const [firmVal, setFirmVal] = useState('');
   const [divisionVal, setDivisionVal] = useState('');
@@ -319,7 +309,6 @@ function Questions() {
     const data = await fetch(`${url}/getallquestions`);
     const res = await data.json();
     random = res && Math.floor(Math.random() * (res.length)) + 1;
-    console.log(random,"knbvgdtyghjk,");
     setRandom(random);
     setData(res);
     console.log(res,"ressss");
@@ -420,7 +409,6 @@ function Questions() {
     } else if (firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) {
       data.map((ques) => {
         if (ques.firms.includes(firmVal) || ques.divisions.includes(divisionVal) || ques.position.includes(positionVal) || ques.tags.includes(tagVal)) {
-          console.log(ques);
           array.push(ques);
         }
       })
@@ -535,9 +523,9 @@ function Questions() {
         label: '',
         data: [data && data.length, correct.length, wrong.length],
         backgroundColor: [
-          '#8da0cb',
-          '#66c2a5',
-          'rgb(81, 80, 80)'
+          '#3f497f',
+          '#539165',
+          '#f7C04A'
         ],
         borderWidth: 1,
       },
@@ -589,7 +577,7 @@ function Questions() {
                   onChange={(e) => setCategoryVal(e.target.value)}
                   value="Category"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Category
                   </option>
                   {
@@ -611,7 +599,7 @@ function Questions() {
                   onChange={(e) => setDifficultyVal(e.target.value)}
                   value="Difficulty"
                 >
-                  <option value="Difficulty" selected disabled hidden>
+                  <option value="Difficulty" disabled hidden>
                     Difficulty
                   </option>
                   <option value="medium">Medium</option>
@@ -850,8 +838,6 @@ function Questions() {
                 ))}
               </div>
             </div>
-
-
           </div>
         </div>
 
@@ -879,7 +865,7 @@ function Questions() {
                   onChange={(e) => setCategoryVal(e.target.value)}
                   value="Category"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Category
                   </option>
                   {
@@ -896,7 +882,7 @@ function Questions() {
                   onChange={(e) => setDifficultyVal(e.target.value)}
                   value="Difficulty"
                 >
-                  <option value="Difficulty" selected disabled hidden>
+                  <option value="Difficulty" disabled hidden>
                     Difficulty
                   </option>
                   <option value="medium">Medium</option>
@@ -912,9 +898,9 @@ function Questions() {
                   required
                   style={{ border: "none", width: "63px" }}
                   onChange={(e) => setCategoryVal(e.target.value)}
-                  value="Category"
+                  value="Firms"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Firms
                   </option>
                   {categories && categories.firms.map((item) => (
@@ -930,9 +916,9 @@ function Questions() {
                   required
                   style={{ border: "none", width: "90px" }}
                   onChange={(e) => setCategoryVal(e.target.value)}
-                  value="Category"
+                  value="Divisions"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Divisions
                   </option>
                   {categories && categories.divisions.map((item) => (
@@ -947,9 +933,9 @@ function Questions() {
                   required
                   style={{ border: "none", width: "90px" }}
                   onChange={(e) => setCategoryVal(e.target.value)}
-                  value="Category"
+                  value="Positions"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Positions
                   </option>
                   {categories && categories.positions.map((item) => (
@@ -964,9 +950,9 @@ function Questions() {
                   required
                   style={{ border: "none", width: "56px" }}
                   onChange={(e) => setCategoryVal(e.target.value)}
-                  value="Category"
+                  value="Tags"
                 >
-                  <option value="Category" selected disabled hidden>
+                  <option value="Category" disabled hidden>
                     Tags
                   </option>
                   {categories && categories.tags.map((item) => (

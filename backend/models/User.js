@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema(
         password:{type:String},
         email:{type:String},
         token:{type:String},
+        phoneNo:{type:String},
         role:{type:String,enum: ['admin','user']},
         rank:{type:String,default:0},
         score:{type:Number,default:0},
@@ -24,7 +25,22 @@ const userSchema = mongoose.Schema(
         currentAttempted:[
             {
                 questionId:{type:String},
+                category:{type:String},
                 status:{type:String}
+            }
+        ],
+        badges:[
+            { bronze:{type:Boolean,default:false} },
+            { silver:{type:Boolean,default:false} },
+            { gold:{type:Boolean,default:false} },
+            { platinum:{type:Boolean,default:false} },
+            { categorybadge:{type:Boolean,default:false} },
+        ],
+        weakCategories:[
+            {
+                category:{type:String},
+                questionId:{type:String},
+                count:{type:Number}
             }
         ]
     }

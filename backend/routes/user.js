@@ -21,6 +21,16 @@ router.put('/submittedans/:id', async (req, res) => {
     }
 })
 
+// get all users
+router.get('/', async (req, res) => {
+    try {
+        const data = await User.aggregate([{ $match: {} },{$project:{phoneNo:1}}]);
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 // get user by id
 router.get('/:id', async (req, res) => {
     try {
@@ -95,6 +105,55 @@ router.put('/update/ans/status/:id/:quesId', async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
+})
+
+
+// update weakness of user
+router.put('/update/weak/categories/:id', async (req, res) => {
+    console.log(req.body,"mdkh3dihuh")
+    try {
+        const data = await User.findOne({ _id: req.params.id, 'weakCategories.category': req.body.category });
+        if (data) {
+            const userdata = await User.updateOne({_id:req.params.id,"weakCategories.category":req.body.category  },{
+                $set: {
+                    "weakCategories.$.count": req.body.count,
+                 }
+            },{new:true}) 
+            res.status(200).json(userdata)
+        } else {
+            const data = await User.updateOne({ _id: req.params.id }, {
+                $push: { weakCategories: req.body }
+            });
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+
+
+// update badge status
+router.put('/update/badge/status/:id', async (req, res) => {
+    console.log("smnjhafuyg");
+    // try {
+    //     const data = await User.findOne({ _id: req.params.id, 'currentAttempted.questionId': req.params.quesId });
+    //     if (data) {
+    //         const userdata = await User.updateOne({_id:req.params.id,"currentAttempted.questionId":req.params.quesId.toString() },{
+    //             $set: {
+    //                 "currentAttempted.$.status": req.body.status,
+    //              }
+    //         },{new:true}) 
+    //         res.status(200).json(userdata)
+    //     } else {
+    //         const data = await User.updateOne({ _id: req.params.id }, {
+    //             $push: { currentAttempted: req.body }
+    //         });
+    //         res.status(200).json(data);
+    //     }
+    // } catch (error) {
+    //     res.status(500).json(error);
+    // }
 })
 
 

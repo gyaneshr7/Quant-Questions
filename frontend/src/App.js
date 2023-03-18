@@ -14,6 +14,7 @@ import Progress from './components/Progress';
 import ErrorPage from './components/ErrorPage';
 import FAQ from './components/FAQ';
 import AllQuestions from './components/AllQuestions';
+import Forgotpassword from './components/Forgotpassword';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
@@ -29,6 +30,7 @@ function App() {
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/questions' element={<Questions />}></Route>
           <Route path='/quedetail' element={<QueDetail />}></Route>
+          <Route path='/forgotpassword' element={user === null ? <Forgotpassword /> : <ErrorPage />}></Route>
           
           <Route path='/change_password' element={userRole === 'user' ? <ChangePassword /> : <ErrorPage />}></Route>
           <Route path='/submissions' element={userRole === 'user' ? <Submissions /> : <ErrorPage />}></Route>

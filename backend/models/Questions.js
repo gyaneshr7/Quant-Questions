@@ -18,6 +18,7 @@ const questionsSchema = mongoose.Schema(
         divisions:[{type:String}],
         position:[{type:String}],
         tags:[{type:String}],
+        explanation:{type:String}
     }
 )
 questionsSchema.plugin(AutoIncrement, {inc_field: 'uniqueId'});

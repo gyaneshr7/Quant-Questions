@@ -89,7 +89,7 @@
 
 .sign{
     position: relative;
-    left:-26px;
+    /* left:-26px; */
 }
 .forgot:hover,
 .sign:hover{

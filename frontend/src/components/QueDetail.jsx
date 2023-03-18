@@ -29,7 +29,9 @@ function QueDetail() {
   const [correctAns, setCorrectAns] = useState();
   const [wrongAns, setWrongAns] = useState();
   const [hide, setHide] = useState(false);
+  const [checkBadge, setCheckBadge] = useState(false);
   const user = JSON.parse(localStorage.getItem("quantuser"));
+
   const today = new Date();
   const yyyy = today.getFullYear();
   let mm = today.getMonth() + 1; // Months start at 0!
@@ -59,7 +61,7 @@ function QueDetail() {
     let allRadio = document.querySelectorAll("#my-radio");
     allRadio.forEach((value) => (value.checked = false));
   };
-  let status;
+
   const isPreviousDisabled = currentQuestion === 0;
   const isNextDisabled =
     allQuestions && currentQuestion === allQuestions.length - 1;
@@ -69,9 +71,7 @@ function QueDetail() {
     const res = await data.json();
     res &&
       res.map((ques, i) => {
-        console.log(location.state.id, ques.uniqueId);
         if (ques.uniqueId == location.state.id) {
-          console.log("khushi");
           setCurrentQuestion(i);
         }
       });
@@ -91,13 +91,15 @@ function QueDetail() {
 
   const ansSubmitHandler = async () => {
     if (!user) {
-      alert("Please Login!");
-      window.location.href = "/login";
+      alert("Please login to practice!")
+      window.location.href = '/login';
       return;
     }
+
     const a = await fetch(`http://localhost:8000/user/${user.id}`);
     const updateduser = await a.json();
     let score;
+
     if (allQuestions[currentQuestion].difficulty === "hard") {
       score = 5;
     } else if (allQuestions[currentQuestion].difficulty === "medium") {
@@ -105,6 +107,7 @@ function QueDetail() {
     } else {
       score = 2;
     }
+
     let quesSubmission = 0;
     let quesAcceptance = 0;
     let status;
@@ -120,6 +123,7 @@ function QueDetail() {
         status = "correct";
         quesAcceptance = 1;
         console.log("correctanswer");
+
         val = {
           userId: updateduser._id,
           score: updateduser.score + score,
@@ -143,7 +147,8 @@ function QueDetail() {
             },
           }
         );
-        const res = await data.json();
+        const updateUser = await data.json();
+        console.log(updateUser, "updateduser");
       } else {
         setCorrectAns(false);
         setWrongAns(true);
@@ -160,6 +165,7 @@ function QueDetail() {
             date: todaysdate,
           },
         };
+        // update details of user
         const data = await fetch(
           `http://localhost:8000/user/submittedans/${userData._id}`,
           {
@@ -171,18 +177,48 @@ function QueDetail() {
           }
         );
         const res = await data.json();
+
+        // let wrongval;
+        // console.log(res.weakCategories, "categories", allQuestions[currentQuestion].category);
+        // res.weakCategories.length == 0 ?
+        //   wrongval = {
+        //     category: allQuestions[currentQuestion].category,
+        //     count: 1
+        //   } 
+        //   : 
+        //   res.weakCategories.map((data) => {
+        //     console.log("object")
+        //     if (data.category == allQuestions[currentQuestion].category) {
+        //       wrongval = {
+        //         category: allQuestions[currentQuestion].category,
+        //         count: data.count + 1
+        //       }
+        //     } else {
+        //       wrongval = {
+        //         category: allQuestions[currentQuestion].category,
+        //         count: 1
+        //       }
+        //     }
+        //   })
+        // console.log(wrongval, "kkkkkkkk")
+        // // submit wrong submissions to update weakness of user
+        // const updatedwrong = await fetch(`http://localhost:8000/user/update/weak/categories/${userData._id}`, {
+        //   method: "PUT",
+        //   body: JSON.stringify(wrongval),
+        //   headers: {
+        //     "Content-type": "application/json"
+        //   }
+        // })
+        // const reswrong = await updatedwrong.json();
+        // console.log(reswrong, "reswrong");
       }
 
+      // set questions submission and accepted value
       const quesValue = {
         submission: allQuestions[currentQuestion].submission + quesSubmission,
-        accepted: allQuestions[currentQuestion].accepted + quesAcceptance,
-      };
-      console.log(
-        allQuestions[currentQuestion].submission,
-        allQuestions[currentQuestion].accepted,
-        quesValue,
-        "lksjdhfjagwuf"
-      );
+        accepted: allQuestions[currentQuestion].accepted + quesAcceptance
+      }
+
       // update question for submissions and acceptance
       const updateQues = await fetch(
         `http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`,
@@ -195,11 +231,11 @@ function QueDetail() {
         }
       );
       const updatedResp = await updateQues.json();
-      console.log(updatedResp, "updatedresp");
 
       // update current question status
       const userUpdation = {
         questionId: allQuestions[currentQuestion]._id,
+        category:allQuestions[currentQuestion].category,
         status: status,
       };
       const updateUser = await fetch(
@@ -214,6 +250,42 @@ function QueDetail() {
       );
       const updatedUserResp = await updateUser.json();
       console.log(updatedUserResp);
+
+
+      // update badge status
+      // let count = 0;
+      // updatedUserResp.currentAttempted.map((user) => {
+      //   if (user.status == 'correct') {
+      //     count++;
+      //   }
+      // })
+      // let badgeval;
+      // if (count >= Math.floor(allQuestions.length * 10) / 100) {
+      //   badgeval = { bronze: true };
+      //   console.log(count, Math.floor(allQuestions.length * 25) / 100);
+      // } else {
+      //   console.log("medal lost");
+      // }
+
+      // if (count >= Math.floor(allQuestions.length * 50) / 100) {
+      //   badgeval = { silver: true };
+      // } else if (count >= Math.floor(allQuestions.length * 75) / 100) {
+      //   badgeval = { gold: true };
+      // } else if (count >= Math.floor(allQuestions.length * 100) / 100) {
+      //   badgeval = { platinum: true };
+      // }
+
+      // if (badgeval) {
+      //   console.log("logged");
+      // }
+
+      // const updatebadge = await fetch(`http://localhost:8000/user/update/badge/status/${allQuestions[currentQuestion]._id}`, {
+      //   method: "PUT",
+      //   body: JSON.stringify(badgeval),
+      //   headers: {
+      //     "Content-type": "application/json"
+      //   }
+      // })
     }
   };
 

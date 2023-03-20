@@ -8,3 +8,76 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.otp-form{
+  display:flex;
+  gap:7px;
+  justify-content: center;
+  align-items: center;
+}
+
+.otp-input{
+  padding:6px;
+  width:300px;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+.otp-btn{
+  background-color: rgb(91, 91, 91);
+  font-size: 1.2rem;
+  border-radius: 5px;
+  color:white;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 3px;
+  padding-bottom: 4px;
+  font-weight: 600;
+  border:1px solid rgb(91, 91, 91);
+}
+.otp-btn:hover{
+  background-color: rgb(142, 142, 142);
+  color:white;
+  border: 1px solid rgb(142, 142, 142);
+}
+
+.my-model{
+  position: relative;
+  top:20%;
+}
+
+
+.subbtn{
+  background-color: rgb(26, 146, 221);
+  border:1px solid rgb(26, 146, 221);
+  color:white;
+  width:400px;
+  padding: 7px;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 19px;
+}
+
+.forgot-page{
+  height:490px;
+  width:500px;
+  /* margin: auto; */
+  margin-top: 40px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dforgot{
+  font-size: 30px;
+  font-weight: 800;
+  font-family: "Campton-Bold", Helvetica, sans-serif;
+  margin-top: 20px;
+}
+
+
+.subbtn:hover{
+  background-color: rgb(7, 110, 212);
+  border-radius:1px solid  rgb(7, 110, 212);
+}

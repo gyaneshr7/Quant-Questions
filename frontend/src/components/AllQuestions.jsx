@@ -60,6 +60,9 @@ function AllQuestions() {
     setOpen(false);
     setEdit(false);
   }
+
+  let ttl=mydata.title;
+  console.log(ttl);
   
   return (
     <div>
@@ -95,13 +98,15 @@ function AllQuestions() {
           <div className="admin-func">
             <div className="disp-all-ques">
               {mydata.map((data, index) => (
-                <div className="hover-it">
-                <div className="all-ques-drop">
+                
+                <div>
+                <div className={edit && index===id ? "all-edit-drop":"all-ques-drop" }>
                   <div>
                     <div className="ques1-drop">
                       {edit && index===id ? (
                         <div className="ques-d">
                           <span className="span-tag">Title:</span>
+                        
                           <textarea
                             className="quest1"
                             type="text"
@@ -213,8 +218,7 @@ function AllQuestions() {
                                 placeholder={data.tags}
                               />{" "}
                             </div>
-                          </div>
-                          <div className="add-ons">
+                            <div className="add-ons">
                             <button className="add-btn-save">Save</button>
                             <button
                               className="add-btn-save"
@@ -223,6 +227,8 @@ function AllQuestions() {
                               Cancel
                             </button>
                           </div>
+                          </div>
+                          
                         </div>
                       ) : (
                         <div>
@@ -338,7 +344,7 @@ function AllQuestions() {
                     </div>
                   )}
                 </div>
-                <hr style={{ height: "0.7px", borderwidth: "0", color: " rgb(163, 163, 163)", backgroundcolor: " rgb(163, 163, 163)", marginTop: "" }} />
+                {/* <hr style={{ height: "0.7px", borderwidth: "0", color: " rgb(163, 163, 163)", backgroundcolor: " rgb(163, 163, 163)", marginTop: "" }} /> */}
                 </div>              
               ))}
             </div>

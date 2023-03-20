@@ -4,6 +4,9 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import './Forgot.css'
+import Header from './Header';
+import Modal from "react-bootstrap/Modal";
+import logo2 from '../images/logo2.png'
 
 export default function Forgotpassword() {
     const [phoneNo, setPhoneNo] = useState();
@@ -13,6 +16,7 @@ export default function Forgotpassword() {
     const [otpEdit, setOtpEdit] = useState(false);
     const [newPass, setNewPaas] = useState();
     const [confirmnewPass, setConfirmNewPaas] = useState();
+    const[show,setShow]=useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -70,6 +74,8 @@ export default function Forgotpassword() {
             validator.isMobilePhone(phoneNo)
                 ? handleSendOtp()
                 : alert('Enter a valid Phone Number')
+                  setShow(true);
+
         }
         else {
             alert("Phone Number can't be empty");
@@ -120,36 +126,55 @@ export default function Forgotpassword() {
         }
     }
 
+    const handleClose = () => setShow(false);
+
+
     return (
         <div>
+            <Header/>
             {
-                !otpEdit && !changeEdit &&
-                <form className='login-page' onSubmit={submitPhoneNo}>
+                !changeEdit &&
+                <div>
+                <div className="dforgot">Forgot Password ?</div>
+                <form className='forgot-page' onSubmit={submitPhoneNo}>
                     <div className='box'>
                         <div className='login'>
+                        <img src={logo2} className="login-logo" alt="" />
                             <div id="sign-in-button"></div>
                             <div className='passwordfield'>
                                 <input type="number" className='inputBox' onChange={(e) => setPhoneNo(e.target.value)} autoComplete="new-password" placeholder='Enter Phone No.' />
                             </div>
-                            <button type="submit" className='logbtn'>Submit</button>
+                            <button type="submit" className='subbtn'>Submit</button>
                         </div>
                     </div>
                 </form>
+                </div>
             }
 
             {
                 otpEdit && !changeEdit &&
                 <>
-                    <h2>Enter OTP</h2>
-                    <form onSubmit={onSubmitOTP}>
-                        <input type="number" name="otp" placeholder="OTP Number" required onChange={(e) => setOtp(e.target.value)} />
-                        <button type="submit">Submit</button>
+                    <Modal
+                    show={show}
+                    onHide={handleClose}
+                    className="my-modal">
+
+                    <Modal.Header closeButton>
+                        <Modal.Title>Enter OTP!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="">
+                    <form onSubmit={onSubmitOTP} className="otp-form">
+                        <input type="number" name="otp" placeholder="OTP Number" className='otp-input' required onChange={(e) => setOtp(e.target.value)} />
+                        <button type="submit" className="otp-btn">Submit</button>
                     </form>
+                    </Modal.Body>
+                </Modal>
+                    
                 </>
             }
             {
                 changeEdit && !otpEdit &&
-                <form className='login-page' onSubmit={submitPassword}>
+                <form className='forgot-page' onSubmit={submitPassword}>
                     <div className='box'>
                         <div className='login'>
                             <div className='passwordfield'>
@@ -158,7 +183,7 @@ export default function Forgotpassword() {
                             <div className='passwordfield'>
                                 <input type="text" className='inputBox' onChange={(e) => setConfirmNewPaas(e.target.value)} autoComplete="new-password" placeholder='Confirm New Password' />
                             </div>
-                            <button type="submit" className='logbtn'>Submit</button>
+                            <button type="submit" className='subbtn'>Submit</button>
                         </div>
                     </div>
                 </form>

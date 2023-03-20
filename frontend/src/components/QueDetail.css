@@ -96,7 +96,7 @@
     border:1px solid #18742d;
 }
 
-.show{
+.show-ans-btn{
     background-color: #007bff;
     color:white;
     border:1px solid #007bff;
@@ -108,7 +108,7 @@
     font-weight: 600;
 }
 
-.show:hover{
+.show-ans-btn:hover{
     background-color: #0163cb;
     color:white;
     border:1px solid #0163cb;

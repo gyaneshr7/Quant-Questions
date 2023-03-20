@@ -411,7 +411,7 @@ function QueDetail() {
               )}
               {wrongAns && (
                 <>
-                  <button className="show" onClick={showMyAnswer}>
+                  <button className="show-ans-btn" onClick={showMyAnswer}>
                     { hide ? "Hide Answer":"View Answer" }
                   </button>
                   <p

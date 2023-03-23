@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import "./FAQ.css";
 import Header from "./Header";
+import ReactMarkdown from 'react-markdown';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 import { IoIosArrowForward } from "react-icons/io";
 function FAQ() {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
+  
+  const equation='a² - b² = (a-b)(a+b) \n (1198)² (1200 - 2)² \n We can use the identity:\n (a-b)²= a² + b² – 2ab (1200)² + 2² – 2 * 1200 * 2 1440000 + 4 – 48001435204';
+  const formatted = katex.renderToString(equation);
+
   const faq = [
     {
       id: 1,
@@ -39,6 +46,37 @@ function FAQ() {
     setId(id);
     console.log(id);
   };
+
+  const explanation = `
+  Cost Price (C.P.) = Rs. (4700 + 800) = Rs. 5500.
+
+Selling Price (S.P.) = Rs. 5800.
+
+Gain = (S.P.) - (C.P.) = Rs.(5800 - 5500) = Rs. 300.
+
+Gain % =		300	x 100	%	= 5	5	%
+5500	11
+
+  Suppose originally he had x apples.
+   
+  Then, (100 - 40)% of x = 420.
+    60/100 *  x = 420
+  
+   x =(420 x 100)/60	  = 700.
+
+   
+(.000216)1/3	=		216		1/3
+106
+   =		6 x 6 x 6		1/3
+102 x 102 x 102
+   =	6
+102
+   =	6
+100
+   = 0.06
+  
+`;
+
   return (
     <div>
       <Header />
@@ -60,6 +98,10 @@ function FAQ() {
           </div>
         ))}
       </div>
+
+      {/* <div dangerouslySetInnerHTML={{ __html: explanation }} /> */}
+      {/* <ReactMarkdown style={{justifyContent:"left"}}>{explanation}</ReactMarkdown>  */}
+       <div dangerouslySetInnerHTML={{__html: formatted}}></div>       
     </div>
   );
 }

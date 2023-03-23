@@ -15,6 +15,7 @@ import ErrorPage from './components/ErrorPage';
 import FAQ from './components/FAQ';
 import AllQuestions from './components/AllQuestions';
 import Forgotpassword from './components/Forgotpassword';
+import Resources from './components/Resources';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
@@ -37,6 +38,7 @@ function App() {
           <Route path='/profile' element={userRole === 'user' ? <Profile /> : <ErrorPage />}></Route>
           <Route path='/progress' element={userRole === 'user' ? <Progress /> : <ErrorPage />}></Route>
           <Route path='/faq' element={userRole === 'user' ? <FAQ /> : <ErrorPage />}></Route>
+          <Route path='/resources' element={userRole === 'user' ? <Resources /> : <ErrorPage />}></Route>
 
           <Route path='/dashboard' element={userRole === 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
           <Route path='/all-ques' element={userRole === 'admin' ? <AllQuestions /> : <ErrorPage />}></Route>

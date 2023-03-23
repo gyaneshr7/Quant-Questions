@@ -1,5 +1,6 @@
 .header{
     background-color: rgb(248, 249, 250);
+    /* background-color:rgb(198, 198, 198); */
 }
 
 .main{
@@ -12,7 +13,7 @@
     display: flex;
     position: relative;
     gap:6px;
-    top:13px;
+    top:15px;
     padding-right: 40px;
 }
 .ques-user{
@@ -21,6 +22,10 @@
 }
 .logo{
     margin-left: 50px;
+    height:75px;
+    width:230px;
+    object-fit: inherit;
+    cursor: pointer;
 }
 
 .que-btn{
@@ -30,6 +35,7 @@
     border-radius: 4px;
     border: 1px solid black;
     cursor: pointer;
+    margin-top: 5px;
 }
 
 .que-btn:hover{
@@ -56,8 +62,8 @@
     padding-bottom: 10px;
     flex-direction: column;
     cursor:pointer;
-    overflow: hidden;
-    z-index:111;
+    overflow:hidden;
+    z-index:9999999;
 }
 .mylinks{
     text-decoration: none;
@@ -74,6 +80,7 @@
 }
 .curs{
     cursor:pointer;
+    margin-top: 10px;
 }
 .subm{
     position: relative;

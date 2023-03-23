@@ -4,16 +4,12 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
 .otp-form{
   display:flex;
   gap:7px;
   justify-content: center;
   align-items: center;
+  margin-top: 25px;
 }
 
 .otp-input{
@@ -62,7 +58,7 @@ input[type=number] {
 .forgot-page{
   height:490px;
   width:500px;
-  /* margin: auto; */
+  margin: auto;
   margin-top: 40px;
   align-items: center;
   justify-content: center;
@@ -80,4 +76,24 @@ input[type=number] {
 .subbtn:hover{
   background-color: rgb(7, 110, 212);
   border-radius:1px solid  rgb(7, 110, 212);
+}
+
+.modal-dialog{
+  position: relative;
+  top:200px;
+}
+
+.modal-content{
+  height:fit-content;
+  border-radius: 10x !important;
+}
+
+.otp-body{
+  padding-left: 43px;
+}
+
+.otp-body span{
+  color:rgb(60, 60, 248);
+  padding-left:5px;
+  text-decoration: underline;
 }

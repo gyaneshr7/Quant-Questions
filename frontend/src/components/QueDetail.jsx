@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "./QueDetail.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import katex from 'katex';
+import { IoIosArrowBack, IoIosArrowForward,IoMdArrowDropright } from "react-icons/io";
 import { AiOutlineMail } from "react-icons/ai";
 import { GrNote } from "react-icons/gr";
 import { AiOutlineLike } from "react-icons/ai";
@@ -12,9 +13,12 @@ import { RiLightbulbFlashLine } from "react-icons/ri";
 import { AiOutlineDislike } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { MdFormatListBulleted } from "react-icons/md";
 import { RiInformationFill } from "react-icons/ri";
 import { FaTags } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
+import ReactMarkdown from 'react-markdown';
+
 
 function QueDetail() {
   const location = useLocation();
@@ -31,6 +35,12 @@ function QueDetail() {
   const [hide, setHide] = useState(false);
   const [checkBadge, setCheckBadge] = useState(false);
   const user = JSON.parse(localStorage.getItem("quantuser"));
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleMenu = () => {
+    setCollapsed(!collapsed);
+  };
 
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -91,8 +101,8 @@ function QueDetail() {
 
   const ansSubmitHandler = async () => {
     if (!user) {
-      alert("Please login to practice!")
-      window.location.href = '/login';
+      alert("Please login to practice!");
+      window.location.href = "/login";
       return;
     }
 
@@ -184,8 +194,8 @@ function QueDetail() {
         //   wrongval = {
         //     category: allQuestions[currentQuestion].category,
         //     count: 1
-        //   } 
-        //   : 
+        //   }
+        //   :
         //   res.weakCategories.map((data) => {
         //     console.log("object")
         //     if (data.category == allQuestions[currentQuestion].category) {
@@ -216,8 +226,8 @@ function QueDetail() {
       // set questions submission and accepted value
       const quesValue = {
         submission: allQuestions[currentQuestion].submission + quesSubmission,
-        accepted: allQuestions[currentQuestion].accepted + quesAcceptance
-      }
+        accepted: allQuestions[currentQuestion].accepted + quesAcceptance,
+      };
 
       // update question for submissions and acceptance
       const updateQues = await fetch(
@@ -235,7 +245,7 @@ function QueDetail() {
       // update current question status
       const userUpdation = {
         questionId: allQuestions[currentQuestion]._id,
-        category:allQuestions[currentQuestion].category,
+        category: allQuestions[currentQuestion].category,
         status: status,
       };
       const updateUser = await fetch(
@@ -250,7 +260,6 @@ function QueDetail() {
       );
       const updatedUserResp = await updateUser.json();
       console.log(updatedUserResp);
-
 
       // update badge status
       // let count = 0;
@@ -307,17 +316,34 @@ function QueDetail() {
 
   const tags = ["Maths", "Bayes Theorem", "C", "java", "Javascript"];
 
-  const showMyAnswer=()=>{
+  const showMyAnswer = () => {
     setShowAns(!showAns);
     setHide(!hide);
-  }
+  };
 
-  const explanation="The digit 5 has two place values in the numeral, 5 * 105 = 50,000 and 5 * 101 = 50. ∴Required difference = 50000 - 50 = 49950";
+  window.addEventListener('DOMContentLoaded',()=>{
+    let mathOutput=document.querySelector('#explain-convert');
+    mathOutput.innerHtml=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`)
+  })
+
+  const explanation =
+    "The digit 5 has two place values in the numeral, 5 * 105 = 50,000 and 5 * 101 = 50. ∴Required difference = 50000 - 50 = 49950";
+
+    const openNav=()=> {
+      document.getElementById("mySidebar").style.width = "300px";
+      document.getElementById("main").style.marginLeft = "300px";
+    }
+    
+    const closeNav=()=> {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+    }
+
 
   return (
     <div>
       <Header />
-      <div className="detail-side">
+      <div id="main" className="detail-side">
         <div className="que-side">
           <div className="detail-one">
             <div className="line-one">
@@ -402,8 +428,8 @@ function QueDetail() {
                   style={{
                     color: "green",
                     fontSize: "18px",
-                    position:"relative",
-                    top:"8px"
+                    position: "relative",
+                    top: "8px",
                   }}
                 >
                   Correct Answer
@@ -412,14 +438,14 @@ function QueDetail() {
               {wrongAns && (
                 <>
                   <button className="show-ans-btn" onClick={showMyAnswer}>
-                    { hide ? "Hide Answer":"View Answer" }
+                    {hide ? "Hide Answer" : "View Answer"}
                   </button>
                   <p
                     style={{
                       color: "red",
                       fontSize: "18px",
-                      position:"relative",
-                      top:"8px"
+                      position: "relative",
+                      top: "8px",
                     }}
                   >
                     Wrong Answer
@@ -440,41 +466,58 @@ function QueDetail() {
             </div>
 
             <div>
-              {
-                showAns && (
-                  <div className="explain">
+              {showAns && (
+                <div className="explain">
                   <div className="explain-head">Explanation:</div>
-                  <div className="explain-cont">
-                  {explanation}
-                  </div>
-                  </div>
-                )
-              }
-             
+                  <div className="explain-cont" >
+                  <ReactMarkdown id="explain-convert" style={{justifyContent:"left"}}></ReactMarkdown>   
+                    </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="buttons">
-            <button
-              className="prev"
-              onClick={handlePreviousButtonClick}
-              disabled={isPreviousDisabled}
-            >
-              <IoIosArrowBack fontSize={20} />
-              Prev
-            </button>
-            <p className="nums">
-              {allQuestions && allQuestions[currentQuestion].uniqueId}/
-              {allQuestions && allQuestions.length}
-            </p>
-            <button
-              className="next"
-              onClick={handleNextButtonClick}
-              disabled={isNextDisabled}
-            >
-              Next
-              <IoIosArrowForward fontSize={20} />
-            </button>
+          
+      <div id="mySidebar" className="sidebar">
+        <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>×</a>
+        <div className="all-side">
+        <div className="all-categ">Categories</div>   
+        <a href="/"><IoMdArrowDropright size="25"/>Probability</a>
+        <a href="/"><IoMdArrowDropright size="25"/>Profit & Loss</a>
+        <a href="/"><IoMdArrowDropright size="25"/>Average</a>
+        <a href="/"><IoMdArrowDropright size="25"/>Permutation & Combination</a>
+        <a href="/"><IoMdArrowDropright size="25"/>Problem on Ages</a>
+        </div>
+        
+      </div>
+
+      <div className="disp-sidebar">
+      <div id="main">
+        <button className="openbtn" onClick={openNav}><MdFormatListBulleted size="25"/> Questions</button>  
+      </div>
+
+            <div className="buttons">
+              <button
+                className="prev"
+                onClick={handlePreviousButtonClick}
+                disabled={isPreviousDisabled}
+              >
+                <IoIosArrowBack fontSize={20} />
+                Prev
+              </button>
+              <p className="nums">
+                {allQuestions && allQuestions[currentQuestion].uniqueId}/
+                {allQuestions && allQuestions.length}
+              </p>
+              <button
+                className="next"
+                onClick={handleNextButtonClick}
+                disabled={isNextDisabled}
+              >
+                Next
+                <IoIosArrowForward fontSize={20} />
+              </button>
+            </div>
           </div>
         </div>
 

@@ -17,6 +17,7 @@ export default function Forgotpassword() {
     const [newPass, setNewPaas] = useState();
     const [confirmnewPass, setConfirmNewPaas] = useState();
     const[show,setShow]=useState(false);
+    const[loading,setLoading]=useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -63,23 +64,25 @@ export default function Forgotpassword() {
                 window.confirmationResult = confirmationResult;
                 alert("OTP has been sent");
                 setOtpEdit(true);
+                setLoading(false);
             }).catch((error) => {
                 console.log(error)
             });
     };
 
     const submitPhoneNo = (e) => {
+        setLoading(true);
         e.preventDefault();
         if (phoneNo) {
             validator.isMobilePhone(phoneNo)
                 ? handleSendOtp()
                 : alert('Enter a valid Phone Number')
                   setShow(true);
-
         }
         else {
             alert("Phone Number can't be empty");
         }
+        // setLoading(false);
     }
 
     const onSubmitOTP = (e) => {
@@ -144,7 +147,19 @@ export default function Forgotpassword() {
                             <div className='passwordfield'>
                                 <input type="number" className='inputBox' onChange={(e) => setPhoneNo(e.target.value)} autoComplete="new-password" placeholder='Enter Phone No.' />
                             </div>
+                            {loading ? (
+                            <div
+                              class="spinner-border"
+                              role="status"
+                              style={{ height: "15px", width: "15px",color:"#15074e",marginRight:"25px",marginTop:"15px" }}
+                            >
+                              <button class="visually-hidden">Loading...</button>
+                            </div>
+                          ) : (
                             <button type="submit" className='subbtn'>Submit</button>
+                          )
+                          }
+                            {/* <button type="submit" className='subbtn'>Submit</button> */}
                         </div>
                     </div>
                 </form>
@@ -162,7 +177,8 @@ export default function Forgotpassword() {
                     <Modal.Header closeButton>
                         <Modal.Title>Enter OTP!</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="">
+                    <Modal.Body>
+                    <div className="otp-body">OTP sent to<span> 8777367875</span></div>    
                     <form onSubmit={onSubmitOTP} className="otp-form">
                         <input type="number" name="otp" placeholder="OTP Number" className='otp-input' required onChange={(e) => setOtp(e.target.value)} />
                         <button type="submit" className="otp-btn">Submit</button>

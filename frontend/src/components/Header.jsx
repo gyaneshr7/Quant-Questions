@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "../images/logo.png";
+import logo3 from "../images/logo3.png";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -11,6 +12,7 @@ import { GrNotes } from "react-icons/gr";
 import { FaExchangeAlt } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { FaQuestion } from "react-icons/fa";
+import { GrResources } from "react-icons/gr";
 import progress from "../images/progress.png";
 
 function Header() {
@@ -34,7 +36,7 @@ function Header() {
       <div className="main">
         <div>
           <Link to="/questions">
-            <img className="logo" src={logo} onClick={() => { setClicked(true) }} alt="" />
+            <img className="logo" src={logo3} onClick={() => { setClicked(true) }} alt="" />
           </Link>
         </div>
         {
@@ -56,6 +58,7 @@ function Header() {
                        <Link to='/submissions' className="mylinks"><div className="gap-user"><img className="icon-user my-sub" src={progress} alt=""/><div className="subm">Submissions</div></div></Link>
                        {/* <div className="gap-user" ><GrNotes className="icon-user"/>Manage Subscriptions</div>  */}
                        <Link to='/faq' className="mylinks"><div className="gap-user"><FaQuestion className="icon-user"/>FAQs</div></Link>
+                       <Link to='/resources' className="mylinks"><div className="gap-user"><GrResources className="icon-user"/>Resources</div></Link>
                        <Link to='/change_password' className="mylinks"><div className="gap-user"><FaExchangeAlt className="icon-user"/>Change Password</div></Link>
                        <Link to='/login' className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
                     </div>

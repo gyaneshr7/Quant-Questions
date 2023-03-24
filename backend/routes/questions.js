@@ -26,6 +26,7 @@ router.get('/getallquestions', async (req, res) => {
 
 // Fetch all questions by category
 router.get('/getquestions/category/:category', async (req, res) => {
+    console.log(req.params.category);
     try {
         const questions = await Questions.aggregate([{
             $match: {
@@ -89,6 +90,7 @@ router.get('/firms/:id/:firm', async (req, res) => {
     }
 })
 
+// update question when a user submits a answer
 router.put('/updateans/:id', async (req, res) => {
     try {
         console.log(req.body);
@@ -100,6 +102,30 @@ router.put('/updateans/:id', async (req, res) => {
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error);
+    }
+})
+
+// update questions
+router.put('/update/questions/:id', async (req, res) => {
+    try {
+        console.log(req.body);
+        const data = await Questions.findOneAndUpdate({ _id: req.params.id },req.body,{new:true})
+        console.log(data);
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+
+
+// DELETE A QUESTION
+router.delete('/:id',async (req,res)=>{
+    try {
+        const data = await Questions.deleteOne({_id:req.params.id});
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json(error)
     }
 })
 

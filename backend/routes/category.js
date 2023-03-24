@@ -120,7 +120,9 @@ router.get('/getcategories', async (req, res) => {
 })
 
 router.put('/updatecategory/:category', async (req, res) => {
+    console.log(req.body)
     try {
+        let response;
         req.body.firmscount.map(async(data)=>{
             const res = await Category.updateOne({'firms.name':data.name},{'$set': {
                 'firms.$.count': data.count

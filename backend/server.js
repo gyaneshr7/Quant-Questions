@@ -10,6 +10,7 @@ const authController = require('./routes/auth')
 const questionsController = require('./routes/questions');
 const userController = require('./routes/user');
 const categoryController = require('./routes/category');
+const resourceController = require('./routes/resource');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -30,6 +31,7 @@ app.use('/auth',authController);
 app.use('/question',questionsController);
 app.use('/user',userController);
 app.use('/category',categoryController);
+app.use('/resources',resourceController);
 
 app.listen(port,()=>{
     console.log(`Server is listening at ${port}`);

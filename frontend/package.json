@@ -28,7 +28,6 @@
     "multiselect-react-dropdown": "^2.0.25",
     "namor": "^3.0.1",
     "npm": "^9.5.1",
-    "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-bootstrap-modal": "^4.2.0",
     "react-chartjs-2": "^5.2.0",

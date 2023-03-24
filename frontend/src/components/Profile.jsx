@@ -12,18 +12,18 @@ import { Pie } from "react-chartjs-2";
 import Modal from "react-bootstrap/Modal";
 
 import { CategoryScale, LinearScale, BarElement, Title } from "chart.js";
-
 import { Bar } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
 
 function Profile() {
   const [userData, setUserData] = useState();
   const [questions, setQuestions] = useState();
   const [submittedQuestions, setSubmittedQuestions] = useState();
   const [rank, setRank] = useState([]);
+  const [categories, setCategories] = useState([]);
   const user = JSON.parse(localStorage.getItem("quantuser"));
   const [show, setShow] = useState(false);
 
+  // correct and wrong answers
   const correct = [],
     wrong = [];
   userData &&
@@ -34,6 +34,82 @@ function Profile() {
         wrong.push(data);
       }
     });
+
+  // find weakness of a user
+  let weaknessarray = [], weakness = [];
+  categories.length > 0 && userData &&
+    categories.map((category) => {
+      let wrongquescount = 0;
+      let categorycount = 0;
+      let val;
+      userData.currentAttempted.map((current) => {
+        if (category.name == current.category) {
+          categorycount = categorycount + 1
+        }
+        if (category.name == current.category && current.status == 'wrong') {
+          wrongquescount = wrongquescount + 1
+        }
+      })
+
+      console.log(category.name, wrongquescount, categorycount);
+      if (wrongquescount >= (60 * categorycount) / 100 && wrongquescount > 0) {
+        console.log(wrongquescount, (60 * categorycount) / 100 );
+        weaknessarray.push({
+          category: category.name,
+          count: wrongquescount,
+          color: category.color
+        })
+      }
+    })
+
+  weaknessarray.push({
+    category: "Aptitude",
+    count: 8,
+    color: "color"
+  })
+  weaknessarray.push({
+    category: "reasoning",
+    count: 5,
+    color: "color"
+  })
+  weaknessarray.push({
+    category: "1",
+    count: 7,
+    color: "color"
+  })
+  weaknessarray.push({
+    category: "2",
+    count: 7,
+    color: "color"
+  })
+
+  if (weaknessarray.length > 0) {
+    if (weaknessarray.length > 2) {
+      let sorted = weaknessarray.sort((p1, p2) => (p1.count < p2.count) ? 1 : (p1.count > p2.count) ? -1 : 0);
+      // let i;
+      // for (i = 0; i < sorted.length - 1; i++) {
+      //   if (sorted[i].count != sorted[i + 1].count) {
+      //     weakness.push(sorted[i]);
+      //   }
+      // }
+      console.log(sorted, "sorted")
+      sorted.slice(2,5).map(data=>{
+        weakness.push(data)
+      })
+      // console.log(weakness, "weakness");
+    } else {
+      weakness = weaknessarray;
+    }
+  }
+  // console.log(weakness,"weakness")
+
+
+  // fetch categories
+  const fetchCategories = async () => {
+    const data = await fetch(`http://localhost:8000/category/getcategories`);
+    const res = await data.json();
+    setCategories(res.category);
+  }
 
   useEffect(() => {
     let score = [];
@@ -64,6 +140,7 @@ function Profile() {
     };
     fetchData();
     fetchQuestions();
+    fetchCategories()
     fetchScore();
   }, []);
 
@@ -98,56 +175,44 @@ function Profile() {
     responsive: true,
     plugins: {
       legend: {
-        position: "right",
+        display: false,
+        position: 'right',
         label: {
-          fullSize: true,
-        },
+          fullSize: true
+        }
       },
       title: {
         display: false,
-        text: "Progress in Categories",
+        text: 'Progress in Categories',
       },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     },
   };
 
-  const labels = [
-    "Probability",
-    "Profit & Loss",
-    "Percentage",
-    "Ages",
-    "Geometry",
-    "Area",
-    "Partnership",
-    "Progression",
-    "Clocks & Calendar",
-    "Chain Rule",
-    "Logarithm",
-  ];
+  let labels = [];
+  weakness.length > 0 &&
+    weakness.map((data) => {
+      labels.push(data.category)
+    })
 
   const data2 = {
     labels,
     datasets: [
       {
-        label: labels,
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: [
-          "#d4b7f7",
-          "#b7dbf7",
-          "#bfb7f7",
-          "#f7b7f7",
-          "#f5d7c4",
-          "#f7b7c8",
-          "#c6f7b7",
-          "#f3f7b7",
-          "#fab1af",
-          "#bdaffa",
-          "#afedfa",
-        ],
-      },
+        // label: weakness.length>0 && weakness.map((data,i)=>data.category),
+        data: labels.map((data, i) => weakness[i].count),
+        backgroundColor: weakness.map((data, i) => weakness[i].color),
+      }
     ],
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+  }
 
   return (
     <div>
@@ -244,9 +309,9 @@ function Profile() {
                 {submittedQuestions && submittedQuestions.length > 0 ? (
                   <tbody>
                     {submittedQuestions &&
-                      submittedQuestions.slice(0, 10).map((data) => (
-                        <tr>
-                          {/* <td className="que-co">{data.question.title}</td> */}
+                      submittedQuestions.slice(0, 10).map((data, i) => (
+                        <tr key={i}>
+                          <td className="que-co">{data.question.title}</td>
                           <td>
                             {data.correctAns ? (
                               <TiTick color="green" size={25} />
@@ -265,7 +330,7 @@ function Profile() {
                 ) : (
                   <tbody>
                     <tr>
-                      <td className="no-data" colspan="5">
+                      <td className="no-data" colSpan="5">
                         No recent submissions
                       </td>
                     </tr>
@@ -296,7 +361,7 @@ function Profile() {
                 <div className="shield">
                   <RiShieldStarLine />
                 </div>
-                <div class="ribbon" onMouseOver={() => setShow(true)}>
+                <div className="ribbon" onMouseOver={() => setShow(true)}>
                   <AiFillStar className="star" />
                   <AiFillStar className="star" style={{ opacity: 0.3 }} />
                   <AiFillStar className="star" style={{ opacity: 0.3 }} />
@@ -310,7 +375,7 @@ function Profile() {
                 <div className="shield">
                   <RiShieldStarLine />
                 </div>
-                <div class="ribbon">
+                <div className="ribbon">
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
@@ -324,7 +389,7 @@ function Profile() {
                 <div className="shield">
                   <RiShieldStarLine />
                 </div>
-                <div class="ribbon">
+                <div className="ribbon">
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
@@ -338,7 +403,7 @@ function Profile() {
                 <div className="shield">
                   <RiShieldStarLine />
                 </div>
-                <div class="ribbon">
+                <div className="ribbon">
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
@@ -371,30 +436,30 @@ function Profile() {
               </svg>
             </div>
 
-            <Modal 
-            backdrop="static"
-            // style={{borderRadius:"20px"}}
-             show={show} 
-             className="congo-modal"
-             onHide={handleClose}>
-              
+            <Modal
+              backdrop="static"
+              // style={{borderRadius:"20px"}}
+              show={show}
+              className="congo-modal"
+              onHide={handleClose}>
+
               <Modal.Body>
                 <div className="congo-box">
                   <div className="congrats">Congratulations!</div>
                   <div className="show-badge">
-                  <div className="hex bronze">
-                    <div className="gold-tag">Bronze</div>
-                    <div className="shield">
-                      <RiShieldStarLine />
+                    <div className="hex bronze">
+                      <div className="gold-tag">Bronze</div>
+                      <div className="shield">
+                        <RiShieldStarLine />
+                      </div>
+                      <div class="ribbon" onMouseOver={() => setShow(true)}>
+                        <AiFillStar className="star" />
+                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
+                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
+                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
+                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
+                      </div>
                     </div>
-                    <div class="ribbon" onMouseOver={() => setShow(true)}>
-                      <AiFillStar className="star" />
-                      <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                      <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                      <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                      <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                    </div>
-                  </div>
                   </div>
                   <div className="first-star">
                     You have recieived 1st star of Bronze.

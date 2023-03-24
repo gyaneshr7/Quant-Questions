@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "./QueDetail.css";
 import katex from 'katex';
-import { IoIosArrowBack, IoIosArrowForward,IoMdArrowDropright } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoMdArrowDropright } from "react-icons/io";
 import { AiOutlineMail } from "react-icons/ai";
 import { GrNote } from "react-icons/gr";
 import { AiOutlineLike } from "react-icons/ai";
@@ -34,13 +34,11 @@ function QueDetail() {
   const [wrongAns, setWrongAns] = useState();
   const [hide, setHide] = useState(false);
   const [checkBadge, setCheckBadge] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [categoryQuestions, setCategoryQuestions] = useState();
+  const [chooseCategory, setChooseCategory] = useState(false);
+  const [categoryCss, setCategoryCss] = useState();
   const user = JSON.parse(localStorage.getItem("quantuser"));
-
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleMenu = () => {
-    setCollapsed(!collapsed);
-  };
 
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -73,8 +71,8 @@ function QueDetail() {
   };
 
   const isPreviousDisabled = currentQuestion === 0;
-  const isNextDisabled =
-    allQuestions && currentQuestion === allQuestions.length - 1;
+  const isNextDisabled = chooseCategory ? categoryQuestions && currentQuestion === categoryQuestions.length - 1
+    : allQuestions && currentQuestion === allQuestions.length - 1;
 
   const fetchQuestions = async () => {
     const data = await fetch(`http://localhost:8000/question/getallquestions`);
@@ -86,6 +84,13 @@ function QueDetail() {
         }
       });
     setAllquestions(res);
+    let category = [];
+    res.map((data) => {
+      if (!category.includes(data.category)) {
+        category.push(data.category)
+      }
+    })
+    setCategories(category)
   };
 
   const fetchUser = async () => {
@@ -94,9 +99,31 @@ function QueDetail() {
     setUserData(res);
   };
 
+  // const fetchCategories = async () => {
+  //   const data = await fetch(`http://localhost:8000/category/getcategories`);
+  //   const res = await data.json();
+  //   setCategories(res.category);
+  // };
+
+  const fetchCategoryWiseQuestions = async (category) => {
+    setCategoryCss(category);
+    if (category == "All") {
+      setCategoryQuestions(allQuestions);
+      setCurrentQuestion(0);
+      setChooseCategory(true);
+    } else {
+      const data = await fetch(`http://localhost:8000/question/getquestions/category/${category}`);
+      const res = await data.json();
+      setCategoryQuestions(res);
+      setCurrentQuestion(0);
+      setChooseCategory(true);
+    }
+  }
+
   useEffect(() => {
     fetchQuestions();
     fetchUser();
+    // fetchCategories();
   }, []);
 
   const ansSubmitHandler = async () => {
@@ -110,9 +137,9 @@ function QueDetail() {
     const updateduser = await a.json();
     let score;
 
-    if (allQuestions[currentQuestion].difficulty === "hard") {
+    if (chooseCategory ? categoryQuestions[currentQuestion].difficulty === "hard" : allQuestions[currentQuestion].difficulty === "hard") {
       score = 5;
-    } else if (allQuestions[currentQuestion].difficulty === "medium") {
+    } else if (chooseCategory ? categoryQuestions[currentQuestion].difficulty === "medium" : allQuestions[currentQuestion].difficulty === "medium") {
       score = 3;
     } else {
       score = 2;
@@ -126,8 +153,7 @@ function QueDetail() {
       setShowAns(false);
       setAnswer("");
       let val;
-      console.log(answer, allQuestions[currentQuestion].answer);
-      if (answer == allQuestions[currentQuestion].answer) {
+      if (chooseCategory ? answer == categoryQuestions[currentQuestion].answer : answer == allQuestions[currentQuestion].answer) {
         setCorrectAns(true);
         setWrongAns(false);
         status = "correct";
@@ -141,7 +167,7 @@ function QueDetail() {
           correctAns: updateduser.correctAns + 1,
           wrongAns: updateduser.wrongAns,
           submittedQuestions: {
-            question: allQuestions[currentQuestion]._id,
+            question: chooseCategory ? categoryQuestions[currentQuestion]._id : allQuestions[currentQuestion]._id,
             correctAns: true,
             date: todaysdate,
           },
@@ -170,7 +196,7 @@ function QueDetail() {
           correctAns: updateduser.correctAns,
           wrongAns: updateduser.wrongAns + 1,
           submittedQuestions: {
-            question: allQuestions[currentQuestion]._id,
+            question: chooseCategory ? categoryQuestions[currentQuestion]._id : allQuestions[currentQuestion]._id,
             correctAns: false,
             date: todaysdate,
           },
@@ -187,51 +213,17 @@ function QueDetail() {
           }
         );
         const res = await data.json();
-
-        // let wrongval;
-        // console.log(res.weakCategories, "categories", allQuestions[currentQuestion].category);
-        // res.weakCategories.length == 0 ?
-        //   wrongval = {
-        //     category: allQuestions[currentQuestion].category,
-        //     count: 1
-        //   }
-        //   :
-        //   res.weakCategories.map((data) => {
-        //     console.log("object")
-        //     if (data.category == allQuestions[currentQuestion].category) {
-        //       wrongval = {
-        //         category: allQuestions[currentQuestion].category,
-        //         count: data.count + 1
-        //       }
-        //     } else {
-        //       wrongval = {
-        //         category: allQuestions[currentQuestion].category,
-        //         count: 1
-        //       }
-        //     }
-        //   })
-        // console.log(wrongval, "kkkkkkkk")
-        // // submit wrong submissions to update weakness of user
-        // const updatedwrong = await fetch(`http://localhost:8000/user/update/weak/categories/${userData._id}`, {
-        //   method: "PUT",
-        //   body: JSON.stringify(wrongval),
-        //   headers: {
-        //     "Content-type": "application/json"
-        //   }
-        // })
-        // const reswrong = await updatedwrong.json();
-        // console.log(reswrong, "reswrong");
       }
 
       // set questions submission and accepted value
       const quesValue = {
-        submission: allQuestions[currentQuestion].submission + quesSubmission,
-        accepted: allQuestions[currentQuestion].accepted + quesAcceptance,
+        submission: chooseCategory ? categoryQuestions[currentQuestion].submission + quesSubmission : allQuestions[currentQuestion].submission + quesSubmission,
+        accepted: chooseCategory ? categoryQuestions[currentQuestion].accepted + quesAcceptance : allQuestions[currentQuestion].accepted + quesAcceptance,
       };
 
       // update question for submissions and acceptance
       const updateQues = await fetch(
-        `http://localhost:8000/question/updateans/${allQuestions[currentQuestion]._id}`,
+        `http://localhost:8000/question/updateans/${chooseCategory ? categoryQuestions[currentQuestion]._id : allQuestions[currentQuestion]._id}`,
         {
           method: "PUT",
           body: JSON.stringify(quesValue),
@@ -244,12 +236,12 @@ function QueDetail() {
 
       // update current question status
       const userUpdation = {
-        questionId: allQuestions[currentQuestion]._id,
-        category: allQuestions[currentQuestion].category,
+        questionId: chooseCategory ? categoryQuestions[currentQuestion]._id : allQuestions[currentQuestion]._id,
+        category: chooseCategory ? categoryQuestions[currentQuestion].category : allQuestions[currentQuestion].category,
         status: status,
       };
       const updateUser = await fetch(
-        `http://localhost:8000/user/update/ans/status/${userData._id}/${allQuestions[currentQuestion]._id}`,
+        `http://localhost:8000/user/update/ans/status/${userData._id}/${chooseCategory ? categoryQuestions[currentQuestion]._id : allQuestions[currentQuestion]._id}`,
         {
           method: "PUT",
           body: JSON.stringify(userUpdation),
@@ -262,12 +254,13 @@ function QueDetail() {
       console.log(updatedUserResp);
 
       // update badge status
-      // let count = 0;
-      // updatedUserResp.currentAttempted.map((user) => {
-      //   if (user.status == 'correct') {
-      //     count++;
-      //   }
-      // })
+      let count = 0;
+      updatedUserResp.currentAttempted.map((ques) => {
+        if (ques.status == 'correct') {
+          count++;
+        }
+      })
+      console.log(count,"countttttt");
       // let badgeval;
       // if (count >= Math.floor(allQuestions.length * 10) / 100) {
       //   badgeval = { bronze: true };
@@ -298,46 +291,28 @@ function QueDetail() {
     }
   };
 
-  const firms = [
-    "Tower Research Capital",
-    "Global Atlantic",
-    "Nomura",
-    "RBC",
-    "Bank",
-    "Tower Research Capital",
-    "Global Atlantic",
-    "Nomura",
-    "RBC",
-    "Bank",
-    "Nomura",
-    "RBC",
-    "Bank",
-  ];
-
-  const tags = ["Maths", "Bayes Theorem", "C", "java", "Javascript"];
-
   const showMyAnswer = () => {
     setShowAns(!showAns);
     setHide(!hide);
   };
 
-  window.addEventListener('DOMContentLoaded',()=>{
-    let mathOutput=document.querySelector('#explain-convert');
-    mathOutput.innerHtml=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`)
-  })
+  // window.addEventListener('DOMContentLoaded',()=>{
+  //   let mathOutput=document.querySelector('#explain-convert');
+  //   mathOutput.innerHtml=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`)
+  // })
 
   const explanation =
     "The digit 5 has two place values in the numeral, 5 * 105 = 50,000 and 5 * 101 = 50. ∴Required difference = 50000 - 50 = 49950";
 
-    const openNav=()=> {
-      document.getElementById("mySidebar").style.width = "300px";
-      document.getElementById("main").style.marginLeft = "300px";
-    }
-    
-    const closeNav=()=> {
-      document.getElementById("mySidebar").style.width = "0";
-      document.getElementById("main").style.marginLeft= "0";
-    }
+  const openNav = () => {
+    document.getElementById("mySidebar").style.width = "300px";
+    document.getElementById("main").style.marginLeft = "300px";
+  }
+
+  const closeNav = () => {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
 
 
   return (
@@ -349,10 +324,10 @@ function QueDetail() {
             <div className="line-one">
               <div className="main-detail">
                 <div className="detail-title">
-                  {allQuestions && allQuestions[currentQuestion].uniqueId}.
+                  {chooseCategory ? categoryQuestions[currentQuestion] && currentQuestion + 1 : allQuestions && currentQuestion + 1}.
                 </div>
                 <div className="detail-title">
-                  {allQuestions && allQuestions[currentQuestion].title}
+                  {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].title : allQuestions && allQuestions[currentQuestion].title}
                 </div>
               </div>
               <div className="detail-icons">
@@ -373,50 +348,90 @@ function QueDetail() {
 
             <div className="line-two">
               <p className="que-descr">
-                {allQuestions && allQuestions[currentQuestion].question}
+                {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].question : allQuestions && allQuestions[currentQuestion].question}
               </p>
             </div>
             <p className="answer">Your Answer</p>
-            {allQuestions &&
-            allQuestions[currentQuestion].answerType === "Text" ? (
-              <div className="answer">
-                <textarea
-                  type="text"
-                  value={answer}
-                  className="ans-field"
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                    setShowAns(false);
-                    setWrongAns(false);
-                    setCorrectAns(false);
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="options">
-                {allQuestions &&
-                  allQuestions[currentQuestion].options.map(
-                    (option, i) =>
-                      option !== "" && (
-                        <div className="disp-radio" key={i}>
-                          <input
-                            type="radio"
-                            id="my-radio"
-                            value={option}
-                            name="option"
-                            onChange={() => {
-                              setAnswer(option);
-                              setShowAns(false);
-                              setWrongAns(false);
-                              setCorrectAns(false);
-                            }}
-                          />
-                          <p className="input-pin">{option}</p>
-                        </div>
-                      )
-                  )}
-              </div>
-            )}
+            {chooseCategory ?
+              categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].answerType == "Text" ?
+                <div className="answer">
+                  <textarea
+                    type="text"
+                    value={answer}
+                    className="ans-field"
+                    onChange={(e) => {
+                      setAnswer(e.target.value);
+                      setShowAns(false);
+                      setWrongAns(false);
+                      setCorrectAns(false);
+                    }}
+                  />
+                </div>
+                :
+                <div className="options">
+                  {
+                    categoryQuestions[currentQuestion].options.map(
+                      (option, i) =>
+                        option !== "" && (
+                          <div className="disp-radio" key={i}>
+                            <input
+                              type="radio"
+                              id="my-radio"
+                              value={option}
+                              name="option"
+                              onChange={() => {
+                                setAnswer(option);
+                                setShowAns(false);
+                                setWrongAns(false);
+                                setCorrectAns(false);
+                              }}
+                            />
+                            <p className="input-pin">{option}</p>
+                          </div>
+                        )
+                    )}
+                </div>
+              :
+              allQuestions &&
+                allQuestions[currentQuestion].answerType === "Text" ? (
+                <div className="answer">
+                  <textarea
+                    type="text"
+                    value={answer}
+                    className="ans-field"
+                    onChange={(e) => {
+                      setAnswer(e.target.value);
+                      setShowAns(false);
+                      setWrongAns(false);
+                      setCorrectAns(false);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="options">
+                  {allQuestions &&
+                    allQuestions[currentQuestion].options.map(
+                      (option, i) =>
+                        option !== "" && (
+                          <div className="disp-radio" key={i}>
+                            <input
+                              type="radio"
+                              id="my-radio"
+                              value={option}
+                              name="option"
+                              onChange={() => {
+                                setAnswer(option);
+                                setShowAns(false);
+                                setWrongAns(false);
+                                setCorrectAns(false);
+                              }}
+                            />
+                            <p className="input-pin">{option}</p>
+                          </div>
+                        )
+                    )}
+                </div>
+              )}
 
             <div className="align-btn">
               {/* <input type="submit" className="submit" value="Submit" id="submit" onClick={ansSubmitHandler}/> */}
@@ -459,7 +474,7 @@ function QueDetail() {
                 <div className="ans-show1">
                   <div className="show-ans">Correct Answer :</div>
                   <div className="correct-ans">
-                    {allQuestions[currentQuestion].answer}
+                    {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].answer : allQuestions && allQuestions[currentQuestion].answer}
                   </div>
                 </div>
               )}
@@ -470,31 +485,33 @@ function QueDetail() {
                 <div className="explain">
                   <div className="explain-head">Explanation:</div>
                   <div className="explain-cont" >
-                  <ReactMarkdown id="explain-convert" style={{justifyContent:"left"}}></ReactMarkdown>   
-                    </div>
+                    <ReactMarkdown id="explain-convert" style={{ justifyContent: "left" }}>{chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation}</ReactMarkdown>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          
-      <div id="mySidebar" className="sidebar">
-        <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>×</a>
-        <div className="all-side">
-        <div className="all-categ">Categories</div>   
-        <a href="/"><IoMdArrowDropright size="25"/>Probability</a>
-        <a href="/"><IoMdArrowDropright size="25"/>Profit & Loss</a>
-        <a href="/"><IoMdArrowDropright size="25"/>Average</a>
-        <a href="/"><IoMdArrowDropright size="25"/>Permutation & Combination</a>
-        <a href="/"><IoMdArrowDropright size="25"/>Problem on Ages</a>
-        </div>
-        
-      </div>
 
-      <div className="disp-sidebar">
-      <div id="main">
-        <button className="openbtn" onClick={openNav}><MdFormatListBulleted size="25"/> Questions</button>  
-      </div>
+          <div id="mySidebar" className="sidebar">
+            <div className="closebtn categoryonclick" onClick={closeNav}>×</div>
+            <div className="all-side">
+              <div className="all-categ">Categories</div>
+              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => fetchCategoryWiseQuestions("All")}><IoMdArrowDropright size="25" />All</div>
+              {
+                categories.length > 0 &&
+                categories.map((data) => (
+                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => fetchCategoryWiseQuestions(data)}><IoMdArrowDropright size="25" />{data}</div>
+                ))
+              }
+            </div>
+
+          </div>
+
+          <div className="disp-sidebar">
+            <div id="main">
+              <button className="openbtn" onClick={openNav}><MdFormatListBulleted size="25" /> Questions</button>
+            </div>
 
             <div className="buttons">
               <button
@@ -506,8 +523,8 @@ function QueDetail() {
                 Prev
               </button>
               <p className="nums">
-                {allQuestions && allQuestions[currentQuestion].uniqueId}/
-                {allQuestions && allQuestions.length}
+                {currentQuestion + 1}/
+                {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions.length : allQuestions && allQuestions && allQuestions.length}
               </p>
               <button
                 className="next"
@@ -535,50 +552,73 @@ function QueDetail() {
                 <div className="my-detail">
                   <div className="status-detail">Status:</div>
                   <div className="solving">
-                    {userData &&
-                    userData.currentAttempted.some(
-                      (data) =>
-                        data.questionId === allQuestions[currentQuestion]._id
-                    ) ? (
-                      userData &&
-                      userData.currentAttempted.map((data) => (
-                        <>
-                          {data.questionId ===
-                            allQuestions[currentQuestion]._id &&
-                            data.status === "correct" && (
-                              <div>{data.status}</div>
-                            )}
-                          {data.questionId ===
-                            allQuestions[currentQuestion]._id &&
-                            data.status === "wrong" && <div>{data.status}</div>}
-                        </>
-                      ))
-                    ) : (
-                      <div>Unsolved</div>
-                    )}
+                    {userData && chooseCategory ?
+                      userData.currentAttempted.some(
+                        (data) =>
+                          data.questionId === categoryQuestions[currentQuestion]._id
+                      ) ? (
+                        userData &&
+                        userData.currentAttempted.map((data) => (
+                          <>
+                            {data.questionId ===
+                              categoryQuestions[currentQuestion]._id &&
+                              data.status === "correct" && (
+                                <div>{data.status}</div>
+                              )}
+                            {data.questionId ===
+                              categoryQuestions[currentQuestion]._id &&
+                              data.status === "wrong" && <div>{data.status}</div>}
+                          </>
+                        ))
+                      ) : (
+                        <div>Unsolved</div>
+                      ) :
+                      userData.currentAttempted.some(
+                        (data) =>
+                          data.questionId === allQuestions[currentQuestion]._id
+                      ) ? (
+                        userData &&
+                        userData.currentAttempted.map((data) => (
+                          <>
+                            {data.questionId ===
+                              allQuestions[currentQuestion]._id &&
+                              data.status === "correct" && (
+                                <div>{data.status}</div>
+                              )}
+                            {data.questionId ===
+                              allQuestions[currentQuestion]._id &&
+                              data.status === "wrong" && <div>{data.status}</div>}
+                          </>
+                        ))
+                      ) : (
+                        <div>Unsolved</div>
+                      )
+                    }
                   </div>
                 </div>
                 <div className="my-detail">
                   <div className="status-detail">Difficulty:</div>
                   <div
-                    className={
+                    className={chooseCategory ? categoryQuestions[currentQuestion].difficulty === "easy"
+                      ? "success-de" : categoryQuestions[currentQuestion].difficulty === "hard" ? "danger-de" : "medium-de"
+                      :
                       allQuestions[currentQuestion].difficulty === "easy"
                         ? "success-de"
                         : allQuestions[currentQuestion].difficulty === "hard"
-                        ? "danger-de"
-                        : "medium-de"
+                          ? "danger-de"
+                          : "medium-de"
                     }
                   >
-                    {allQuestions[currentQuestion].difficulty}
+                    {chooseCategory ? categoryQuestions[currentQuestion].difficulty : allQuestions[currentQuestion].difficulty}
                   </div>
                 </div>
                 <div className="my-detail">
                   <div className="status-detail">Submitted:</div>
-                  <div>{allQuestions[currentQuestion].submission}</div>
+                  <div>{chooseCategory ? categoryQuestions[currentQuestion].submission : allQuestions[currentQuestion].submission}</div>
                 </div>
                 <div className="my-detail">
                   <div className="status-detail">Accepted:</div>
-                  <div>{allQuestions[currentQuestion].accepted}</div>
+                  <div>{chooseCategory ? categoryQuestions[currentQuestion].accepted : allQuestions[currentQuestion].accepted}</div>
                 </div>
               </div>
             )}
@@ -596,14 +636,22 @@ function QueDetail() {
               <div className="main-tags">
                 <div className="all-firms">
                   <div className="tag-item">
-                    {allQuestions[currentQuestion].category}
+                    {chooseCategory ? categoryQuestions[currentQuestion].category : allQuestions[currentQuestion].category}
                   </div>
                 </div>
-                {allQuestions[currentQuestion].tags.map((item) => (
-                  <div className="all-firms">
-                    <div className="tag-item">{item}</div>
-                  </div>
-                ))}
+                {
+                  chooseCategory ?
+                    categoryQuestions[currentQuestion].tags.map((item) => (
+                      <div className="all-firms">
+                        <div className="tag-item">{item}</div>
+                      </div>
+                    ))
+                    :
+                    allQuestions[currentQuestion].tags.map((item) => (
+                      <div className="all-firms">
+                        <div className="tag-item">{item}</div>
+                      </div>
+                    ))}
               </div>
             )}
           </div>
@@ -617,11 +665,19 @@ function QueDetail() {
             </div>
             {open3 && (
               <div className="main-tags">
-                {allQuestions[currentQuestion].firms.map((item) => (
-                  <div className="all-firms">
-                    <div className="tag-item">{item}</div>
-                  </div>
-                ))}
+                {
+                  chooseCategory ?
+                    categoryQuestions[currentQuestion].firms.map((item) => (
+                      <div className="all-firms">
+                        <div className="tag-item">{item}</div>
+                      </div>
+                    ))
+                    :
+                    allQuestions[currentQuestion].firms.map((item) => (
+                      <div className="all-firms">
+                        <div className="tag-item">{item}</div>
+                      </div>
+                    ))}
               </div>
             )}
           </div>

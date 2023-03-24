@@ -23,6 +23,7 @@ function Progress() {
   let categoryLabels=[];
   let categoryData=[];
   let categoryColor=[];
+
   categories && categories.map((category)=>{
     categoryLabels.push(category.name);
   })
@@ -34,8 +35,9 @@ function Progress() {
   categoryLabels.length>0 && 
   categoryLabels.map((label)=>{
     let count=0;
-    userdata && userdata.submittedQuestions.map((data)=>{
-      if(data.question.category==label){
+    userdata && userdata.submittedQuestions.map((data,i)=>{
+      console.log(data,i);
+      if(data.question && data.question.category==label){
         count++;
       }
     })
@@ -47,18 +49,21 @@ function Progress() {
       correctSubmissions.push(question)
     }
   })
+
   if (correctSubmissions.length > 0) {
     correctSubmissions.map((item) => {
       var findItem = uniqueCorrectSubmissions.find((x) => x._id === item._id);
       if (!findItem) uniqueCorrectSubmissions.push(item);
     });
   }
+
   submittedQuestions && submittedQuestions.map((item) => {
     var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
     if (!findItem) {
       uniqueAttemptedQuestions.push(item)
     };
   })
+
   const correct = [], wrong = [];
   userdata && userdata.currentAttempted.map((data) => {
     if (data.status == 'correct') {
@@ -67,6 +72,7 @@ function Progress() {
       wrong.push(data);
     }
   })
+  
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)

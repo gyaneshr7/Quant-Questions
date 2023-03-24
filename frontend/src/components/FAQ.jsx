@@ -47,36 +47,6 @@ function FAQ() {
     console.log(id);
   };
 
-  const explanation = `
-  Cost Price (C.P.) = Rs. (4700 + 800) = Rs. 5500.
-
-Selling Price (S.P.) = Rs. 5800.
-
-Gain = (S.P.) - (C.P.) = Rs.(5800 - 5500) = Rs. 300.
-
-Gain % =		300	x 100	%	= 5	5	%
-5500	11
-
-  Suppose originally he had x apples.
-   
-  Then, (100 - 40)% of x = 420.
-    60/100 *  x = 420
-  
-   x =(420 x 100)/60	  = 700.
-
-   
-(.000216)1/3	=		216		1/3
-106
-   =		6 x 6 x 6		1/3
-102 x 102 x 102
-   =	6
-102
-   =	6
-100
-   = 0.06
-  
-`;
-
   return (
     <div>
       <Header />
@@ -97,11 +67,7 @@ Gain % =		300	x 100	%	= 5	5	%
                 }
           </div>
         ))}
-      </div>
-
-      {/* <div dangerouslySetInnerHTML={{ __html: explanation }} /> */}
-      {/* <ReactMarkdown style={{justifyContent:"left"}}>{explanation}</ReactMarkdown>  */}
-       <div dangerouslySetInnerHTML={{__html: formatted}}></div>       
+      </div>       
     </div>
   );
 }

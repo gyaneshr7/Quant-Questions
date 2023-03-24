@@ -9,6 +9,7 @@ import { MdLibraryAdd } from "react-icons/md";
 import { ChromePicker } from "react-color";
 import { Link, useLocation } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
+import { CategoryScale } from "chart.js";
 
 function Dashboard() {
   const [color, setColor] = useState('');
@@ -52,7 +53,7 @@ function Dashboard() {
   const [divisionsArray, setDivisionsArray] = useState();
   const [positionsArray, setPositionsArray] = useState();
   const [tagsArray, setTagsArray] = useState();
-  const[css,setCss]=useState(true);
+  const [css, setCss] = useState(true);
   const [loading, setLoading] = useState(false);
 
   let firmNames = [],
@@ -86,14 +87,10 @@ function Dashboard() {
       answerTypeNames.push(data.name);
     });
 
-  // if (user) {
-  // console.log("mbhgfdydsyr");
   window.history.pushState(null, null, location.href);
   window.onpopstate = function (event) {
     window.history.go(1);
   };
-  // }
-
 
   // add questions to db
   const submitHandler = async () => {
@@ -112,7 +109,7 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
-          explanation:explanation
+          explanation: explanation
         };
       } else {
         val = {
@@ -126,7 +123,7 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
-          explanation:explanation
+          explanation: explanation
         };
       }
       console.log(val);
@@ -343,23 +340,23 @@ function Dashboard() {
           {/* <div className="dash-head"><img className="quant" src={quant} alt=""/></div> */}
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
-            <div className={css?"add-que-hover":"add-que"}>
+            <div className={css ? "add-que-hover" : "add-que"}>
               <MdLibraryAdd className="icon-side" />
               Add Questions
             </div>
 
-            <Link to="/all-ques" className={css?"add-que":"add-que-hover"} onClick={handleQues}>
+            <Link to="/all-ques" className={css ? "add-que" : "add-que-hover"} onClick={handleQues}>
               <FaList className="icon-side" />
               All Questions
             </Link>
 
-            
+
             <div className="add-que" onClick={handleLogout}>
               <FiLogOut className="icon-side" />
               Logout
             </div>
 
-            
+
           </div>
         </div>
 
@@ -389,12 +386,12 @@ function Dashboard() {
                         required
                         onChange={(e) => setCategory(e.target.value)}
                       >
-                        <option value="none" selected disabled hidden>
+                        <option value="Category" selected disabled hidden>
                           Category
                         </option>
                         {categoryNames.length > 0 &&
-                          categoryNames.map((category) => (
-                            <option value={category}>{category}</option>
+                          categoryNames.map((category, i) => (
+                            <option key={i} value={category}>{category}</option>
                           ))}
                       </select>
                     )}
@@ -464,7 +461,7 @@ function Dashboard() {
                       required
                       onChange={(e) => setDifficulty(e.target.value)}
                     >
-                      <option value="none" selected disabled hidden>
+                      <option value="Category" selected disabled hidden>
                         Difficulty
                       </option>
                       <option value="medium">Medium</option>
@@ -494,8 +491,8 @@ function Dashboard() {
                           Answer Type
                         </option>
                         {answerTypeNames.length > 0 &&
-                          answerTypeNames.map((ans) => (
-                            <option value={ans}>{ans}</option>
+                          answerTypeNames.map((ans, i) => (
+                            <option key={i} value={ans}>{ans}</option>
                           ))}
                       </select>
                     )}
@@ -541,9 +538,9 @@ function Dashboard() {
                 <div className="title">
                   <label className="disp-title">Firms</label>
                   <div className="wrapper">
-                    <div class="d-flex flex-row align-items-center mb-2 multi-placeholder">
+                    <div className="d-flex flex-row align-items-center mb-2 multi-placeholder">
                       {!firmEdit && (
-                        <div class="form-outline flex-fill mb-0">
+                        <div className="form-outline flex-fill mb-0">
                           <Multiselect
                             placeholder="Firms"
                             displayValue=""
@@ -598,9 +595,9 @@ function Dashboard() {
                 <div className="title">
                   <label className="disp-title">Divisions</label>
                   <div className="wrapper">
-                    <div class="d-flex flex-row align-items-center mb-2 multi-placeholder">
+                    <div className="d-flex flex-row align-items-center mb-2 multi-placeholder">
                       {!divisionEdit && (
-                        <div class="form-outline flex-fill mb-0">
+                        <div className="form-outline flex-fill mb-0">
                           <Multiselect
                             placeholder="Divisions"
                             displayValue=""
@@ -655,9 +652,9 @@ function Dashboard() {
                 <div className="title">
                   <label className="disp-title">Positions</label>
                   <div className="wrapper">
-                    <div class="d-flex flex-row align-items-center mb-2 multi-placeholder">
+                    <div className="d-flex flex-row align-items-center mb-2 multi-placeholder">
                       {!positionEdit && (
-                        <div class="form-outline flex-fill mb-0">
+                        <div className="form-outline flex-fill mb-0">
                           <Multiselect
                             placeholder="Position"
                             displayValue=""
@@ -712,9 +709,9 @@ function Dashboard() {
                 <div className="title">
                   <label className="disp-title">Tags</label>
                   <div className="wrapper">
-                    <div class="d-flex flex-row align-items-center mb-2 multi-placeholder">
+                    <div className="d-flex flex-row align-items-center mb-2 multi-placeholder">
                       {!tagEdit && (
-                        <div class="form-outline flex-fill mb-0">
+                        <div className="form-outline flex-fill mb-0">
                           <Multiselect
                             placeholder="Tags"
                             displayValue=""
@@ -850,25 +847,25 @@ function Dashboard() {
                 </div>
               )}
 
-              {(anstype === "Mcq" || anstype === "Text") && 
-              (
-                <div className="title">
-                <label className="disp-title">Add Explanation</label>
-                <textarea
-                  className="quest-input"
-                  type="text"
-                  placeholder="Enter Explanation"
-                  value={explanation}
-                  onChange={(e) => setExplanation(e.target.value)}
-                />
-              </div>
-              )}    
-              
+              {(anstype === "Mcq" || anstype === "Text") &&
+                (
+                  <div className="title">
+                    <label className="disp-title">Add Explanation</label>
+                    <textarea
+                      className="quest-input"
+                      type="text"
+                      placeholder="Enter Explanation"
+                      value={explanation}
+                      onChange={(e) => setExplanation(e.target.value)}
+                    />
+                  </div>
+                )}
+
 
               <div className="add-btn-admin">
-              <button className="add-btn" onClick={submitHandler}>
-                Add Question
-              </button>
+                <button className="add-btn" onClick={submitHandler}>
+                  Add Question
+                </button>
               </div>
             </div>
           </div>

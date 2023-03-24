@@ -1,21 +1,21 @@
-.all-ques-drop{
-    border-bottom:1px solid rgb(163, 163, 163);
+.all-ques-drop {
+    border-bottom: 1px solid rgb(163, 163, 163);
     margin: auto;
-    width:800px;
+    width: 800px;
 }
 
-.all-edit-drop{
-        border-bottom:1px solid rgb(163, 163, 163);
-        margin: auto;
-        width:800px;
+.all-edit-drop {
+    border-bottom: 1px solid rgb(163, 163, 163);
+    margin: auto;
+    width: 800px;
 }
 
-.all-ques-drop:hover{
+.all-ques-drop:hover {
     background-color: rgb(212, 210, 210);
-    border-left:4px solid rgb(108, 108, 235);
+    border-left: 4px solid rgb(108, 108, 235);
 }
 
-.disp-all-ques{
+.disp-all-ques {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -23,95 +23,102 @@
     padding-bottom: 50px;
 }
 
-.ques1-drop{
+.ques1-drop {
     display: flex;
     text-align: left;
     padding-left: 50px;
-    width:700px;
+    width: 700px;
     justify-content: space-between;
     font-size: 18px;
     font-weight: 600;
-    padding:15px;
+    padding: 15px;
 }
 
-.additionals{
+.additionals {
     display: flex;
-    gap:10px;
+    gap: 10px;
     cursor: pointer;
 }
 
-.detail-ques{
+.detail-ques {
     text-align: left;
     /* padding-left: 50px; */
     padding-top: 20px;
     display: flex;
     flex-direction: column;
-    gap:9px;
+    gap: 9px;
 }
 
-.span-tag{
+.span-tag {
     font-size: 16px;
-    font-weight:600;
+    font-weight: 600;
 }
 
-.add-ons{
+.add-ons {
     display: flex;
-    gap:6px;
+    gap: 6px;
     text-align: right;
     justify-content: right;
     align-items: right;
     padding-bottom: 10px;
 }
 
-.add-btn-save{
-        background-color: rgb(91, 91, 91);
-        font-size: 1.2rem;
-        border-radius: 5px;
-        margin-top: 6px;
-        padding-top:2px;
-        padding-bottom:2px;
-        padding-left:7px;
-        padding-right:7px;
-        color:white;
-        font-weight: 600;
-        border:1px solid rgb(91, 91, 91);
+.add-btn-save {
+    background-color: rgb(91, 91, 91);
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
+    color: white;
+    font-weight: 600;
+    border: 1px solid rgb(91, 91, 91);
 }
 
-.add-btn-save:hover{
+.add-btn-save:hover {
     background-color: rgb(142, 142, 142);
-    color:white;
+    color: white;
     border: 1px solid rgb(142, 142, 142);
 }
 
-.quest1{
-    width:500px;
+.quest1 {
+    width: 500px;
     margin-left: 6px;
     border: 1px solid rgb(196, 194, 194);
     border-radius: 5px;
-    padding:4px;
+    padding: 4px;
 }
 
-.detail-ques input{
+.detail-ques input {
     margin-left: 6px;
     border: 1px solid rgb(196, 194, 194);
     border-radius: 5px;
-    padding:4px;
-    width:fit-content;
+    padding: 4px;
+    width: fit-content;
 }
 
-.span-ques{
+.span-ques {
     position: relative;
-    top:-25px;
+    top: -25px;
 }
 
-.ques-d{
+.ques-d {
     display: flex;
 }
 
-.ques-d input{
-    width:300px;
+.ques-d input {
+    width: 300px;
 }
 
 .quest1:empty:before {
     content: attr(data-placeholder);
+}
+
+.selection {
+    width: 194px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(199, 198, 198)
 }

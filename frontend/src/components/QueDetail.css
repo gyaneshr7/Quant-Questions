@@ -377,7 +377,7 @@
     padding-top: 60px;
   }
   
-  .sidebar a {
+  .categoryonclick{
     padding: 8px 8px 8px 15px;
     text-decoration: none;
     font-size: 20px;
@@ -385,6 +385,7 @@
     display: block;
     text-align: left;
     transition: 0.3s;
+    cursor: pointer;
   }
 
   .all-categ{
@@ -397,10 +398,15 @@
     color: white;
   }
   
-  .sidebar a:hover {
+  .categoryonclick:hover {
     color: #f1f1f1;
   }
   
+  .categoryClicked{
+    color: white;
+  }
+
+
   .sidebar .closebtn {
     position: absolute;
     top: 0;

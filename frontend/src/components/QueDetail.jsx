@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "./QueDetail.css";
 import katex from 'katex';
-import { IoIosArrowBack, IoIosArrowForward, IoMdArrowDropright } from "react-icons/io";
+import remarkMath from 'remark-math';
+import "katex/dist/katex.min.css"
+import { InlineMath, BlockMath } from 'react-katex';
+import gfm from 'remark-gfm'
+import rehypeRaw from "rehype-raw";
+import rehypeKatex from 'rehype-katex'
+import ReactMarkdown from 'react-markdown';
+import { IoIosArrowBack, IoIosArrowForward,IoMdArrowDropright } from "react-icons/io";
 import { AiOutlineMail } from "react-icons/ai";
 import { GrNote } from "react-icons/gr";
+import { BiCategory } from "react-icons/bi";
 import { AiOutlineLike } from "react-icons/ai";
 import { BsFillCalculatorFill } from "react-icons/bs";
 import { DiJavascript1 } from "react-icons/di";
@@ -17,7 +25,6 @@ import { MdFormatListBulleted } from "react-icons/md";
 import { RiInformationFill } from "react-icons/ri";
 import { FaTags } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
-import ReactMarkdown from 'react-markdown';
 import { RiShieldStarLine } from "react-icons/ri";
 import Modal from "react-bootstrap/Modal";
 import { AiFillStar } from "react-icons/ai";
@@ -34,6 +41,7 @@ function QueDetail() {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
   const [correctAns, setCorrectAns] = useState();
   const [wrongAns, setWrongAns] = useState();
   const [hide, setHide] = useState(false);
@@ -70,6 +78,10 @@ function QueDetail() {
     if (previousQuestion >= 0) {
       setCurrentQuestion(previousQuestion);
     }
+    setHide(false);
+    let allRadio = document.querySelectorAll("#my-radio");
+    allRadio.forEach((value) => (value.checked = false));
+    setHide(false);
   };
 
   const handleNextButtonClick = () => {
@@ -83,6 +95,7 @@ function QueDetail() {
     }
     let allRadio = document.querySelectorAll("#my-radio");
     allRadio.forEach((value) => (value.checked = false));
+    setHide(false);
   };
 
   const isPreviousDisabled = currentQuestion === 0;
@@ -492,32 +505,59 @@ function QueDetail() {
     setHide(!hide);
   };
 
-  const openNav = () => {
-    document.getElementById("mySidebar").style.width = "300px";
-    document.getElementById("main").style.marginLeft = "300px";
-  }
+  // window.onload('DOMContentLoaded',()=>{
+  //   let mathOutput=document.querySelector('#explain-convert');
+  //   mathOutput.innerHtml=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`)
+  //   console.log("hghfghb");
+  // })
 
-  const closeNav = () => {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-  }
+  const formatted=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`);
+  // const formatted={chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}
+
+    const openNav=()=> {
+      document.getElementById("mySidebar").style.width = "300px";
+      document.getElementById("main").style.marginLeft = "300px";
+    }
+
+    const openMobNav=()=> {
+      document.getElementById("myMobSidebar").style.width = "100vw";
+      document.getElementById("main").style.marginLeft = "0px";
+    }
+    
+    const closeMobNav=()=> {
+      document.getElementById("myMobSidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+    }
+    const closeNav=()=> {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+    }
 
   return (
     <div>
       <Header />
       <div id="main" className="detail-side">
         <div className="que-side">
+        <div id="main">
+        <button className="openbtn mob-btn" onClick={openMobNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Questions</button>  
+        </div>
+        <div id="main">
+        <button className="openbtn web-btn" onClick={openNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Questions</button>  
+        </div>
           <div className="detail-one">
             <div className="line-one">
               <div className="main-detail">
                 <div className="detail-title">
                   {chooseCategory ? categoryQuestions[currentQuestion] && currentQuestion + 1 : allQuestions && currentQuestion + 1}.
                 </div>
-                <div className="detail-title">
+                <div className="detail-title quest-title">
                   {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].title : allQuestions && allQuestions[currentQuestion].title}
                 </div>
               </div>
               <div className="detail-icons">
+                <div className="catopenbtn"><BiCategory size="20" style={{marginTop:"3px"}} />                   
+               {chooseCategory ? categoryQuestions && categoryQuestions[currentQuestion].category : allQuestions  && allQuestions[currentQuestion].category}
+              </div>
                 {/* <div className="icon-line1">
                   <BsFillCalculatorFill size={18} />
                   <AiOutlineMail size={23} />
@@ -627,13 +667,7 @@ function QueDetail() {
               </button>
               {correctAns && (
                 <p
-                  style={{
-                    color: "green",
-                    fontSize: "18px",
-                    position: "relative",
-                    top: "8px",
-                  }}
-                >
+                className="correct-ans-style">
                   Correct Answer
                 </p>
               )}
@@ -643,13 +677,7 @@ function QueDetail() {
                     {hide ? "Hide Answer" : "View Answer"}
                   </button>
                   <p
-                    style={{
-                      color: "red",
-                      fontSize: "18px",
-                      position: "relative",
-                      top: "8px",
-                    }}
-                  >
+                  className="wrong-ans-style">
                     Wrong Answer
                   </p>
                 </>
@@ -672,16 +700,57 @@ function QueDetail() {
                 <div className="explain">
                   <div className="explain-head">Explanation:</div>
                   <div className="explain-cont" >
-                    <ReactMarkdown id="explain-convert" style={{ justifyContent: "left" }}>{chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation}</ReactMarkdown>
-                  </div>
+                    {/* <ReactMarkdown id="explain-convert" style={{ justifyContent: "left" }}>{chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation}</ReactMarkdown> */}
+                {/* <div style={{fontStyle:"normal"}} dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}`}}></div> */}
+                  
+                  
+                  {/* <ReactMarkdown
+                   children= {chooseCategory ? categoryQuestions[currentQuestion] && katex.renderToString(categoryQuestions[currentQuestion].explanation) : allQuestions && katex.renderToString(allQuestions[currentQuestion].explanation)}
+                  //  children= {chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}
+                  //  dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && katex.renderToString(categoryQuestions[currentQuestion].explanation) : allQuestions && katex.renderToString(allQuestions[currentQuestion].explanation)}`}}
+                   plugins={[remarkMath]}
+                   renderers={renderers}           
+                   remarkPlugins={[gfm]}
+                   rehypePlugins={[rehypeRaw]} 
+                   style={{justifyContent:"left"}} >
+                  </ReactMarkdown> */}
+
+                  <ReactMarkdown
+                      children= {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions[currentQuestion] && allQuestions[currentQuestion].explanation}
+                      // plugins={[remarkMath]}
+                      // renderers={renderers}           
+                      // remarkPlugins={[gfm]}
+                      // rehypePlugins={[rehypeRaw]}
+                      // dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions[currentQuestion] && allQuestions[currentQuestion].explanation}`}}
+                      plugins={[gfm,remarkMath,rehypeKatex,rehypeRaw]}
+                      // escapeHtml="false"
+                      style={{ justifyContent: "left" }}
+                      renderers={{
+                        math: ({ value }) => {
+                            console.log("math equation");
+                            return {value}
+                        },
+                        inlineMath: ({ value }) =>{
+                            console.log("inlineMath equation");
+                            return {value}
+                        }
+                    }}
+                      // renderers={{
+                      //   renderers,
+                      //   math: ({ value }) => <BlockMath>{value}</BlockMath>,
+                      //   inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>
+                      // }} 
+                    />
+
+                    </div>
                 </div>
               )}
             </div>
           </div>
 
 
-          <div id="mySidebar" className="sidebar">
-            <div className="closebtn categoryonclick" onClick={closeNav}>×</div>
+          <div id="mySidebar" className="web-sidebar">
+            <div className="closebtn " onClick={closeNav}>×</div>
             <div className="all-side">
               <div className="all-categ">Categories</div>
               <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false); setWrongAns(false);}}><IoMdArrowDropright size="25" />All</div>
@@ -695,7 +764,21 @@ function QueDetail() {
 
           </div>
 
-          <div className="disp-sidebar">
+          <div id="myMobSidebar" className="mob-sidebar">
+            <div className="closebtn" onClick={closeMobNav}>×</div>
+            <div className="all-side">
+              <div className="all-categ">Categories</div>
+              <div className={categoryCss === "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); closeMobNav()}}><IoMdArrowDropright size="25" />All</div>
+              {
+                categories.length > 0 &&
+                categories.map((data) => (
+                  <div className={categoryCss === data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data);closeMobNav()}}><IoMdArrowDropright size="25" />{data}</div>
+                ))
+              }
+            </div>
+          </div>
+
+          {/* <div className="disp-sidebar sidebar-web-view">
             <div id="main">
               <button className="openbtn" onClick={openNav}><MdFormatListBulleted size="25" /> Questions</button>
             </div>
@@ -722,7 +805,38 @@ function QueDetail() {
                 <IoIosArrowForward fontSize={20} />
               </button>
             </div>
-          </div>
+
+            <div className="" id="main">
+              <button className="catopenbtn"><BiCategory size="27" style={{marginTop:"3px"}} />                   
+               <p>{chooseCategory ? categoryQuestions && categoryQuestions[currentQuestion].category : allQuestions  && allQuestions[currentQuestion].category}</p>
+              </button>
+            </div>
+          </div> */}
+
+          <div className="disp-sidebar">
+            <div className="buttons">
+              <button
+                className="prev"
+                onClick={handlePreviousButtonClick}
+                disabled={isPreviousDisabled}
+              >
+                <IoIosArrowBack fontSize={20} />
+                Prev
+              </button>
+              <p className="nums">
+                {currentQuestion + 1}/
+                {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions.length : allQuestions && allQuestions && allQuestions.length}
+              </p>
+              <button
+                className="next"
+                onClick={handleNextButtonClick}
+                disabled={isNextDisabled}
+              >
+                Next
+                <IoIosArrowForward fontSize={20} />
+              </button>
+            </div>
+          </div>    
         </div>
 
         <div className="detail-two">
@@ -814,8 +928,8 @@ function QueDetail() {
           <div className="detail-box1">
             <div className="open-detail" onClick={() => setOpen2(!open2)}>
               <div className="gap-detail">
-                <FaTags className="info-icon" />
-                Category & Tags
+                <BiCategory className="info-icon" />
+                Category
               </div>
               <IoMdArrowDropdown className="drop-detail" size="20" />
             </div>
@@ -825,6 +939,23 @@ function QueDetail() {
                   <div className="tag-item">
                     {chooseCategory ? categoryQuestions[currentQuestion].category : allQuestions[currentQuestion].category}
                   </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="detail-box1">
+            <div className="open-detail" onClick={() => setOpen4(!open4)}>
+              <div className="gap-detail">
+                <FaTags className="info-icon" />
+                Tags
+              </div>
+              <IoMdArrowDropdown className="drop-detail" size="20" />
+            </div>
+            {open4 && (
+              <div className="main-tags">
+                <div className="all-firms">
+                  
                 </div>
                 {
                   chooseCategory ?

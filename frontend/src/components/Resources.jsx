@@ -50,7 +50,7 @@ function Resources() {
       <div className="Res-table-display">
     <div className="RescourcesTable">
       <div className="res-table-heading">
-        <div className="res-heading-left">Documents </div>
+        <div className="res-heading-left">Resources </div>
         <div className="res-heading-right">
   
         <form className="res-table-search">
@@ -71,14 +71,14 @@ function Resources() {
       </div>
 
       <div className="res-table-div">
-        <table class="table">
+        <table class="table table-hover">
           <thead class="">
 
             <tr className="res-table-head">
               <th scope="col">
-              <div style={{ marginLeft: "30px" }}>Categories</div>
+              <div className="table-categ">Categories</div>
               </th>
-              <th scope="col">Resources</th>
+              <th scope="col">Files</th>
             </tr>
           </thead>
           <tbody>
@@ -88,7 +88,7 @@ function Resources() {
             data.map((data)=>(
               <tr>
               <th scope="row">
-                <div style={{ marginLeft: "30px",fontSize:"16px" }}>
+                <div  className="table-categ data-categ">
                   {data.category}
                 </div>
               

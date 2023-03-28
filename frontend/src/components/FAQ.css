@@ -55,3 +55,16 @@
     /* transition-property: margin-bottom; */
 }
 
+@media screen and (max-width:540px){
+    .all-faq{
+        width:90%;
+    }
+
+    .faq-open{
+        font-size: 18px;
+        text-align:left;
+        /* justify-content: left; */
+    }
+
+    
+}

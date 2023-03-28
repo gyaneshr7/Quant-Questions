@@ -35,7 +35,7 @@ function Questions() {
   const [categories, setCategories] = useState();
 
   const correct = [], wrong = [];
-  userData && userData.currentAttempted.map((data) => {
+  userData && userData.currentAttempted && userData.currentAttempted.map((data) => {
     if (data.status == 'correct') {
       correct.push(data);
     } else {

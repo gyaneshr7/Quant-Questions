@@ -13,7 +13,7 @@
 }
 
 .detail-two{
-    margin-top: 20px;
+    margin-top: 86px;
     width:250px;
     display: flex;
     flex-direction: column;
@@ -46,12 +46,17 @@
     font-weight: 800;
 }
 
+.quest-title{
+    width:580px;
+    text-align: justify;
+}
+
 .que-descr{
     display: flex;
     justify-content: left;
     text-align: left;
     margin-left: 40px;
-    margin-top: 40px;
+    margin-top: 20px;
     font-size: 20px;
     color:black;
     width:750px;
@@ -132,15 +137,6 @@
     padding-top: 5px;
 }
 
-.detail-icons{
-    margin-top: 20px;
-    /* margin-left: 90px; */
-    position: absolute;
-    left:900px;
-    display: flex;
-    flex-direction: column;
-}
-
 
 .icon-line1,
 .icon-line2{
@@ -154,7 +150,7 @@
 .buttons{
     margin-top: 15px;
     display: flex;
-    gap:15px;
+    /* gap:15px; */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -165,7 +161,8 @@
 
 .nums{
     position: relative;
-    top: 10px;
+    top: 8px;
+    left:10%;
 }
 
 .options{
@@ -360,11 +357,11 @@
 
 .disp-sidebar{
     display: flex;
-    margin-left:0;
-    gap:190px;
+    margin:auto;
+    /* gap:14px; */
 }
 
-  .sidebar {
+  .web-sidebar {
     height: 100%;
     width: 0;
     position: fixed;
@@ -375,6 +372,10 @@
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+  }
+
+  .mob-sidebar{
+    display:none;
   }
   
   .categoryonclick{
@@ -407,12 +408,17 @@
   }
 
 
-  .sidebar .closebtn {
+  .closebtn {
     position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+    right: 20px;
+    top:10px;
+    text-decoration: none;
+    font-size: 35px;
+    color: #858585;
+    display: block;
+    text-align:right;
+    transition: 0.3s;
+    cursor: pointer;
   }
   
   .openbtn {
@@ -431,7 +437,49 @@
     background-color:grey;
     color: white;
   }
+
+  .cat-btn{
+    margin-top: 15px;
+    margin-right: 10px;
+  }
+
   
+.detail-icons{
+    position:relative;
+    /* left:35px; */
+    top:25px;
+    right:-46px;
+    /* left:890px; */
+    /* top:205px; */
+    display: flex;
+    flex-direction: column;
+}
+
+  
+  .catopenbtn {
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border: 1px solid rgb(206, 205, 205);
+    border-radius: 5px;
+    align-items: left;
+    /* color: grey; */
+    font-weight: 600;
+    background-color:transparent;
+    display: flex;
+    gap:2px;
+  }
+  
+  .catopenbtn:hover {
+    background-color:rgb(171, 170, 170);
+    border:1px solid rgb(171, 170, 170);
+    color: white;
+  }
+
+  .catopenbtn p{
+    width:150px;
+  }
+
   .prev,
 .next{
     border:1px solid rgb(206, 205, 205);
@@ -468,22 +516,46 @@
     opacity:0.3
 }
 
+  .correct-ans-style{
+    color:green;
+    font-size: 18px;
+    position:relative;
+    top:8px;
+  }
+
+  .wrong-ans-style{
+    color:red;
+    font-size: 18px;
+    position:relative;
+    top:8px;
+  }
+
+  .web-btn{
+    display: flex;
+  }
+  .sidebar-mob-view,
+  .mob-btn{
+    display: none;
+  }
 @media screen and (max-width:540px){
     .detail-side{
         flex-direction: column;
-        justify-content: center; 
         align-items: center; 
         margin-top: 30px;
+        padding-bottom:20px;
     }
 
     .detail-one{
         width:350px;
+        margin:auto;
     }
 
     .main-detail{
-        width:260px;
+        width:350px;
         gap:2px;
+        margin-left: 15px;
     }
+
     .detail-title{
         font-size: 15px;
         text-align: justify;
@@ -492,6 +564,7 @@
     .que-descr{
         width:300px;
         text-align: justify;
+        font-size: 15px;
     }
 
     .buttons{
@@ -501,11 +574,98 @@
     }
 
     .ans-field{
-        width:250px;
+        width:280px;
+    }
+
+    .correct-ans-style,
+    .wrong-ans-style{
+        font-size:14px;
+    }
+
+    .explain{
+        width:300px;
+    }
+
+    .correct-ans{
+        width:200px;
+    }
+
+    .show-ans,
+    .correct-ans{
+        font-size:15px;
+    }
+
+    .ans-show1{
+        gap:1px;
+        margin-left:-20px;
+    }
+
+    .que-descr,
+    .answer,
+    .align-btn,
+    .options,
+    .explain
+    {
+        margin-left:20px;
+    }
+
+    .explain-cont{
+        width:280px;
+        font-size: 15px;
+        display: flex;
+        flex-direction:column;
+        flex-wrap: wrap;
+        /* word-wrap: break-word; */
+    }
+
+    .disp-sidebar{
+        gap:10px;
+        margin:auto;
+    }
+
+    .sidebar-web-view,
+    .web-btn,
+    .detail-icons{
+        display:none;
+    }
+
+    .quest-title{
+        width:80%;
+    }
+
+    
+    .sidebar-mob-view{
+        display:flex;
+        margin:auto;
+    }
+
+    .mob-btn{
+        display: flex;
+        margin-bottom:20px;
     }
 
     .detail-two{
-        /* margin-right: 95px; */
+        margin-top: -40px;
+        margin-left:-90px;
+    }   
+    
+    .web-sidebar{
+        display:none;
     }
+
+
+    .mob-sidebar {
+        display: block;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1111;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
 }
 

@@ -1,19 +1,17 @@
 .res-page{
-    /* z-index:-1; */
-    position:relative;
-    top:0;
-    left:0;
-    height:100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .Res-tabel-display {
     background-color: #f1f3f6;
 }
 .RescourcesTable {
-    margin: 30px 70px;
     background-color: #fff;
     border-radius: 15px;
     padding: 20px;
+    width:70%;
+    margin: auto;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 }
 .res-table-div {
@@ -25,7 +23,7 @@
 }
 
 .res-table-div table thead {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     background-color: #dddddf;
     border-top-right-radius:10px;
     border-top-left-radius:10px;
@@ -66,6 +64,9 @@
     cursor: pointer;
 }
 
+.data-categ{
+    font-size:18px;
+}
 
 .RescourcesTable table tbody tr th{
     text-align: left;
@@ -123,8 +124,9 @@
     /* margin: 0px 20px; */
 }
 
+
 .res-table-search input {
-    border-top-left-radius: 5x;
+    border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -136,7 +138,19 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 0px;
-    height: 40px;
+    height:40px;
+}
+
+.srch-btn{
+    background-color: rgb(17, 55, 244);
+    color:white;
+    padding:8px;
+    border:1px solid rgb(17, 55, 244);
+}
+.srch-input{
+    border:1px solid rgb(195, 194, 194);
+    padding:5px;
+    border-top-left-radius:5px;
 }
 
 .res-heading-left {
@@ -197,14 +211,33 @@
     padding: 5px;
 }
 
-.srch-btn{
-    background-color: rgb(17, 55, 244);
-    color:white;
-    padding:8px;
-    border:1px solid rgb(17, 55, 244);
+.table-categ{
+    margin-left: 30px;
 }
-.srch-input{
-    border:1px solid rgb(195, 194, 194);
-    padding:5px;
-    border-top-left-radius: 4px;
+
+  
+@media screen and (max-width:540px){
+    .RescourcesTable{
+        width:90%;
+    }
+    .res-table-heading{
+        flex-direction: column;
+    }
+
+    .res-table-search{
+        margin-left: -20px;
+        margin-top: 20px;
+    }
+    .srch-input{
+        width:280px;
+    }
+
+    .res-view,
+    .data-categ{
+        font-size: 15px;
+    }
+
+    .table-categ{
+        margin-left: 10px;
+    }
 }

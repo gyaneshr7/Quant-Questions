@@ -567,7 +567,17 @@ function AllQuestions() {
           </div>
 
           <div className="admin-func">
+          
             <div className="disp-all-ques">
+            <div className="search-all">
+                <input
+                  type="text"
+                  // value={searchval}
+                  // onChange={searchHandler}
+                  placeholder="Search questions..."
+                  className="search-in"
+                />
+            </div>
               {mydata.map((data, index) => (
 
                 <div key={index}>

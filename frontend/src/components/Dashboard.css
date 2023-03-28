@@ -20,6 +20,7 @@
 
 .admin-func{
     display: flex;
+    /* flex-direction: column; */
     gap:150px;
     margin-top: 20px;
     /* margin-bottom: 10px; */

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { ImCross } from "react-icons/im";
+import { FaLock } from "react-icons/fa";
 import { GiProgression } from "react-icons/gi";
 import "./Profile.css";
 import progress from "../images/progress.png";
@@ -95,7 +96,7 @@ function Profile() {
       sorted.slice(2,5).map(data=>{
         weakness.push(data)
       })
-      // console.log(weakness, "weakness");
+      console.log(weakness, "weakness");
     } else {
       weakness = weaknessarray;
     }
@@ -345,7 +346,7 @@ function Profile() {
             <div className="pro">Weakness</div>
 
             <div className="bar">
-              <Bar data={data2} options={options} />
+              <Bar data={data2} />
             </div>
           </div>
         </div>
@@ -355,6 +356,9 @@ function Profile() {
             <div className="pro">Badges & Achievements</div>
 
             <div className="bar">
+
+              <div>
+              <div className="locking"><FaLock size="20"/></div>
               <div className="hex bronze">
                 <div className="gold-tag">Bronze</div>
                 <div className="shield">
@@ -368,8 +372,13 @@ function Profile() {
                   <AiFillStar className="star" style={{ opacity: 0.3 }} />
                 </div>
               </div>
+              </div>
+              
 
-              <div className="hex silver">
+            <div>
+            <div className="locking"><FaLock size="20"/></div>
+            <div className="hex silver">
+                
                 <div className="gold-tag">Silver</div>
                 <div className="shield">
                   <RiShieldStarLine />
@@ -382,7 +391,10 @@ function Profile() {
                   <AiFillStar className="star" style={{ opacity: 0.3 }}/>
                 </div>
               </div>
-
+            </div>
+              
+              <div>
+              <div className="locking"><FaLock size="20"/></div>
               <div className="hex gold">
                 <div className="gold-tag">Gold</div>
                 <div className="shield">
@@ -396,7 +408,10 @@ function Profile() {
                   <AiFillStar className="star" style={{ opacity: 0.3 }}/>
                 </div>
               </div>
+              </div>
 
+              <div>
+              <div className="locking"><FaLock size="20"/></div>
               <div className="hex platinum">
                 <div className="gold-tag">Platinum</div>
                 <div className="shield">
@@ -409,6 +424,7 @@ function Profile() {
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
                 </div>
+              </div>
               </div>
 
               <svg
@@ -423,8 +439,10 @@ function Profile() {
                       stdDeviation="8"
                       result="blur"
                     />
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2"/> */}
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2" flood-opacity="0.3" /> */}
                     <feColorMatrix
-                      in="blur"
+                      // in="blur"
                       mode="matrix"
                       values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
                       result="goo"

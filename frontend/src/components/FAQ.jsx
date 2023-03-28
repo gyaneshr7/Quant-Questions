@@ -10,8 +10,6 @@ function FAQ() {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
   
-  const equation='a² - b² = (a-b)(a+b) \n (1198)² (1200 - 2)² \n We can use the identity:\n (a-b)²= a² + b² – 2ab (1200)² + 2² – 2 * 1200 * 2 1440000 + 4 – 48001435204';
-  const formatted = katex.renderToString(equation);
 
   const faq = [
     {
@@ -42,7 +40,7 @@ function FAQ() {
   ];
 
   const setClicked = (id) => {
-    setOpen(!open);
+    setOpen(true);
     setId(id);
     console.log(id);
   };
@@ -61,7 +59,7 @@ function FAQ() {
               </div>
             </div>
             {open && index === id &&
-                  <div className="faq-open-detail">
+                  <div onClick={()=>setOpen(false)} className="faq-open-detail">
                     <div>{data.d}</div>
                   </div>
                 }

@@ -464,6 +464,10 @@
     /* color: #6a6a6a; */
   }
 
+.star-class{
+    opacity:0.3
+}
+
 @media screen and (max-width:540px){
     .detail-side{
         flex-direction: column;

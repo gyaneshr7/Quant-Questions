@@ -9,7 +9,6 @@ import { RiShieldStarLine } from "react-icons/ri";
 import { AiFillStar } from "react-icons/ai";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import Modal from "react-bootstrap/Modal";
 
 import { CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 import { Bar } from "react-chartjs-2";
@@ -361,7 +360,7 @@ function Profile() {
                 <div className="shield">
                   <RiShieldStarLine />
                 </div>
-                <div className="ribbon" onMouseOver={() => setShow(true)}>
+                <div className="ribbon">
                   <AiFillStar className="star" />
                   <AiFillStar className="star" style={{ opacity: 0.3 }} />
                   <AiFillStar className="star" style={{ opacity: 0.3 }} />
@@ -378,9 +377,9 @@ function Profile() {
                 <div className="ribbon">
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
+                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
+                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
+                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
                 </div>
               </div>
 
@@ -394,7 +393,7 @@ function Profile() {
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
                   <AiFillStar className="star" />
-                  <AiFillStar className="star" />
+                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
                 </div>
               </div>
 
@@ -435,41 +434,6 @@ function Profile() {
                 </defs>
               </svg>
             </div>
-
-            <Modal
-              backdrop="static"
-              // style={{borderRadius:"20px"}}
-              show={show}
-              className="congo-modal"
-              onHide={handleClose}>
-
-              <Modal.Body>
-                <div className="congo-box">
-                  <div className="congrats">Congratulations!</div>
-                  <div className="show-badge">
-                    <div className="hex bronze">
-                      <div className="gold-tag">Bronze</div>
-                      <div className="shield">
-                        <RiShieldStarLine />
-                      </div>
-                      <div class="ribbon" onMouseOver={() => setShow(true)}>
-                        <AiFillStar className="star" />
-                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                        <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="first-star">
-                    You have recieived 1st star of Bronze.
-                  </div>
-                  <button className="thanks" onClick={() => setShow(false)}>
-                    Ok.Thanks!
-                  </button>
-                </div>
-              </Modal.Body>
-            </Modal>
           </div>
         </div>
       </div>

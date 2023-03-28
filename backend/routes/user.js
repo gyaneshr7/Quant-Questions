@@ -3,28 +3,10 @@ const mongoose = require('mongoose')
 const User = require('../models/User');
 const Questions = require('../models/Questions');
 
-// update user on submission of answer
-router.put('/submittedans/:id', async (req, res) => {
-    try {
-        console.log(req.body);
-        const data = await User.findOneAndUpdate({ _id: req.params.id }, {
-            totalSubmissions: req.body.totalSubmissions,
-            correctAns: req.body.correctAns,
-            score: req.body.score,
-            wrongAns: req.body.wrongAns,
-            $push: { submittedQuestions: req.body.submittedQuestions },
-        }, { new: true }).populate('submittedQuestions');
-        console.log(data);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
-
 // get all users
 router.get('/', async (req, res) => {
     try {
-        const data = await User.aggregate([{ $match: {} },{$project:{phoneNo:1}}]);
+        const data = await User.aggregate([{ $match: {} }, { $project: { phoneNo: 1 } }]);
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error);
@@ -54,7 +36,7 @@ router.get('/get/all/attempted/question/:id', async (req, res) => {
 
 router.get('/get/scores', async (req, res) => {
     try {
-        const user = await User.aggregate([{ $match : { role : "user" } },{$project : {score:1}}]);
+        const user = await User.aggregate([{ $match: { role: "user" } }, { $project: { score: 1 } }]);
         console.log(user);
         res.status(500).json(user);
     } catch (error) {
@@ -84,23 +66,64 @@ router.put('/delete/correct/answers/:id', async (req, res) => {
     }
 })
 
+// update user on submission of answer
+router.put('/submittedans/:id', async (req, res) => {
+    try {
+        console.log(req.body);
+        const data = await User.findOneAndUpdate({ _id: req.params.id }, {
+            totalSubmissions: req.body.totalSubmissions,
+            correctAns: req.body.correctAns,
+            score: req.body.score,
+            wrongAns: req.body.wrongAns,
+            $push: { submittedQuestions: req.body.submittedQuestions },
+        }, { new: true }).populate('submittedQuestions');
+        console.log(data);
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 // update curent question status of a user
 router.put('/update/ans/status/:id/:quesId', async (req, res) => {
-    console.log(req.body);
     try {
         const data = await User.findOne({ _id: req.params.id, 'currentAttempted.questionId': req.params.quesId });
         if (data) {
-            const userdata = await User.updateOne({_id:req.params.id,"currentAttempted.questionId":req.params.quesId.toString() },{
+            const userdata = await User.findOneAndUpdate({ _id: req.params.id, "currentAttempted.questionId": req.params.quesId.toString() }, {
                 $set: {
                     "currentAttempted.$.status": req.body.status,
-                 }
-            },{new:true}) 
+                }
+            }, { new: true })
             res.status(200).json(userdata)
         } else {
-            const data = await User.updateOne({ _id: req.params.id }, {
+            const data = await User.findOneAndUpdate({ _id: req.params.id }, {
                 $push: { currentAttempted: req.body }
-            });
+            }, { new: true });
             res.status(200).json(data);
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+// update badge status
+router.put('/update/badge/status/:id', async (req, res) => {
+    console.log(req.body);
+    try {
+        const data = await User.findOne({ _id: req.params.id, 'badges.name': req.body.badgeval.name });
+        if(data){
+            const userdata = await User.findOneAndUpdate({ _id: req.params.id, "badges.name": req.body.badgeval.name }, {
+                $set: {
+                    "badges.$.status": req.body.badgeval.status,
+                },highestCount: req.body.count && req.body.count
+            }, { new: true })
+            res.status(200).json(userdata)
+        }else{
+            console.log("hii");
+            const userdata = await User.findOneAndUpdate({ _id: req.params.id}, {
+                $push: { badges: req.body.badgeval },highestCount: req.body.count && req.body.count
+            }, { new: true });
+            res.status(200).json(userdata);
         }
     } catch (error) {
         res.status(500).json(error);
@@ -109,52 +132,28 @@ router.put('/update/ans/status/:id/:quesId', async (req, res) => {
 
 
 // update weakness of user
-router.put('/update/weak/categories/:id', async (req, res) => {
-    console.log(req.body,"mdkh3dihuh")
-    try {
-        const data = await User.findOne({ _id: req.params.id, 'weakCategories.category': req.body.category });
-        if (data) {
-            const userdata = await User.updateOne({_id:req.params.id,"weakCategories.category":req.body.category  },{
-                $set: {
-                    "weakCategories.$.count": req.body.count,
-                 }
-            },{new:true}) 
-            res.status(200).json(userdata)
-        } else {
-            const data = await User.updateOne({ _id: req.params.id }, {
-                $push: { weakCategories: req.body }
-            });
-            res.status(200).json(data);
-        }
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
+// router.put('/update/weak/categories/:id', async (req, res) => {
+//     console.log(req.body, "mdkh3dihuh")
+//     try {
+//         const data = await User.findOne({ _id: req.params.id, 'weakCategories.category': req.body.category });
+//         if (data) {
+//             const userdata = await User.updateOne({ _id: req.params.id, "weakCategories.category": req.body.category }, {
+//                 $set: {
+//                     "weakCategories.$.count": req.body.count,
+//                 }
+//             }, { new: true })
+//             res.status(200).json(userdata)
+//         } else {
+//             const data = await User.updateOne({ _id: req.params.id }, {
+//                 $push: { weakCategories: req.body }
+//             });
+//             res.status(200).json(data);
+//         }
+//     } catch (error) {
+//         res.status(500).json(error);
+//     }
+// })
 
-
-
-// update badge status
-router.put('/update/badge/status/:id', async (req, res) => {
-    console.log("smnjhafuyg");
-    // try {
-    //     const data = await User.findOne({ _id: req.params.id, 'currentAttempted.questionId': req.params.quesId });
-    //     if (data) {
-    //         const userdata = await User.updateOne({_id:req.params.id,"currentAttempted.questionId":req.params.quesId.toString() },{
-    //             $set: {
-    //                 "currentAttempted.$.status": req.body.status,
-    //              }
-    //         },{new:true}) 
-    //         res.status(200).json(userdata)
-    //     } else {
-    //         const data = await User.updateOne({ _id: req.params.id }, {
-    //             $push: { currentAttempted: req.body }
-    //         });
-    //         res.status(200).json(data);
-    //     }
-    // } catch (error) {
-    //     res.status(500).json(error);
-    // }
-})
 
 
 module.exports = router;

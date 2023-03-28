@@ -30,23 +30,12 @@ const userSchema = mongoose.Schema(
             }
         ],
         badges: [
-            { bronze: { type: Boolean, default: false } },
-            { sone: { type: Boolean, default: false } },
-            { stwo: { type: Boolean, default: false } },
-            { sthree: { type: Boolean, default: false } },
-            { sfourth: { type: Boolean, default: false } },
-            { sfifth: { type: Boolean, default: false } },
-            { gone: { type: Boolean, default: false } },
-            { gtwo: { type: Boolean, default: false } },
-            { gthree: { type: Boolean, default: false } },
-            { gfourth: { type: Boolean, default: false } },
-            { gfifth: { type: Boolean, default: false } },
-            { pone: { type: Boolean, default: false } },
-            { ptwo: { type: Boolean, default: false } },
-            { pthree: { type: Boolean, default: false } },
-            { pfourth: { type: Boolean, default: false } },
-            { pfifth: { type: Boolean, default: false } },
-        ]
+            {
+                name: { type: String },
+                status: { type: Boolean, default: false }
+            }
+        ],
+        highestCount: { type: Number, default: 0 }
     }
 )
 

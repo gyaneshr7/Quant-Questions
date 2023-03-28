@@ -18,6 +18,10 @@ import { RiInformationFill } from "react-icons/ri";
 import { FaTags } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 import ReactMarkdown from 'react-markdown';
+import { RiShieldStarLine } from "react-icons/ri";
+import Modal from "react-bootstrap/Modal";
+import { AiFillStar } from "react-icons/ai";
+import { log } from "util";
 
 
 function QueDetail() {
@@ -38,6 +42,15 @@ function QueDetail() {
   const [categoryQuestions, setCategoryQuestions] = useState();
   const [chooseCategory, setChooseCategory] = useState(false);
   const [categoryCss, setCategoryCss] = useState();
+  const [showModal, setShowModal] = useState(false)
+
+  const [badge, setBadge] = useState();
+  const [star1, setStar1] = useState(false);
+  const [star2, setStar2] = useState(false);
+  const [star3, setStar3] = useState(false);
+  const [star4, setStar4] = useState(false);
+  const [star5, setStar5] = useState(false);
+
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
   const today = new Date();
@@ -49,6 +62,7 @@ function QueDetail() {
   const todaysdate = dd + "/" + mm + "/" + yyyy;
 
   const handlePreviousButtonClick = () => {
+    setAnswer('');
     setShowAns(false);
     setCorrectAns(false);
     setWrongAns(false);
@@ -59,6 +73,7 @@ function QueDetail() {
   };
 
   const handleNextButtonClick = () => {
+    setAnswer('');
     setShowAns(false);
     setCorrectAns(false);
     setWrongAns(false);
@@ -135,6 +150,7 @@ function QueDetail() {
 
     const a = await fetch(`http://localhost:8000/user/${user.id}`);
     const updateduser = await a.json();
+    console.log(updateduser, "updateduser1");
     let score;
 
     if (chooseCategory ? categoryQuestions[currentQuestion].difficulty === "hard" : allQuestions[currentQuestion].difficulty === "hard") {
@@ -153,7 +169,10 @@ function QueDetail() {
       setShowAns(false);
       setAnswer("");
       let val;
-      if (chooseCategory ? answer == categoryQuestions[currentQuestion].answer : answer == allQuestions[currentQuestion].answer) {
+      let ans=answer.replace(/ /g,'');
+      let correctanswer=chooseCategory ? categoryQuestions[currentQuestion].answer.replace(/ /g,'') : allQuestions[currentQuestion].answer.replace(/ /g,''); 
+      console.log(ans.toLowerCase(),correctanswer.toLowerCase());
+      if (ans.toLowerCase() ==correctanswer.toLowerCase()) {
         setCorrectAns(true);
         setWrongAns(false);
         status = "correct";
@@ -184,7 +203,7 @@ function QueDetail() {
           }
         );
         const updateUser = await data.json();
-        console.log(updateUser, "updateduser");
+        console.log(updateUser, "updateduser2");
       } else {
         setCorrectAns(false);
         setWrongAns(true);
@@ -213,6 +232,7 @@ function QueDetail() {
           }
         );
         const res = await data.json();
+        console.log(res, "wrong");
       }
 
       // set questions submission and accepted value
@@ -233,6 +253,7 @@ function QueDetail() {
         }
       );
       const updatedResp = await updateQues.json();
+      console.log(updatedResp, "3")
 
       // update current question status
       const userUpdation = {
@@ -251,7 +272,7 @@ function QueDetail() {
         }
       );
       const updatedUserResp = await updateUser.json();
-      console.log(updatedUserResp);
+      console.log(updatedUserResp, "kmjbvtfcrdt");
 
       // update badge status
       let count = 0;
@@ -260,34 +281,209 @@ function QueDetail() {
           count++;
         }
       })
-      console.log(count,"countttttt");
-      // let badgeval;
-      // if (count >= Math.floor(allQuestions.length * 10) / 100) {
-      //   badgeval = { bronze: true };
-      //   console.log(count, Math.floor(allQuestions.length * 25) / 100);
-      // } else {
-      //   console.log("medal lost");
-      // }
+      console.log(count, "countttttt");
+      let badgeval = {};
+      let highestCount = updatedUserResp.highestCount;
+      if (count >= 0 && count <= 100) {
+        if (count == 2) {
+          setBadge("Bronze"); setStar1(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "bone", status: true }
+        } else if (count ==1) {
+          badgeval = { name: "bone", status: false }
+        }
+        if (count == 4) {
+          setBadge("Bronze"); setStar2(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "btwo", status: true }
+        } else if (count ==3) {
+          badgeval = { name: "btwo", status: false }
+        } 
+        if (count == 6) {
+          setBadge("Bronze"); setStar3(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "bthree", status: true }
+        } else if (count ==5) {
+          badgeval = { name: "bthree", status: false }
+        }
+        if (count == 8) {
+          setBadge("Bronze"); setStar4(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "bfour", status: true }
+        } else if (count == 7) {
+          badgeval = { name: "bfour", status: false }
+        }
+        // if (count == 10) {
+        //     setBadge("Bronze"); setStar1(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "bone", status: true }
+        //   } else if (count >=0 && count<10) {
+        //     badgeval = { name: "bone", status: false }
+        //   }else if (count == 20) {
+        //     setBadge("Bronze"); setStar2(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "btwo", status: true }
+        //   } else if (count <20 && count>10) {
+        //     badgeval = { name: "btwo", status: false }
+        //   }else if (count == 30) {
+        //     setBadge("Bronze"); setStar3(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "bthree", status: true }
+        //   } else if (count >20 && count<30) {
+        //     badgeval = { name: "bthree", status: false }
+        //   }else if (count == 40) {
+        //     setBadge("Bronze"); setStar4(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "bfour", status: true }
+        //   } else if (count >30 && count<40) {
+        //     badgeval = { name: "bfour", status: false }
+        //   }else if (count == 50) {
+        //     setBadge("Bronze"); setStar5(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "bfive", status: true }
+        //   } else if (count >40 && count<50) {
+        //     badgeval = { name: "bfive", status: false }
+        //   }else if (count == 80) {
+        //     setBadge("Silver"); setStar1(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "sone", status: true }
+        //   } else if (count >40 && count<50) {
+        //     badgeval = { name: "sone", status: false }
+        //   }else if (count == 100) {
+        //     setBadge("Silver"); setStar2(true);
+        //     if(count>highestCount){
+        //       setShowModal(true);
+        //     }
+        //     badgeval = { name: "stwo", status: true }
+        //   } else if (count >40 && count<50) {
+        //     badgeval = { name: "sthree", status: false }
+        //   }
+      }
+      if (count > 100 && count <= 250) {
+        if (count == 120) {
+          setBadge("Silver"); setStar3(true);
+          setShowModal(true);
+          badgeval = { name: "sthree", status: true }
+        } else if (count > 100 && count < 120) {
+          badgeval = { name: "sthree", status: false }
+        }else if (count == 140) {
+          setBadge("Silver"); setStar4(true);
+          setShowModal(true);
+          badgeval = { name: "sfour", status: true }
+        } else if (count > 120 && count < 140) {
+          badgeval = { name: "sfour", status: false }
+        }else if (count == 160) {
+          setBadge("Silver"); setStar5(true);
+          setShowModal(true);
+          badgeval = { name: "sfive", status: true }
+        } else if (count > 140 && count < 160) {
+          badgeval = { name: "sfive", status: false }
+        } else if (count == 220) {
+          setBadge("Gold"); setStar1(true);
+          badgeval = { name: "gone", status: true }
+        } else if (count > 160 && count < 220) {
+          badgeval = { name: "gone", status: false }
+        } else if (count == 250) {
+          setBadge("Gold"); setStar2(true);
+          badgeval = { name: "gtwo", status: true }
+        } else if (count > 220 && count < 250) {
+          badgeval = { name: "gtwo", status: false }
+        }
+      }
+      if (count > 250 && count <= 420) {
+        if (count == 280) {
+          setBadge("Gold"); setStar3(true);
+          badgeval = { name: "gthree", status: true }
+        } else if (count > 250 && count < 280) {
+          badgeval = { name: "gthree", status: false }
+        }
+        if (count == 310) {
+          setBadge("Gold"); setStar4(true);
+          badgeval = { name: "gfour", status: true }
+        } else if (count > 280 && count < 310) {
+          badgeval = { name: "gfour", status: false }
+        }
+        if (count == 340) {
+          setBadge("Gold"); setStar5(true);
+          badgeval = { name: "gfive", status: true }
+        } else if (count > 310 && count < 340) {
+          badgeval = { name: "gfive", status: false }
+        }
+        if (count == 420) {
+          setBadge("Platinum"); setStar1(true);
+          badgeval = { name: "pone", status: true }
+        } else if (count > 340 && count < 420) {
+          badgeval = { name: "pone", status: false }
+        }
+      }
+      if (count > 420 && count <= 600) {
+        if (count == 465) {
+          setBadge("Platinum"); setStar2(true);
+          badgeval = { name: "ptwo", status: true }
+        } else if (count > 420 && count < 465) {
+          badgeval = { name: "ptwo", status: false }
+        }
+        if (count == 510) {
+          setBadge("Platinum"); setStar3(true);
+          badgeval = { name: "pthree", status: true }
+        } else if (count > 465 && count < 510) {
+          badgeval = { name: "pthree", status: false }
+        }
+        if (count == 555) {
+          setBadge("Platinum"); setStar4(true);
+          badgeval = { name: "pfour", status: true }
+        } else if (count > 510 && count < 555) {
+          badgeval = { name: "pfour", status: false }
+        }
+        if (count == 600) {
+          setBadge("Platinum"); setStar5(true);
+          badgeval = { name: "pfive", status: true }
+        } else if (count > 555 && count < 600) {
+          badgeval = { name: "pfive", status: false }
+        }
+      }
+      let badgeCountVal={};
+      if(count>highestCount){
+        badgeCountVal={
+          count:count,
+          badgeval
+        }
+      }else if(Object.keys(badgeval).length !== 0){
+        badgeCountVal={
+          badgeval
+        }
+      }
+      console.log(badgeval,count,highestCount);
 
-      // if (count >= Math.floor(allQuestions.length * 50) / 100) {
-      //   badgeval = { silver: true };
-      // } else if (count >= Math.floor(allQuestions.length * 75) / 100) {
-      //   badgeval = { gold: true };
-      // } else if (count >= Math.floor(allQuestions.length * 100) / 100) {
-      //   badgeval = { platinum: true };
-      // }
-
-      // if (badgeval) {
-      //   console.log("logged");
-      // }
-
-      // const updatebadge = await fetch(`http://localhost:8000/user/update/badge/status/${allQuestions[currentQuestion]._id}`, {
-      //   method: "PUT",
-      //   body: JSON.stringify(badgeval),
-      //   headers: {
-      //     "Content-type": "application/json"
-      //   }
-      // })
+      const updatebadge = await fetch(`http://localhost:8000/user/update/badge/status/${userData._id}`, {
+        method: "PUT",
+        body: JSON.stringify(badgeCountVal),
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const badgeres = await updatebadge.json();
+      console.log(badgeres)
     }
   };
 
@@ -295,14 +491,6 @@ function QueDetail() {
     setShowAns(!showAns);
     setHide(!hide);
   };
-
-  // window.addEventListener('DOMContentLoaded',()=>{
-  //   let mathOutput=document.querySelector('#explain-convert');
-  //   mathOutput.innerHtml=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`)
-  // })
-
-  const explanation =
-    "The digit 5 has two place values in the numeral, 5 * 105 = 50,000 and 5 * 101 = 50. ∴Required difference = 50000 - 50 = 49950";
 
   const openNav = () => {
     document.getElementById("mySidebar").style.width = "300px";
@@ -313,7 +501,6 @@ function QueDetail() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
   }
-
 
   return (
     <div>
@@ -497,11 +684,11 @@ function QueDetail() {
             <div className="closebtn categoryonclick" onClick={closeNav}>×</div>
             <div className="all-side">
               <div className="all-categ">Categories</div>
-              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => fetchCategoryWiseQuestions("All")}><IoMdArrowDropright size="25" />All</div>
+              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false); setWrongAns(false);}}><IoMdArrowDropright size="25" />All</div>
               {
                 categories.length > 0 &&
                 categories.map((data) => (
-                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => fetchCategoryWiseQuestions(data)}><IoMdArrowDropright size="25" />{data}</div>
+                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data); setShowAns(false); setCorrectAns(false); setWrongAns(false);}}><IoMdArrowDropright size="25" />{data}</div>
                 ))
               }
             </div>
@@ -683,6 +870,42 @@ function QueDetail() {
           </div>
         </div>
       </div>
+      <Modal
+        backdrop="static"
+        // style={{borderRadius:"20px"}}
+        show={showModal}
+        className="congo-modal"
+        onHide={() => setShowModal(false)}
+      >
+        <Modal.Body>
+          <div className="congo-box">
+            <div className="congrats">Congratulations!</div>
+            <div className="show-badge">
+              <div className={badge == 'Bronze' ? 'hex bronze' : badge == 'Silver' ? 'hex silver' : badge == 'Gold' ? 'hex gold' : 'hex platinum'}>
+                <div className="gold-tag">{badge}</div>
+                <div className="shield">
+                  <RiShieldStarLine />
+                </div>
+                <div class="ribbon">
+                  <AiFillStar className={star1 || star2 || star3 || star4 || star5  ? 'star' : 'star star-class'} />
+                  <AiFillStar className={star2 || star3 || star4 || star5 ? 'star' : 'star star-class'} />
+                  <AiFillStar className={star3 || star4 || star5 ? 'star' : 'star star-class'} />
+                  <AiFillStar className={star4 || star5 ? 'star' : 'star star-class'} />
+                  <AiFillStar className={star5 ? 'star' : 'star star-class'} />
+                </div>
+              </div>
+            </div>
+            <div className="first-star">
+              {
+                `You have received ${star1 ? '1st' : star2 ? '2nd' :star3 ? '3rd' :star4 ? '4th' :'5th'} star of ${badge} Badge 🏅`
+              }
+            </div>
+            <button className="thanks" onClick={() => { setShowModal(false); setBadge(""); setStar1(false); setStar2(false); setStar3(false); setStar4(false); setStar5(false); }}>
+              Ok Thanks!
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

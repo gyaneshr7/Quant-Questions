@@ -31,8 +31,8 @@ function App() {
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/forgotpassword' element={user === null ? <Forgotpassword /> : <ErrorPage />}></Route>
           
-          <Route path='/quedetail' element={userRole === 'user' ?  <QueDetail /> : <ErrorPage />}></Route>
-          <Route path='/questions' element={userRole === 'user' ? <Questions /> : <ErrorPage />}></Route>
+          <Route path='/quedetail' element={userRole === 'user' || userRole==null ?  <QueDetail /> : <ErrorPage />}></Route>
+          <Route path='/questions' element={userRole === 'user' || userRole==null ? <Questions /> : <ErrorPage />}></Route>
           <Route path='/change_password' element={userRole === 'user' ? <ChangePassword /> : <ErrorPage />}></Route>
           <Route path='/submissions' element={userRole === 'user' ? <Submissions /> : <ErrorPage />}></Route>
           <Route path='/profile' element={userRole === 'user' ? <Profile /> : <ErrorPage />}></Route>

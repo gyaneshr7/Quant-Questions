@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { ImCross } from "react-icons/im";
 import { FaLock } from "react-icons/fa";
+import { FaLockOpen } from "react-icons/fa";
 import { GiProgression } from "react-icons/gi";
 import "./Profile.css";
 import progress from "../images/progress.png";
@@ -51,9 +52,9 @@ function Profile() {
         }
       })
 
-      console.log(category.name, wrongquescount, categorycount);
+      // console.log(category.name, wrongquescount, categorycount);
       if (wrongquescount >= (60 * categorycount) / 100 && wrongquescount > 0) {
-        console.log(wrongquescount, (60 * categorycount) / 100 );
+        console.log(wrongquescount, (60 * categorycount) / 100);
         weaknessarray.push({
           category: category.name,
           count: wrongquescount,
@@ -62,26 +63,26 @@ function Profile() {
       }
     })
 
-  weaknessarray.push({
-    category: "Aptitude",
-    count: 8,
-    color: "color"
-  })
-  weaknessarray.push({
-    category: "reasoning",
-    count: 5,
-    color: "color"
-  })
-  weaknessarray.push({
-    category: "1",
-    count: 7,
-    color: "color"
-  })
-  weaknessarray.push({
-    category: "2",
-    count: 7,
-    color: "color"
-  })
+  // weaknessarray.push({
+  //   category: "Aptitude",
+  //   count: 8,
+  //   color: "color"
+  // })
+  // weaknessarray.push({
+  //   category: "reasoning",
+  //   count: 5,
+  //   color: "color"
+  // })
+  // weaknessarray.push({
+  //   category: "1",
+  //   count: 7,
+  //   color: "color"
+  // })
+  // weaknessarray.push({
+  //   category: "2",
+  //   count: 7,
+  //   color: "color"
+  // })
 
   if (weaknessarray.length > 0) {
     if (weaknessarray.length > 2) {
@@ -92,11 +93,12 @@ function Profile() {
       //     weakness.push(sorted[i]);
       //   }
       // }
-      console.log(sorted, "sorted")
-      sorted.slice(2,5).map(data=>{
+      // console.log(sorted, "sorted")
+      // sorted.slice(2, 5).map(data => {
+      sorted.map(data => {
         weakness.push(data)
       })
-      console.log(weakness, "weakness");
+      // console.log(weakness, "weakness");
     } else {
       weakness = weaknessarray;
     }
@@ -118,6 +120,7 @@ function Profile() {
         `http://localhost:8000/user/get/all/attempted/question/${user.id}`
       );
       const res = await data.json();
+      console.log(res.badges.filter(obj=>obj.name=='bfour' && obj.status==true))
       setUserData(res);
       setSubmittedQuestions(res.submittedQuestions.reverse());
     };
@@ -131,7 +134,6 @@ function Profile() {
     const fetchScore = async () => {
       const data = await fetch(`http://localhost:8000/user/get/scores`);
       const res = await data.json();
-      console.log(res);
       res &&
         res.map((data) => {
           score.push(data.score);
@@ -174,13 +176,13 @@ function Profile() {
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        display: false,
-        position: 'right',
-        label: {
-          fullSize: true
-        }
-      },
+      // legend: {
+      //   display: false,
+      //   position: 'right',
+      //   label: {
+      //     fullSize: true
+      //   }
+      // },
       title: {
         display: false,
         text: 'Progress in Categories',
@@ -210,8 +212,12 @@ function Profile() {
     ],
   };
 
-  const handleClose = () => {
-    setShow(false)
+  function checkStatus(name){
+    if(userData && userData.badges.filter(obj=>obj.name==name && obj.status==true).length>0){
+      return true;
+    }else{
+      return false; 
+    }
   }
 
   return (
@@ -356,75 +362,85 @@ function Profile() {
             <div className="pro">Badges & Achievements</div>
 
             <div className="bar">
+              <div>
+                <div className="locking">
+                  {
+                    (checkStatus("bone") || checkStatus("btwo")  || checkStatus("bthree")  || checkStatus("bfour") ) && !checkStatus("bfive") ? <FaLockOpen size="25"/> : checkStatus("bfive") ? '' : <FaLock size="25"/>
+                  }
+                </div>
+
+                <div className={checkStatus("bone") ? "hex bronze": "hex bronze star-class"}>
+                  <div className="gold-tag">Bronze</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("bone") ?'star' :'star star-class'}  />
+                    <AiFillStar className={checkStatus("btwo") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bthree") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfour") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfive") ?'star' :'star star-class'} />
+                  </div>
+                </div>
+              </div>
+
 
               <div>
-              <div className="locking"><FaLock size="20"/></div>
-              <div className="hex bronze">
-                <div className="gold-tag">Bronze</div>
-                <div className="shield">
-                  <RiShieldStarLine />
-                </div>
-                <div className="ribbon">
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }} />
-                </div>
-              </div>
-              </div>
-              
+                <div className="locking">{
+                    (checkStatus("sone") || checkStatus("stwo")  || checkStatus("sthree")  || checkStatus("sfour") ) && !checkStatus("sfive")? <FaLockOpen size="25"/> : checkStatus("sfive") ? '' : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("sone") ? "hex silver": "hex silver star-class"}>
 
-            <div>
-            <div className="locking"><FaLock size="20"/></div>
-            <div className="hex silver">
-                
-                <div className="gold-tag">Silver</div>
-                <div className="shield">
-                  <RiShieldStarLine />
+                  <div className="gold-tag">Silver</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("sone") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("stwo") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sthree") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfour") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfive") ?'star' :'star star-class'} />
+                  </div>
                 </div>
-                <div className="ribbon">
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
-                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
-                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
-                </div>
-              </div>
-            </div>
-              
-              <div>
-              <div className="locking"><FaLock size="20"/></div>
-              <div className="hex gold">
-                <div className="gold-tag">Gold</div>
-                <div className="shield">
-                  <RiShieldStarLine />
-                </div>
-                <div className="ribbon">
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" style={{ opacity: 0.3 }}/>
-                </div>
-              </div>
               </div>
 
               <div>
-              <div className="locking"><FaLock size="20"/></div>
-              <div className="hex platinum">
-                <div className="gold-tag">Platinum</div>
-                <div className="shield">
-                  <RiShieldStarLine />
-                </div>
-                <div className="ribbon">
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
-                  <AiFillStar className="star" />
+                <div className="locking">{
+                    (checkStatus("gone") || checkStatus("gtwo")  || checkStatus("gthree")  || checkStatus("gfour") ) && !checkStatus("gfive")? <FaLockOpen size="25"/> : checkStatus("gfive") ? '' : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("gone") ? "hex gold": "hex gold star-class"}>
+                  <div className="gold-tag">Gold</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("gone") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gtwo") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gthree") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfour") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfive") ?'star' :'star star-class'} />
+                  </div>
                 </div>
               </div>
+
+              <div>
+                <div className="locking">{
+                    (checkStatus("pone") || checkStatus("ptwo")  || checkStatus("pthree")  || checkStatus("pfour") ) && !checkStatus("pfive") ? <FaLockOpen size="25"/> : checkStatus("pfive") ? '' : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("pone") ? "hex platinum": "hex platinum star-class"}>
+                  <div className="gold-tag">Platinum</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("pone") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("ptwo") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pthree") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfour") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfive") ?'star' :'star star-class'} />
+                  </div>
+                </div>
               </div>
 
               <svg

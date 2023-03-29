@@ -289,7 +289,7 @@ function QueDetail() {
 
       // update badge status
       let count = 0;
-      updatedUserResp.currentAttempted.map((ques) => {
+      updatedUserResp.currentAttempted .map((ques) => {
         if (ques.status == 'correct') {
           count++;
         }
@@ -333,6 +333,24 @@ function QueDetail() {
           badgeval = { name: "bfour", status: true }
         } else if (count == 7) {
           badgeval = { name: "bfour", status: false }
+        }
+        if (count == 10) {
+          setBadge("Bronze"); setStar5(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "bfive", status: true }
+        } else if (count == 9) {
+          badgeval = { name: "bfive", status: false }
+        }
+        if (count == 11) {
+          setBadge("Silver"); setStar1(true);
+          if(count>highestCount){
+            setShowModal(true);
+          }
+          badgeval = { name: "sone", status: true }
+        } else if (count == 9) {
+          badgeval = { name: "sone", status: false }
         }
         // if (count == 10) {
         //     setBadge("Bronze"); setStar1(true);
@@ -854,7 +872,7 @@ function QueDetail() {
                   <div className="status-detail">Status:</div>
                   <div className="solving">
                     {userData && chooseCategory ?
-                      userData.currentAttempted.some(
+                      userData && userData.currentAttempted.some(
                         (data) =>
                           data.questionId === categoryQuestions[currentQuestion]._id
                       ) ? (
@@ -874,12 +892,12 @@ function QueDetail() {
                       ) : (
                         <div>Unsolved</div>
                       ) :
-                      userData.currentAttempted.some(
+                      userData && userData.currentAttempted.some(
                         (data) =>
                           data.questionId === allQuestions[currentQuestion]._id
                       ) ? (
                         userData &&
-                        userData.currentAttempted.map((data) => (
+                        userData && userData.currentAttempted.map((data) => (
                           <>
                             {data.questionId ===
                               allQuestions[currentQuestion]._id &&

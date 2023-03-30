@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import Header from './Header';
 import './Resources.css';
 import { BiSearchAlt2 } from 'react-icons/bi';
@@ -7,49 +7,24 @@ import { FaArrowCircleRight } from 'react-icons/fa';
 function Resources() {
   const[search,setSearch]=useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories,setCategories] = useState([]);
 
-  const data=[
-    {
-      id:1,
-      category:"Probability",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:2,
-      category:"Profit & Loss",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:3,
-      category:"Simple Interest and Compound Interest",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:4,
-      category:"Ratio & Proportion",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:5,
-      category:"Probability",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:6,
-      category:"Mixture and Alligation",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:7,
-      category:"Percentage",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
-    },
-    {
-      id:8,
-      category:"Percentage",
-      link:"https://www.placementpreparation.io/blog/best-websites-to-learn-quantitative-aptitude/"
+  useEffect(()=>{
+    const fetchResources= async ()=>{
+      const data = await fetch(`http://localhost:8000/resources/`);
+      const res = await data.json();
+      console.log(res);
+      let resources=[];
+      res.map((data) => {
+        if (!resources.includes(data.name)) {
+          resources.push(data.name)
+        }
+      })
+      console.log(resources,"resources");
+      setCategories(resources);
     }
-  ]
+    fetchResources();
+  },[])
 
   const itemsPerPage = 5;
  
@@ -58,7 +33,7 @@ function Resources() {
   const endIndex = startIndex + itemsPerPage;
 
   const tableData =
-    data && data.slice(startIndex, endIndex);
+    categories && categories.slice(startIndex, endIndex);
 
     console.log(tableData);
 
@@ -70,7 +45,7 @@ function Resources() {
     setCurrentPage((page) => page + 1);
   }
 
-  const totalPages = Math.ceil(data && data.length / itemsPerPage);
+  const totalPages = Math.ceil(categories && categories.length / itemsPerPage);
 
   return (
     <div>
@@ -115,13 +90,12 @@ function Resources() {
 
 
           {
-            tableData && 
-            
+            tableData &&   
               tableData.map((data)=>(
                 <tr>
                 <th scope="row">
                   <div  className="table-categ data-categ">
-                    {data.category}
+                    {data}
                   </div>
                 
                 </th>
@@ -129,9 +103,7 @@ function Resources() {
                   <div className="res-view">View</div>
                 </td>
               </tr>
-              
               ))
-            
           }
           
           </tbody>
@@ -148,7 +120,7 @@ function Resources() {
               </button>
               <p className="nums">
                 {
-                  data &&  data.length > 0 ? ` Page ${currentPage} of ${totalPages}`: "0/0"
+                  categories &&  categories.length > 0 ? ` Page ${currentPage} of ${totalPages}`: "0/0"
                 }
                 
               </p>

@@ -56,6 +56,7 @@ export default function Forgotpassword() {
     }
 
     const handleSendOtp = () => {
+        setLoading(true)
         configureCaptcha();
         const appVerifier = window.recaptchaVerifier;
         const phoneNumber = "+91" + phoneNo
@@ -71,18 +72,17 @@ export default function Forgotpassword() {
     };
 
     const submitPhoneNo = (e) => {
-        setLoading(true);
         e.preventDefault();
+        console.log(phoneNo);
         if (phoneNo) {
             validator.isMobilePhone(phoneNo)
                 ? handleSendOtp()
                 : alert('Enter a valid Phone Number')
-                  setShow(true);
+                  setShow(true); 
         }
         else {
             alert("Phone Number can't be empty");
         }
-        // setLoading(false);
     }
 
     const onSubmitOTP = (e) => {

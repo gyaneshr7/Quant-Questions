@@ -58,8 +58,6 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const[loginModalShow,setLoginModalShow]=useState(false);
 
- 
-
   let firmNames = [],
     divisionNames = [],
     positionNames = [],
@@ -99,9 +97,13 @@ function Dashboard() {
   // add questions to db
   const submitHandler = async () => {
     let val = '';
+    const questions = await fetch(`http:///localhost:8000/question/getallquestions`);
+    const quesres = await questions.json();
+    console.log(quesres.length, "length");
     if (title != '' && question != '' && answer != '' && difficulty != '' && category != '' && anstype != '' && firms != '' && divisions != '' && positions != '' && tags !== '') {
       if (anstype === 'Mcq') {
         val = {
+          uniqueId: quesres.length + 1,
           title: title,
           question: question,
           answer: answer,
@@ -117,6 +119,7 @@ function Dashboard() {
         };
       } else {
         val = {
+          uniqueId: quesres.length + 1,
           title: title,
           question: question,
           answer: answer,
@@ -355,11 +358,6 @@ function Dashboard() {
               All Questions
             </Link>
 
-            {/* <div onClick={()=>{setShow(true);setCss(false)}} className={css ? "add-que" : "add-que-hover"}>
-              <MdLibraryAdd className="icon-side" />
-              Add Resources
-            </div> */}
-
             <div  onClick={() => {setLoginModalShow(true);setCss(false);}} className={css ? "add-que" : "add-que-hover"}>
               <MdLibraryAdd className="icon-side" />
               Add Resources
@@ -374,7 +372,6 @@ function Dashboard() {
               Logout
             </div>
             </div>
-
 
           </div>
         </div>
@@ -886,13 +883,11 @@ function Dashboard() {
                   Add Question
                 </button>
 
-                
+
               </div>
             </div>
           </div>
-        </div>
-
-                
+        </div>         
       </div>
     </div>
   );

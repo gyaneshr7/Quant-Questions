@@ -60,7 +60,7 @@ function Header() {
                        <Link to='/faq' className="mylinks"><div className="gap-user"><FaQuestion className="icon-user"/>FAQs</div></Link>
                        <Link to='/resources' className="mylinks"><div className="gap-user"><GrResources className="icon-user"/>Resources</div></Link>
                        <Link to='/change_password' className="mylinks"><div className="gap-user"><FaExchangeAlt className="icon-user"/>Change Password</div></Link>
-                       <Link to='/login' className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
+                       <Link className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
                     </div>
                 }
               </div>
@@ -99,7 +99,7 @@ function Header() {
                  <Link to='/faq' className="mylinks"><div className="gap-user"><FaQuestion className="icon-user"/>FAQs</div></Link>
                  <Link to='/resources' className="mylinks"><div className="gap-user"><GrResources className="icon-user"/>Resources</div></Link> 
                  <Link to='/change_password' className="mylinks"><div className="gap-user"><FaExchangeAlt className="icon-user"/>Change Password</div></Link>
-                 <Link to='/login' className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
+                 <Link  className="mylinks"><div className="gap-user" onClick={logoutHandler}><TbLogout className="icon-user"/>Logout</div></Link>
               </div>
           }
         </div>:

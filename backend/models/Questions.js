@@ -21,6 +21,5 @@ const questionsSchema = mongoose.Schema(
         explanation:{type:String}
     }
 )
-questionsSchema.plugin(AutoIncrement, {inc_field: 'uniqueId'});
 
 module.exports = mongoose.model('Question',questionsSchema) ;

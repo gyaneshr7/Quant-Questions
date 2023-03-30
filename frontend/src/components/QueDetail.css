@@ -150,7 +150,7 @@
 .buttons{
     margin-top: 15px;
     display: flex;
-    /* gap:15px; */
+    gap:10px;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -162,7 +162,7 @@
 .nums{
     position: relative;
     top: 8px;
-    left:10%;
+    /* left:10%; */
 }
 
 .options{
@@ -407,6 +407,24 @@
     color: white;
   }
 
+  .closemod{
+    position: absolute;
+    right: 15px;
+    top:-4px;
+    text-decoration: none;
+    font-size: 35px;
+    font-weight: 700;
+    /* width:100px; */
+    color: #858585;
+    display: block;
+    text-align:right;
+    transition: 0.3s;
+    cursor: pointer; 
+  }
+
+  .closemod:hover{
+    color: black;
+  }
 
   .closebtn {
     position: absolute;

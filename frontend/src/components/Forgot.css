@@ -78,9 +78,24 @@ input::-webkit-inner-spin-button {
   border-radius:1px solid  rgb(7, 110, 212);
 }
 
+.buttonload {
+  background-color: rgb(26, 146, 221); /* Green background */
+  border:1px solid rgb(26, 146, 221);/* Remove borders */
+  color: white; /* White text */
+  width:400px;
+  padding: 7px;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin:5px;
+  margin-left: 24px;
+}
+
 .modal-dialog{
   position: relative;
   top:200px;
+  border-radius: 10px;
 }
 
 .modal-content{

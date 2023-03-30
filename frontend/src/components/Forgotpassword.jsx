@@ -138,7 +138,7 @@ export default function Forgotpassword() {
             {
                 !changeEdit &&
                 <div>
-                <div className="dforgot">Forgot Password ?</div>
+                <div className="dforgot">Password Reset</div>
                 <form className='forgot-page' onSubmit={submitPhoneNo}>
                     <div className='box'>
                         <div className='login'>
@@ -148,18 +148,14 @@ export default function Forgotpassword() {
                                 <input type="number" className='inputBox' onChange={(e) => setPhoneNo(e.target.value)} autoComplete="new-password" placeholder='Enter Phone No.' />
                             </div>
                             {loading ? (
-                            <div
-                              class="spinner-border"
-                              role="status"
-                              style={{ height: "15px", width: "15px",color:"#15074e",marginRight:"25px",marginTop:"15px" }}
-                            >
-                              <button class="visually-hidden">Loading...</button>
-                            </div>
+                                <button class="buttonload">
+                                Wait  <i class="fa fa-spinner fa-spin"></i>
+                              </button>
+                            
                           ) : (
-                            <button type="submit" className='subbtn'>Submit</button>
+                            <button type="submit" className='subbtn'>Get OTP</button>
                           )
                           }
-                            {/* <button type="submit" className='subbtn'>Submit</button> */}
                         </div>
                     </div>
                 </form>
@@ -171,6 +167,7 @@ export default function Forgotpassword() {
                 <>
                     <Modal
                     show={show}
+                    backdrop="static"
                     onHide={handleClose}
                     className="my-modal">
 
@@ -178,7 +175,7 @@ export default function Forgotpassword() {
                         <Modal.Title>Enter OTP!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                    <div className="otp-body">OTP sent to<span> 8777367875</span></div>    
+                    <div className="otp-body">OTP sent to<span>+91{phoneNo}</span></div>    
                     <form onSubmit={onSubmitOTP} className="otp-form">
                         <input type="number" name="otp" placeholder="OTP Number" className='otp-input' required onChange={(e) => setOtp(e.target.value)} />
                         <button type="submit" className="otp-btn">Submit</button>

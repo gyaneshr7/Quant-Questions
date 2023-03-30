@@ -14,6 +14,7 @@
 .profile{
     border-radius: 4px;
     border: 1px solid rgb(195, 194, 194);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     text-align: left;
     width:500px;
 }
@@ -21,6 +22,7 @@
 .bar-profile{
     border-radius: 4px;
     border: 1px solid rgb(195, 194, 194);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     text-align: left;
     width:1040px;
 }
@@ -51,6 +53,7 @@
 .settings{
     border-radius: 4px;
     border: 1px solid rgb(195, 194, 194);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     text-align: left;
     width:500px;
     margin-bottom: auto;
@@ -185,6 +188,10 @@ font-weight: 500;
     background: transparent;
 }
 
+.notshow{
+    visibility: hidden;
+}
+
 .gold-tag{
     z-index:1111111;
     color: rgb(71, 70, 70);
@@ -209,14 +216,66 @@ font-weight: 500;
 .star{
     color:black;
     z-index: 1111;
-    font-size:15px;
+    font-size:16px;
 }
+
+.star.active {
+    animation: star-pop 0.5s ease forwards;
+    /* animation:0.5s slidein; */
+  }
+  
+  
+  .star.active:nth-child(1) { 
+     animation-delay: 0s;
+     visibility: hidden;
+  }
+  
+  .star.active:nth-child(2) { 
+     animation-delay: .5s;
+     visibility: hidden;
+  }
+  
+  .star.active:nth-child(3) { 
+     animation-delay: 1s;
+     visibility: hidden;
+  }
+  
+  .star.active:nth-child(4) { 
+     animation-delay: 1.5s;
+     visibility: hidden;
+  }
+  
+  .star.active:nth-child(5) { 
+     animation-delay: 2s;
+     visibility: hidden;
+  }
+  
+  @keyframes star-pop {
+     0%{
+        transform: scale(0.1);
+     }
+     100%{
+        transform: scale(1);
+        visibility: visible;
+     }
+  }
+
+  @keyframes slidein {
+    from {
+      margin-left: 100%;
+    }
+  
+    to {
+        margin-left: 0%;
+    }
+  }
 
   .hex {
     width: 130px;
     height:160px;
     display:inline-block;
     filter: url('#goo');
+    /* position:static; */
     /* overflow:hidden; */
     /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; */
     box-shadow: rgba(132, 132, 132, 0.35) 0px 5px 15px;

@@ -530,7 +530,33 @@ function QueDetail() {
   // })
 
   const formatted=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`);
-  // const formatted={chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}
+
+  // const formatted=chooseCategory ? categoryQuestions[currentQuestion] && (categoryQuestions[currentQuestion].explanation) : allQuestions && (allQuestions[currentQuestion].explanation)
+
+  const equ='This is a Markdown paragraph with an inline equation: $x = y^2$, and a block equation:\n\n$$\n\\int_0^\\infty x^2 dx\n$$';
+
+  const customRenderers = {
+    html: ({ value }) => {
+      return <div dangerouslySetInnerHTML={{ __html: value }} />;
+    },
+    inlineMath: ({ value }) => {
+      return <InlineMath math={value} />;
+    },
+    math: ({ value }) => {
+      return <BlockMath math={value} />;
+    },
+  };
+  
+  const Crenderers = {
+    inlineMath: ({ value }) => {
+      const html = katex.renderToString(value);
+      return <span dangerouslySetInnerHTML={{ __html: html }} />;
+    },
+    math: ({ value }) => {
+      const html = katex.renderToString(value);
+      return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    },
+  };
 
     const openNav=()=> {
       document.getElementById("mySidebar").style.width = "300px";
@@ -719,7 +745,7 @@ function QueDetail() {
                   <div className="explain-head">Explanation:</div>
                   <div className="explain-cont" >
                     {/* <ReactMarkdown id="explain-convert" style={{ justifyContent: "left" }}>{chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation}</ReactMarkdown> */}
-                {/* <div style={{fontStyle:"normal"}} dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}`}}></div> */}
+                <div style={{fontStyle:"normal"}} dangerouslySetInnerHTML={{__html: formatted}}></div>
                   
                   
                   {/* <ReactMarkdown
@@ -727,26 +753,35 @@ function QueDetail() {
                   //  children= {chooseCategory ? categoryQuestions[currentQuestion] && !String ? katex.renderToString(categoryQuestions[currentQuestion].explanation):categoryQuestions[currentQuestion].explanation : allQuestions && !String ? katex.renderToString(allQuestions[currentQuestion].explanation):allQuestions[currentQuestion].explanation}
                   //  dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && katex.renderToString(categoryQuestions[currentQuestion].explanation) : allQuestions && katex.renderToString(allQuestions[currentQuestion].explanation)}`}}
                    plugins={[remarkMath]}
-                   renderers={renderers}           
+                  //  renderers={renderers}           
                    remarkPlugins={[gfm]}
                    rehypePlugins={[rehypeRaw]} 
                    style={{justifyContent:"left"}} >
                   </ReactMarkdown> */}
 
                   <ReactMarkdown
+                    plugins={[remarkMath]}
+                    remarkPlugins={[gfm]}
+                    rehypePlugins={[rehypeRaw]} 
+                    children={formatted}
+                    skipHtml={false}
+                    renderers={customRenderers}
+                  />
+              
+              {/* <ReactMarkdown plugins={[remarkMath]} renderers={Crenderers} escapeHtml={false}>
+              {equ}
+            </ReactMarkdown> */}
+
+
+                  {/* <ReactMarkdown
                       children= {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions[currentQuestion] && allQuestions[currentQuestion].explanation}
-                      // plugins={[remarkMath]}
-                      // renderers={renderers}           
-                      // remarkPlugins={[gfm]}
-                      // rehypePlugins={[rehypeRaw]}
                       // dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions[currentQuestion] && allQuestions[currentQuestion].explanation}`}}
                       plugins={[gfm,remarkMath,rehypeKatex,rehypeRaw]}
-                      // escapeHtml="false"
                       style={{ justifyContent: "left" }}
                       renderers={{
                         math: ({ value }) => {
                             console.log("math equation");
-                            return {value}
+                            return {value} 
                         },
                         inlineMath: ({ value }) =>{
                             console.log("inlineMath equation");
@@ -758,7 +793,7 @@ function QueDetail() {
                       //   math: ({ value }) => <BlockMath>{value}</BlockMath>,
                       //   inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>
                       // }} 
-                    />
+                    /> */}
 
                     </div>
                 </div>
@@ -796,40 +831,6 @@ function QueDetail() {
             </div>
           </div>
 
-          {/* <div className="disp-sidebar sidebar-web-view">
-            <div id="main">
-              <button className="openbtn" onClick={openNav}><MdFormatListBulleted size="25" /> Questions</button>
-            </div>
-
-            <div className="buttons">
-              <button
-                className="prev"
-                onClick={handlePreviousButtonClick}
-                disabled={isPreviousDisabled}
-              >
-                <IoIosArrowBack fontSize={20} />
-                Prev
-              </button>
-              <p className="nums">
-                {currentQuestion + 1}/
-                {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions.length : allQuestions && allQuestions && allQuestions.length}
-              </p>
-              <button
-                className="next"
-                onClick={handleNextButtonClick}
-                disabled={isNextDisabled}
-              >
-                Next
-                <IoIosArrowForward fontSize={20} />
-              </button>
-            </div>
-
-            <div className="" id="main">
-              <button className="catopenbtn"><BiCategory size="27" style={{marginTop:"3px"}} />                   
-               <p>{chooseCategory ? categoryQuestions && categoryQuestions[currentQuestion].category : allQuestions  && allQuestions[currentQuestion].category}</p>
-              </button>
-            </div>
-          </div> */}
 
           <div className="disp-sidebar">
             <div className="buttons">
@@ -844,7 +845,7 @@ function QueDetail() {
               <p className="nums">
                 {currentQuestion + 1}/
                 {chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions.length : allQuestions && allQuestions && allQuestions.length}
-              </p>
+              </p>
               <button
                 className="next"
                 onClick={handleNextButtonClick}
@@ -1026,8 +1027,9 @@ function QueDetail() {
         className="congo-modal"
         onHide={() => setShowModal(false)}
       >
-        <Modal.Body>
+        <Modal.Body >
           <div className="congo-box">
+            <div className="closemod" onClick={()=>setShowModal(false)}>x</div>
             <div className="congrats">Congratulations!</div>
             <div className="show-badge">
               <div className={badge == 'Bronze' ? 'hex bronze' : badge == 'Silver' ? 'hex silver' : badge == 'Gold' ? 'hex gold' : 'hex platinum'}>
@@ -1046,7 +1048,7 @@ function QueDetail() {
             </div>
             <div className="first-star">
               {
-                `You have received ${star1 ? '1st' : star2 ? '2nd' :star3 ? '3rd' :star4 ? '4th' :'5th'} star of ${badge} Badge 🏅`
+                `You have received ${star1 ? '1st' : star2 ? '2nd' :star3 ? '3rd' : star4 ? '4th' :'5th'} star of ${badge} Badge 🏅`
               }
             </div>
             <button className="thanks" onClick={() => { setShowModal(false); setBadge(""); setStar1(false); setStar2(false); setStar3(false); setStar4(false); setStar5(false); }}>
@@ -1055,6 +1057,31 @@ function QueDetail() {
           </div>
         </Modal.Body>
       </Modal>
+
+              <svg
+                style={{ position: "absolute", width: 0, height: 0 }}
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+              >
+                <defs>
+                  <filter id="goo">
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="8"
+                      result="blur"
+                    />
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2"/> */}
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2" flood-opacity="0.3" /> */}
+                    <feColorMatrix
+                      // in="blur"
+                      mode="matrix"
+                      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+                      result="goo"
+                    />
+                    <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                  </filter>
+                </defs>
+              </svg>
     </div>
   );
 }

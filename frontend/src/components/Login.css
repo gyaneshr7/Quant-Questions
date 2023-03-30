@@ -8,10 +8,10 @@
 .box{
     border:1px solid rgb(209, 207, 207);
     border-radius: 4px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     padding:20px;
 }
 .login-page{
-    height:490px;
     width:500px;
     margin: auto;
     margin-top: 70px;
@@ -68,9 +68,9 @@
 }
 
 .sign-pass{
-    position: relative;
-    left:-26px;
+    margin: auto;
 }
+
 .forgot-pass:hover,
 .sign-pass:hover{
    text-decoration: underline;
@@ -84,12 +84,12 @@
 
 .forgot{
     position: relative;
-    left:26px;
+    left:27px;
 }
 
 .sign{
     position: relative;
-    /* left:-26px; */
+    left:-27px;
 }
 .forgot:hover,
 .sign:hover{

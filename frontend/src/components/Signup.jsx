@@ -7,21 +7,22 @@ import {
   faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
 import Header from './Header';
-import Footer from './Footer';
 
 function Signup() {
   const [eye, setEye] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const URL = 'http://localhost:8000/auth'
 
   const handlesignup = async () => {
-    console.log(name, email, password);
+    console.log(name, email, password,phone);
     const val = {
       name: name,
       email: email,
       password: password,
+      phoneNo:phone,
       role:"user"
     }
     try {
@@ -48,6 +49,11 @@ function Signup() {
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
             <input className='inputBox' value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
+            
+            <input className='inputBox' value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
+            
+            <input className='inputBox' value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
+
             <div className='passwordfield'>
               <input className='inputBox' type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
               <div className="eyePassword" onClick={() => setEye(!eye)}>
@@ -58,13 +64,10 @@ function Signup() {
                 )}
               </div>
             </div>
-            <input className='inputBox' value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
             <button type="button" className='logbtn' onClick={handlesignup}>Sign Up</button>
           </div>
           <div className='last-block having'>
-            {/* <a href="/" className='forgot-pass'>Having an account ?</a> */}
             <a href="/login" className='sign-pass'>Having an account ? Login</a>
-            {/* <a href="/login" className='forgot-pass'>Having an account ? Login</a> */}
           </div>
         </div>
       </div>

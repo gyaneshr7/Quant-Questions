@@ -176,13 +176,13 @@ function Profile() {
   const options = {
     responsive: true,
     plugins: {
-      // legend: {
-      //   display: false,
-      //   position: 'right',
-      //   label: {
-      //     fullSize: true
-      //   }
-      // },
+      legend: {
+        display: false,
+        position: 'right',
+        label: {
+          fullSize: true
+        }
+      },
       title: {
         display: false,
         text: 'Progress in Categories',
@@ -237,6 +237,10 @@ function Profile() {
               <div className="pro-give">
                 <p style={{ fontWeight: 600 }}>Email:</p>{" "}
                 {userData && userData.email}
+              </div>
+              <div className="pro-give">
+                <p style={{ fontWeight: 600 }}>Contact:</p>{" "}
+                {userData && userData.phoneNo}
               </div>
               {/* <div><p style={{ fontWeight: 600 }}>Background:</p></div>
               <div><p style={{ fontWeight: 600 }}>Degree:</p></div>
@@ -352,7 +356,11 @@ function Profile() {
             <div className="pro">Weakness</div>
 
             <div className="bar">
-              <Bar data={data2} />
+             { weakness.length>0 ?
+              <Bar data={data2} options={options} style={{padding:"40px",fontSize:"18px"}} />
+             :
+             <div className="d-flex justify-content-center pb-5" style={{fontSize:"20px"}}>Attempt more questions to know your weak area.</div>
+          } 
             </div>
           </div>
         </div>
@@ -365,7 +373,7 @@ function Profile() {
               <div>
                 <div className="locking">
                   {
-                    (checkStatus("bone") || checkStatus("btwo")  || checkStatus("bthree")  || checkStatus("bfour") ) && !checkStatus("bfive") ? <FaLockOpen size="25"/> : checkStatus("bfive") ? '' : <FaLock size="25"/>
+                    (checkStatus("bone") || checkStatus("btwo")  || checkStatus("bthree")  || checkStatus("bfour") ) && !checkStatus("bfive") ? <FaLockOpen size="25"/> : checkStatus("bfive") ? <FaLock className="notshow" /> : <FaLock size="25"/>
                   }
                 </div>
 
@@ -375,11 +383,11 @@ function Profile() {
                     <RiShieldStarLine />
                   </div>
                   <div className="ribbon">
-                    <AiFillStar className={checkStatus("bone") ?'star' :'star star-class'}  />
-                    <AiFillStar className={checkStatus("btwo") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("bthree") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("bfour") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("bfive") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bone") ?'star active' :'star star-class'}  />
+                    <AiFillStar className={checkStatus("btwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfive") ?'star active' :'star star-class'} />
                   </div>
                 </div>
               </div>
@@ -387,7 +395,7 @@ function Profile() {
 
               <div>
                 <div className="locking">{
-                    (checkStatus("sone") || checkStatus("stwo")  || checkStatus("sthree")  || checkStatus("sfour") ) && !checkStatus("sfive")? <FaLockOpen size="25"/> : checkStatus("sfive") ? '' : <FaLock size="25"/>
+                    (checkStatus("sone") || checkStatus("stwo")  || checkStatus("sthree")  || checkStatus("sfour") ) && !checkStatus("sfive")? <FaLockOpen size="25"/> : checkStatus("sfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
                   }</div>
                 <div className={checkStatus("sone") ? "hex silver": "hex silver star-class"}>
 
@@ -396,18 +404,18 @@ function Profile() {
                     <RiShieldStarLine />
                   </div>
                   <div className="ribbon">
-                    <AiFillStar className={checkStatus("sone") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("stwo") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("sthree") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("sfour") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("sfive") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("stwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfive") ?'star active' :'star star-class'} />
                   </div>
                 </div>
               </div>
 
               <div>
                 <div className="locking">{
-                    (checkStatus("gone") || checkStatus("gtwo")  || checkStatus("gthree")  || checkStatus("gfour") ) && !checkStatus("gfive")? <FaLockOpen size="25"/> : checkStatus("gfive") ? '' : <FaLock size="25"/>
+                    (checkStatus("gone") || checkStatus("gtwo")  || checkStatus("gthree")  || checkStatus("gfour") ) && !checkStatus("gfive")? <FaLockOpen size="25"/> : checkStatus("gfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
                   }</div>
                 <div className={checkStatus("gone") ? "hex gold": "hex gold star-class"}>
                   <div className="gold-tag">Gold</div>
@@ -415,18 +423,18 @@ function Profile() {
                     <RiShieldStarLine />
                   </div>
                   <div className="ribbon">
-                    <AiFillStar className={checkStatus("gone") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("gtwo") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("gthree") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("gfour") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("gfive") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gtwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfive") ?'star active' :'star star-class'} />
                   </div>
                 </div>
               </div>
 
               <div>
                 <div className="locking">{
-                    (checkStatus("pone") || checkStatus("ptwo")  || checkStatus("pthree")  || checkStatus("pfour") ) && !checkStatus("pfive") ? <FaLockOpen size="25"/> : checkStatus("pfive") ? '' : <FaLock size="25"/>
+                    (checkStatus("pone") || checkStatus("ptwo")  || checkStatus("pthree")  || checkStatus("pfour") ) && !checkStatus("pfive") ? <FaLockOpen size="25"/> : checkStatus("pfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
                   }</div>
                 <div className={checkStatus("pone") ? "hex platinum": "hex platinum star-class"}>
                   <div className="gold-tag">Platinum</div>
@@ -434,11 +442,11 @@ function Profile() {
                     <RiShieldStarLine />
                   </div>
                   <div className="ribbon">
-                    <AiFillStar className={checkStatus("pone") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("ptwo") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("pthree") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("pfour") ?'star' :'star star-class'} />
-                    <AiFillStar className={checkStatus("pfive") ?'star' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("ptwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfive") ?'star active' :'star star-class'} />
                   </div>
                 </div>
               </div>

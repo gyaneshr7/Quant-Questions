@@ -11,6 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Multiselect from "multiselect-react-dropdown";
 import "./AllQuestions.css";
+import ModalResource from "./ModalResource";
 
 function AllQuestions() {
   const [css, setCss] = useState(true);
@@ -29,7 +30,8 @@ function AllQuestions() {
   const [enableSearch, setEnableSearch] = useState(false);
   const [selected, setSelected] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const[show,setShow]=useState(false);
+  const[loginModalShow,setLoginModalShow]=useState(false);
   const [firms, setFirms] = useState([]);
   const [positions, setPositions] = useState([]);
   const [divisions, setDivisions] = useState([]);
@@ -50,17 +52,13 @@ function AllQuestions() {
   const [removedPosition, setRemovedPosition] = useState([]);
   const [removedTag, setRemovedTag] = useState([]);
 
+
   const url = "http://localhost:8000/question";
   const category_url = "http://localhost:8000/category";
 
+  // Pagination
   const itemsPerPage = 10;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const tableData = selected && selected.slice(startIndex, endIndex);
-
-  console.log(tableData);
+  let tableData = selected && selected.slice(0, 10);
 
   function goToPrev() {
     setCurrentPage((page) => page - 1);
@@ -72,6 +70,8 @@ function AllQuestions() {
 
   const totalPages = Math.ceil(selected && selected.length / itemsPerPage);
 
+
+  // Firms, divisions, categories and tags names
   let firmNames = [],
     divisionNames = [],
     positionNames = [],
@@ -100,7 +100,7 @@ function AllQuestions() {
 
   const handleLogout = () => {
     localStorage.setItem("quantuser", null);
-    window.location.href = "/";
+    // window.location.href = "/";
   };
 
   const handleAdd = () => {
@@ -597,6 +597,7 @@ function AllQuestions() {
   // search questions
   const matched = [];
   const searchHandler = (e) => {
+    console.log(mydata,e.target.value);
     if (e.target.value != "") {
       let val = e.target.value;
       mydata.forEach((ques) => {
@@ -611,6 +612,7 @@ function AllQuestions() {
         if (!findItem) uniquematched.push(item);
       });
       setSelected(uniquematched);
+      setCurrentPage(1)
     } else {
       setSelected(mydata);
     }
@@ -622,6 +624,8 @@ function AllQuestions() {
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
+
+          <div style={{display:"flex",flexDirection:"column",gap:"13px"}}>
             <Link to="/dashboard" className="add-que" onClick={handleAdd}>
               <MdLibraryAdd className="icon-side" />
               Add Questions
@@ -632,11 +636,24 @@ function AllQuestions() {
               All Questions
             </div>
 
+            <div  onClick={() => {setLoginModalShow(true);setCss(false);}} className={css ? "add-que" : "add-que-hover"}>
+              <MdLibraryAdd className="icon-side" />
+              Add Resources
+            </div>
+            </div>
+
+            <ModalResource show={loginModalShow} close={() => {setLoginModalShow(false);setCss(true)}}/>
+            
+            <div style={{paddingLeft:"25px"}}>
             <div className="add-que" onClick={handleLogout}>
               <FiLogOut className="icon-side" />
               Logout
             </div>
-          </div>
+            </div>  
+            
+
+
+          </div>
         </div>
 
         <div className="dash-right">
@@ -1055,6 +1072,8 @@ function AllQuestions() {
               </Modal.Footer>
             </Modal>
           )}
+
+          
         </div>
       </div>
     </div>

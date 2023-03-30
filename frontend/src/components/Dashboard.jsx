@@ -10,7 +10,7 @@ import { ChromePicker } from "react-color";
 import { Link, useLocation } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 import { CategoryScale } from "chart.js";
-import Modal from "react-bootstrap/Modal";
+import ModalResource from "./ModalResource";
 
 function Dashboard() {
   const [color, setColor] = useState('');
@@ -56,9 +56,9 @@ function Dashboard() {
   const [tagsArray, setTagsArray] = useState();
   const [css, setCss] = useState(true);
   const [loading, setLoading] = useState(false);
-  const[show,setShow]=useState(false);
+  const[loginModalShow,setLoginModalShow]=useState(false);
 
-  const handleClose = () => setShow(false);
+ 
 
   let firmNames = [],
     divisionNames = [],
@@ -343,6 +343,8 @@ function Dashboard() {
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
+
+            <div style={{display:"flex",flexDirection:"column",gap:"13px"}}>
             <div className={css ? "add-que-hover" : "add-que"}>
               <MdLibraryAdd className="icon-side" />
               Add Questions
@@ -353,14 +355,24 @@ function Dashboard() {
               All Questions
             </Link>
 
-            <div onClick={()=>{setShow(true);setCss(true)}} className={css ? "add-que-hover" : "add-que"}>
+            {/* <div onClick={()=>{setShow(true);setCss(false)}} className={css ? "add-que" : "add-que-hover"}>
+              <MdLibraryAdd className="icon-side" />
+              Add Resources
+            </div> */}
+
+            <div  onClick={() => {setLoginModalShow(true);setCss(false);}} className={css ? "add-que" : "add-que-hover"}>
               <MdLibraryAdd className="icon-side" />
               Add Resources
             </div>
+            </div>
 
-            <div className={css ? "add-que-hover" : "add-que"} onClick={handleLogout}>
+            <ModalResource show={loginModalShow} close={() => {setLoginModalShow(false);setCss(true)}}/>
+
+            <div style={{paddingLeft:"25px"}}>
+            <div className="add-que" onClick={handleLogout}>
               <FiLogOut className="icon-side" />
               Logout
+            </div>
             </div>
 
 
@@ -880,50 +892,7 @@ function Dashboard() {
           </div>
         </div>
 
-                <Modal
-                    show={show}
-                    backdrop="static"
-                    onHide={handleClose}
-                    className="my-modal">
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>Upload Resources</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <div className="up-modal">
-                      <div style={{color:"red"}}>*Note-Please upload pdf only</div>
-                      <div className="show-pdf">
-
-                      <div className="inline-categ">
-                      <div style={{fontWeight:"600",marginTop:"4px"}}>Choose Category</div>  
-                      <select
-                        name="category"
-                        className="opt-font"
-                        style={{
-                          width: "130px",
-                          padding: "5px",
-                          borderRadius: "4px",
-                          border: "1px solid rgb(199, 198, 198)",
-                        }}
-                        required
-                        onChange={(e) => setCategory(e.target.value)}
-                      >
-                        <option value="Category" selected disabled hidden>
-                          Category
-                        </option>
-                        {categoryNames.length > 0 &&
-                          categoryNames.map((category, i) => (
-                            <option key={i} value={category}>{category}</option>
-                          ))}
-                      </select>
-                      </div>
-
-                      <input type="file"/>
-                      </div>
-                      <button className="uploadb">Upload</button>
-                      </div>
-                    </Modal.Body>
-                </Modal>
+                
       </div>
     </div>
   );

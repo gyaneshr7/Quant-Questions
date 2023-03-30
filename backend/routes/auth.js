@@ -68,9 +68,13 @@ router.put("/change/password/:id", async (req, res) => {
     const user = await User.find({ _id: req.params.id });
     if (user.length > 0) {
       if (req.body.currpass == user[0].password) {
-        console.log(req.body.currpass, user[0].password);
-        const updateduser = await User.updateOne({ _id: req.params.id }, { password: req.body.newpass }, { new: true })
-        res.status(200).json("Password Changed Successfully...");
+        if (req.body.newpaas != "") {
+          console.log(req.body.currpass, user[0].password);
+          const updateduser = await User.updateOne({ _id: req.params.id }, { password: req.body.newpass }, { new: true })
+          res.status(200).json("Password Changed Successfully...");
+        } else {
+          res.status(200).json("Please Provide New Password!");
+        }
       } else {
         res.status(200).json("Your current password is wrong...");
       }
@@ -84,14 +88,13 @@ router.put("/change/password/:id", async (req, res) => {
 
 
 router.put("/update/new/password/:phoneNo", async (req, res) => {
-  console.log(Number(req.params.phoneNo));
   try {
     const user = await User.findOne({ phoneNo: req.params.phoneNo });
-    console.log(user);
+    // console.log(user);
     if (user) {
-        const updateduser = await User.updateOne({ phoneNo: req.params.phoneNo }, { password: req.body.newPass }, { new: true })
-        console.log(updateduser);
-        res.status(200).json("Password Changed Successfully...");
+      const updateduser = await User.updateOne({ phoneNo: req.params.phoneNo }, { password: req.body.password }, { new: true })
+      console.log(updateduser, "updateduser");
+      res.status(200).json("Password Changed Successfully...");
     } else {
       res.status(200).json("This user doesn't exists...")
     }

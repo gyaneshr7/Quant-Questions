@@ -34,6 +34,13 @@ function Questions() {
   const [reset, setReset] = useState(false);
   const [categories, setCategories] = useState();
 
+  
+  window.history.pushState(null, null, location.href);
+  window.onpopstate = function (event) {
+    window.history.go(1);
+  };
+
+
   const correct = [], wrong = [];
   userData && userData.currentAttempted && userData.currentAttempted.map((data) => {
     if (data.status == 'correct') {
@@ -57,9 +64,9 @@ function Questions() {
   // colums of the table
   const columnlogin = [
     {
-      name: <div style={{ fontSize: 15, fontWeight: 800 }}>#</div>,
+      name: <div style={{ fontSize: 15, fontWeight: 800 }}>S. No.</div>,
       selector: (row) => row.id,
-      cell: (row) => <div style={{ fontSize: 15 }}>{row.uniqueId && row.uniqueId}</div>,
+      cell: (row) => <div style={{ fontSize: 15 }}>{row.serial}</div>,
       sortable: true,
     },
     {
@@ -310,8 +317,11 @@ function Questions() {
     const res = await data.json();
     random = res && Math.floor(Math.random() * (res.length)) + 1;
     setRandom(random);
+    res.map((ques,i)=>{
+      ques.serial=i+1;
+    })
+    console.log(res,"resss");
     setData(res);
-    console.log(res,"ressss");
   };
 
   const fetchUser = async () => {

@@ -16,6 +16,7 @@ import FAQ from './components/FAQ';
 import AllQuestions from './components/AllQuestions';
 import Forgotpassword from './components/Forgotpassword';
 import Resources from './components/Resources';
+import ResourceDetail from './components/ResourceDetail';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
@@ -27,8 +28,8 @@ function App() {
         <Routes>
           <Route path='/admin' element={<Admin />}></Route>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/signup' element={<Signup />}></Route>
+          <Route path='/login' element={userRole==null || userRole=="admin" ?<Login />: <ErrorPage />}></Route>
+          <Route path='/signup' element={userRole==null || userRole=="admin" ?<Signup />: <ErrorPage />}></Route>
           <Route path='/forgotpassword' element={user === null ? <Forgotpassword /> : <ErrorPage />}></Route>
           
           <Route path='/quedetail' element={userRole === 'user' || userRole==null ?  <QueDetail /> : <ErrorPage />}></Route>
@@ -39,6 +40,7 @@ function App() {
           <Route path='/progress' element={userRole === 'user' ? <Progress /> : <ErrorPage />}></Route>
           <Route path='/faq' element={userRole === 'user' ? <FAQ /> : <ErrorPage />}></Route>
           <Route path='/resources' element={userRole === 'user' ? <Resources /> : <ErrorPage />}></Route>
+          <Route path='/resourcedetail' element={userRole === 'user' ? <ResourceDetail /> : <ErrorPage />}></Route>
 
           <Route path='/dashboard' element={userRole === 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
           <Route path='/all-ques' element={userRole === 'admin' ? <AllQuestions /> : <ErrorPage />}></Route>

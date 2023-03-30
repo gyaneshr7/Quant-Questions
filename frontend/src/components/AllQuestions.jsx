@@ -100,7 +100,7 @@ function AllQuestions() {
 
   const handleLogout = () => {
     localStorage.setItem("quantuser", null);
-    // window.location.href = "/";
+    window.location.href = "/";
   };
 
   const handleAdd = () => {
@@ -130,7 +130,6 @@ function AllQuestions() {
     setOpen(true);
     setId(id);
     setEdit(true);
-    console.log(id);
   };
 
   const setCancel = () => {
@@ -251,7 +250,6 @@ function AllQuestions() {
       value.tags = tval;
     }
 
-    console.log(value, "value");
     const updatedata = await fetch(
       `http://localhost:8000/question/update/questions/${id}`,
       {
@@ -263,7 +261,6 @@ function AllQuestions() {
       }
     );
     const resup = await updatedata.json();
-    console.log(resup);
 
     // console.log(catArray.firmArray)
     // console.log(firms)
@@ -575,7 +572,6 @@ function AllQuestions() {
       },
     });
     const deleted = await deletedata.json();
-    console.log(deleted);
     const data = await fetch(
       "http://localhost:8000/category/updatecategory/firms",
       {
@@ -587,7 +583,6 @@ function AllQuestions() {
       }
     );
     const res = await data.json();
-    console.log(res);
     setDeleteBtn(false);
     setLoading(true);
     setOpen(false);
@@ -597,7 +592,6 @@ function AllQuestions() {
   // search questions
   const matched = [];
   const searchHandler = (e) => {
-    console.log(mydata,e.target.value);
     if (e.target.value != "") {
       let val = e.target.value;
       mydata.forEach((ques) => {

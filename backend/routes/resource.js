@@ -72,7 +72,7 @@ router.put("/update", upload.single("pdf"), async (req, res) => {
   try {
     let resource = await Resources.find({name:req.body.name});
     // Delete image from cloudinary
-    const del =await cloudinary.uploader.destroy(resource[0].cloudinary_id);
+    await cloudinary.uploader.destroy(resource[0].cloudinary_id);
     // Upload image to cloudinary
     let result;
     if (req.file) {
@@ -80,9 +80,9 @@ router.put("/update", upload.single("pdf"), async (req, res) => {
     }
     console.log(result);
     const data = {
-      name: req.body.name || resource.name,
-      pdf: result.secure_url || resource.pdf,
-      cloudinary_id: result.public_id || resource.cloudinary_id,
+      name: req.body.name ,
+      pdf: result.secure_url ,
+      cloudinary_id: result.public_id ,
     };
     user = await Resources.findOneAndUpdate({name:req.body.name}, data, { new: true });
     res.json(user);

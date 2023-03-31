@@ -38,7 +38,7 @@ function Login() {
       const user = await data.json();
       console.log(user);
 
-      if(!(email && password))
+      if(!(email || password))
       {
         alert("All Input fields required");
       }

@@ -9,7 +9,7 @@ function ModalResource(props) {
   const [file, setFile] = useState("");
   const [formsubmit, setFormSubmit] = useState(false);
   const [resources, setResources] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchCategory();
     fetchResources();
@@ -43,22 +43,30 @@ function ModalResource(props) {
       })
 
       if (exist) {
-        axios
-          .put(`http://localhost:8000/resources/update`, formData)
-          .then(async (res) => {
-            console.log(res);
-            alert("File Updated Successfully");
-            setFile("");
-            setCategory("");
-            setFormSubmit(true);
-            window.location.href = '/all-ques'
-          })
+        const result = window.confirm("Do you want to override existing file ?");
+        console.log(result, "askjhgdvtfsdy");
+        if (result) {
+          setLoading(true);
+          axios
+            .put(`http://localhost:8000/resources/update`, formData)
+            .then(async (res) => {
+              console.log(res);
+              alert("File Updated Successfully");
+              setLoading(false);
+              setFile("");
+              setCategory("");
+              setFormSubmit(true);
+              window.location.href = '/all-ques'
+            })
+        }
       } else {
+        setLoading(true);
         axios
           .post(`http://localhost:8000/resources/add/pdf`, formData)
           .then(async (res) => {
             console.log(res);
-            alert("File Upload success");
+            alert("File Uploaded Successfully");
+            setLoading(false);
             setFile("");
             setCategory("");
             setFormSubmit(true);
@@ -111,10 +119,19 @@ function ModalResource(props) {
               </select>
             </div>
 
-            <input type="file" name={file} onChange={(e) => setFile(e.target.files[0])} required />
+            <input type="file" accept='.pdf' name={file} onChange={(e) => setFile(e.target.files[0])} required />
           </div>
 
-          <button type='submit' className="uploadb">Upload</button>
+          {loading ? (
+            <button type='submit' className="uploadb">
+              Wait  <i class="fa fa-spinner fa-spin"></i>
+            </button>
+
+          ) : (
+            <button type='submit' className="uploadb">Upload</button>
+          )
+          }
+
         </form>
       </Modal.Body>
     </Modal>

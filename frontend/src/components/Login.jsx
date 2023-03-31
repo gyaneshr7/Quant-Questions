@@ -37,9 +37,15 @@ function Login() {
       })
       const user = await data.json();
       console.log(user);
-      if (user == 'wrong email or password' || user == 'Not a valid user!') {
+
+      if(!(email && password))
+      {
+        alert("All Input fields required");
+      }
+      else if (user == 'wrong email or password' || user == 'Not a valid user!') {
         alert(user);
-      } else {
+      } 
+      else {
         localStorage.setItem("quantuser", JSON.stringify(user));
         window.location.href = '/questions'
       }
@@ -55,9 +61,9 @@ function Login() {
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='inputBox' value={email}  onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email Address' />
+            <input className='inputBox' value={email} required  onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email Address' />
             <div className='passwordfield'>
-              <input className='inputBox' type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+              <input className='inputBox' type={eye ? "password" : "text"} required autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
               <div className="eyePassword" onClick={() => setEye(!eye)}>
                 {eye ? (
                   <FontAwesomeIcon icon={faEyeSlash} />

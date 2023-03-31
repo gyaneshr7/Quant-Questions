@@ -41,11 +41,8 @@ function Submissions() {
   return (
     <div>
       <Header />
-      <div className="sub">
-        <div className="search-submit">
-          {/* <label style={{ marginRight: "5px" }}>Search:</label> */}
-          {/* <input type="text" /> */}
-        </div>
+      <div className={submittedQuestions && submittedQuestions.length>0 ? "sub":"sub-bet" }>
+      
         <div className="whole-table">
           <table className="mytable table-striped web-table">
             <thead className="table-head">
@@ -98,10 +95,21 @@ function Submissions() {
               
            <tbody>
             <tr>
-              <td className="no-col-data" colspan="5">
+              <td style={{paddingLeft:"43%"}} colspan="5">
                 No recent submissions
               </td>
             </tr>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
+            <div style={{visibility:"hidden"}}>nsjknfm </div>
           </tbody>
               
             } 
@@ -156,18 +164,20 @@ function Submissions() {
                 ))}
             </tbody>
             :
-            <tbody>
+            <tbody className="tablebody">
                     <tr>
                       <td className="no-data" colspan="5">
                         No recent submissions
                       </td>
                     </tr>
-                  </tbody>
+            </tbody>
             }
             
           </table>
 
-          <nav className="d-flex justify-content-center">
+          {
+            submittedQuestions && submittedQuestions.length>0 &&
+            <nav className="d-flex justify-content-center">
             <ul className="pagination">
 
               <button
@@ -195,6 +205,8 @@ function Submissions() {
               </button>
             </ul>
           </nav>
+          }  
+          
         </div>
       </div>
     </div>

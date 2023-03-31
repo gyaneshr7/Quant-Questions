@@ -35,7 +35,9 @@ function Signup() {
       })
       const user = await data.json();
       alert(user);
-      window.location.href='/login'
+      if(user=="Registered Successfully!"){
+        window.location.href='/login'
+      }
     } catch (error) {
       console.log(error);
     }
@@ -48,14 +50,14 @@ function Signup() {
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='inputBox' value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
+            <input className='inputBox' required value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
             
-            <input className='inputBox' value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
+            <input className='inputBox' required value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
             
-            <input className='inputBox' value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
+            <input className='inputBox' required value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
 
             <div className='passwordfield'>
-              <input className='inputBox' type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+              <input className='inputBox' required type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
               <div className="eyePassword" onClick={() => setEye(!eye)}>
                 {eye ? (
                   <FontAwesomeIcon icon={faEyeSlash} />

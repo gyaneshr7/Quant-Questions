@@ -806,11 +806,11 @@ function QueDetail() {
             <div className="closebtn " onClick={closeNav}>×</div>
             <div className="all-side">
               <div className="all-categ">Categories</div>
-              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false); setWrongAns(false);}}><IoMdArrowDropright size="25" />All</div>
+              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false);setAnswer(""); setWrongAns(false);}}><IoMdArrowDropright size="25" />All</div>
               {
                 categories.length > 0 &&
                 categories.map((data) => (
-                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data); setShowAns(false); setCorrectAns(false); setWrongAns(false);}}><IoMdArrowDropright size="25" />{data}</div>
+                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data); setShowAns(false); setCorrectAns(false); setAnswer(""); setWrongAns(false);}}><IoMdArrowDropright size="25" />{data}</div>
                 ))
               }
             </div>

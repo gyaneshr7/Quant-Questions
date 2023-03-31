@@ -36,16 +36,17 @@
 
 
 .res-view{
-    background-color: grey;
+    background-color: rgb(197, 196, 196);
     border-radius: 5px;
     color:white;
+    text-decoration: none;
     padding-left:8px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
 }
 
@@ -72,6 +73,12 @@
     text-align: left;
 }
 
+
+.RescourcesTable table tbody tr td{
+    text-align: right;
+    padding-right:70px;
+}
+
 .res-view-download {
     display: flex;
     /* justify-content: center; */
@@ -90,12 +97,17 @@
     text-decoration: underline;
 }
 
-.res-table-head th{
-    /* border-radius: 10px; */
-    /* border: 2px solid red; */
-    /* border-top-left-radius: 10px; */
-    /* border-top-right-radius: 10px; */
+.res-table-head .first-col{
     text-align:left;
+    font-size: 18px;
+    font-family: "Roboto-Condensed",sans-serif;
+    font-weight: 700;
+}
+
+
+.res-table-head .sec-col{
+ 
+    text-align:right;
     font-size: 18px;
     font-family: "Roboto-Condensed",sans-serif;
     font-weight: 700;
@@ -213,6 +225,10 @@
 
 .table-categ{
     margin-left: 30px;
+}
+
+.table-files{
+    margin-right: 80px;
 }
 
 .res-pagination{

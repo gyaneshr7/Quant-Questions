@@ -13,7 +13,7 @@ import { Pie } from "react-chartjs-2";
 import progressimg from "../images/progress.png";
 
 function Questions() {
-  const location=useLocation();
+  const location = useLocation();
   const [searched, setSearched] = useState("");
   const [searchval, setSearchVal] = useState("");
   const [enableSearch, setEnableSearch] = useState(false);
@@ -25,6 +25,7 @@ function Questions() {
   const [data, setData] = useState();
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
+  console.log(user);
 
   const [firmData, setFirmData] = useState();
   const [firmVal, setFirmVal] = useState('');
@@ -34,12 +35,12 @@ function Questions() {
   const [reset, setReset] = useState(false);
   const [categories, setCategories] = useState();
 
-  
-  window.history.pushState(null, null, location.href);
-  window.onpopstate = function (event) {
-    window.history.go(1);
-  };
-
+  if (user!=null) {
+    window.history.pushState(null, null, location.href);
+    window.onpopstate = function (event) {
+      window.history.go(1);
+    };
+  }
 
   const correct = [], wrong = [];
   userData && userData.currentAttempted && userData.currentAttempted.map((data) => {
@@ -60,7 +61,7 @@ function Questions() {
       hard.push(ques);
     }
   })
-  
+
   // colums of the table
   const columnlogin = [
     {
@@ -129,18 +130,18 @@ function Questions() {
             userData && userData.currentAttempted.some(data => data.questionId === row._id) ?
               userData && userData.currentAttempted.map((data) => (
                 <>
-                {
-                  data.questionId === row._id && data.status==='correct' && <div className="correct1">
-                    {data.status}</div>
-                }
                   {
-                  data.questionId === row._id && data.status==='wrong' && <div className="wrong1">
-                    {data.status}</div>
-                }
+                    data.questionId === row._id && data.status === 'correct' && <div className="correct1">
+                      {data.status}</div>
+                  }
+                  {
+                    data.questionId === row._id && data.status === 'wrong' && <div className="wrong1">
+                      {data.status}</div>
+                  }
                 </>
-                
+
               ))
-              :<div className='unsolved'>Unsolved</div> 
+              : <div className='unsolved'>Unsolved</div>
           }
         </div>
       ),
@@ -181,9 +182,9 @@ function Questions() {
       selector: (row) => row.difficulty,
       cell: (row) => (
         <div
-        className={
-          row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
-        }
+          className={
+            row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
+          }
         >
           {row.difficulty}
         </div>
@@ -317,10 +318,10 @@ function Questions() {
     const res = await data.json();
     random = res && Math.floor(Math.random() * (res.length)) + 1;
     setRandom(random);
-    res.map((ques,i)=>{
-      ques.serial=i+1;
+    res.map((ques, i) => {
+      ques.serial = i + 1;
     })
-    console.log(res,"resss");
+    console.log(res, "resss");
     setData(res);
   };
 
@@ -797,7 +798,7 @@ function Questions() {
 
               <div className="main-firms">
                 {categories && categories.firms.map((item) => (
-                  item.count >0 && <div className="all-firms" value={item.name} onClick={() => setFirmVal(item.name)}>
+                  item.count > 0 && <div className="all-firms" value={item.name} onClick={() => setFirmVal(item.name)}>
                     <div className="firm-item">{item.name}<span className="num-firm">{item.count}</span></div>
                   </div>
                 ))}
@@ -812,7 +813,7 @@ function Questions() {
 
               <div className="main-firms">
                 {categories && categories.divisions.map((item) => (
-                  item.count>0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
+                  item.count > 0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
                     <div className="firm-item">{item.name}<span className="num-divi">{item.count}</span></div>
                   </div>
                 ))}
@@ -827,7 +828,7 @@ function Questions() {
 
               <div className="main-firms">
                 {categories && categories.positions.map((item) => (
-                  item.count>0 && <div className="all-firms" onClick={() => setPositionVal(item.name)}>
+                  item.count > 0 && <div className="all-firms" onClick={() => setPositionVal(item.name)}>
                     <div className="firm-item">{item.name}<span className="num-pos">{item.count}</span></div>
                   </div>
                 ))}
@@ -842,7 +843,7 @@ function Questions() {
 
               <div className="main-firms">
                 {categories && categories.tags.map((item) => (
-                  item.count>0 && <div className="all-firms" onClick={() => setTagVal(item.name)}>
+                  item.count > 0 && <div className="all-firms" onClick={() => setTagVal(item.name)}>
                     <div className="firm-item">{item.name}<span className="num-tag">{item.count}</span></div>
                   </div>
                 ))}
@@ -856,7 +857,7 @@ function Questions() {
       <div className="mobile-view">
         <div className="quest-two">
           <div className="quest-block">
-           
+
             <div className="div2">
               <div className="find">
                 <input
@@ -1071,7 +1072,7 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} 
+                )}
               {(categoryVal.length > 0 || difficultyVal.length > 0) &&
                 !enableSearch && (
                   <DataTable
@@ -1084,7 +1085,7 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} 
+                )}
               {(categoryVal.length > 0 || difficultyVal.length > 0) &&
                 enableSearch && (
                   <DataTable
@@ -1097,7 +1098,7 @@ function Questions() {
                     paginationDefaultPage={1}
                     paginationPerPage={10}
                   />
-                )} 
+                )}
               {(firmVal.length > 0 || divisionVal.length > 0 || positionVal.length > 0 || tagVal.length > 0) &&
                 <DataTable
                   columns={user ? columnlogin : columnlogout}

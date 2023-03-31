@@ -58,7 +58,9 @@ function AllQuestions() {
 
   // Pagination
   const itemsPerPage = 10;
-  let tableData = selected && selected.slice(0, 10);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  let tableData = selected && selected.slice(startIndex, endIndex);
 
   function goToPrev() {
     setCurrentPage((page) => page - 1);

@@ -69,6 +69,11 @@ function QueDetail() {
   if (mm < 10) mm = "0" + mm;
   const todaysdate = dd + "/" + mm + "/" + yyyy;
 
+  const deselectRadio=()=>{
+    let allRadio = document.querySelectorAll("#my-radio");
+    allRadio.forEach((value) => (value.checked = false));
+  }
+
   const handlePreviousButtonClick = () => {
     setAnswer('');
     setShowAns(false);
@@ -79,8 +84,7 @@ function QueDetail() {
       setCurrentQuestion(previousQuestion);
     }
     setHide(false);
-    let allRadio = document.querySelectorAll("#my-radio");
-    allRadio.forEach((value) => (value.checked = false));
+    deselectRadio();
     setHide(false);
   };
 
@@ -93,8 +97,7 @@ function QueDetail() {
     if (nextQuestion < allQuestions.length) {
       setCurrentQuestion(nextQuestion);
     }
-    let allRadio = document.querySelectorAll("#my-radio");
-    allRadio.forEach((value) => (value.checked = false));
+    deselectRadio();
     setHide(false);
   };
 
@@ -635,6 +638,7 @@ function QueDetail() {
                       setShowAns(false);
                       setWrongAns(false);
                       setCorrectAns(false);
+                      setHide(false);
                     }}
                   />
                 </div>
@@ -655,6 +659,7 @@ function QueDetail() {
                                 setShowAns(false);
                                 setWrongAns(false);
                                 setCorrectAns(false);
+                                setHide(false)
                               }}
                             />
                             <p className="input-pin">{option}</p>
@@ -675,6 +680,7 @@ function QueDetail() {
                       setShowAns(false);
                       setWrongAns(false);
                       setCorrectAns(false);
+                      setHide(false)
                     }}
                   />
                 </div>
@@ -695,6 +701,7 @@ function QueDetail() {
                                 setShowAns(false);
                                 setWrongAns(false);
                                 setCorrectAns(false);
+                                setHide(false)
                               }}
                             />
                             <p className="input-pin">{option}</p>
@@ -806,11 +813,11 @@ function QueDetail() {
             <div className="closebtn " onClick={closeNav}>×</div>
             <div className="all-side">
               <div className="all-categ">Categories</div>
-              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false);setAnswer(""); setWrongAns(false);}}><IoMdArrowDropright size="25" />All</div>
+              <div className={categoryCss == "All" ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions("All"); setShowAns(false); setCorrectAns(false);setAnswer(""); setWrongAns(false); deselectRadio(); setHide(false)}}><IoMdArrowDropright size="25" />All</div>
               {
                 categories.length > 0 &&
                 categories.map((data) => (
-                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data); setShowAns(false); setCorrectAns(false); setAnswer(""); setWrongAns(false);}}><IoMdArrowDropright size="25" />{data}</div>
+                  <div className={categoryCss == data ? "categoryonclick categoryClicked" : "categoryonclick"} onClick={() => {fetchCategoryWiseQuestions(data); setShowAns(false); setCorrectAns(false); setAnswer(""); setWrongAns(false); deselectRadio(); setHide(false)}}><IoMdArrowDropright size="25" />{data}</div>
                 ))
               }
             </div>

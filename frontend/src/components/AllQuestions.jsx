@@ -30,8 +30,8 @@ function AllQuestions() {
   const [enableSearch, setEnableSearch] = useState(false);
   const [selected, setSelected] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const[show,setShow]=useState(false);
-  const[loginModalShow,setLoginModalShow]=useState(false);
+  const [show, setShow] = useState(false);
+  const [loginModalShow, setLoginModalShow] = useState(false);
   const [firms, setFirms] = useState([]);
   const [positions, setPositions] = useState([]);
   const [divisions, setDivisions] = useState([]);
@@ -55,9 +55,9 @@ function AllQuestions() {
 
   console.log(mydata);
   // console.log(selected);
-  const [all,setAll]=useState({ttl:title,que:ques,answ:answer,exp:explanation,opt1:option1,opt2:option2,opt3:option3,opt4:option4});
-  const [editId,setEditId]=useState("");
-  
+  const [all, setAll] = useState({ ttl: title, que: ques, answ: answer, exp: explanation, opt1: option1, opt2: option2, opt3: option3, opt4: option4 });
+  const [editId, setEditId] = useState("");
+
   console.log(`all data: ${all}`);
   const url = "http://localhost:8000/question";
   const category_url = "http://localhost:8000/category";
@@ -68,8 +68,8 @@ function AllQuestions() {
   const endIndex = startIndex + itemsPerPage;
   let tableData = selected && selected.slice(startIndex, endIndex);
 
-//  const sliced=Object.entries(all).slice(0, 10);
-//  console.log(sliced);
+  //  const sliced=Object.entries(all).slice(0, 10);
+  //  console.log(sliced);
 
   function goToPrev() {
     setCurrentPage((page) => page - 1);
@@ -114,6 +114,7 @@ function AllQuestions() {
     window.location.href = "/";
   };
 
+  // This will open add questions section
   const handleAdd = () => {
     setCss(false);
   };
@@ -138,7 +139,7 @@ function AllQuestions() {
     fetchCategories();
     setLoading(false);
   }, [loading]);
-  
+
 
   const setClicked = (id) => {
     setOpen(true);
@@ -152,25 +153,26 @@ function AllQuestions() {
     setEdit(false);
   };
 
-  const handleClick = (i,id1) => {
+  const handleClick = (i, id1) => {
     setClicked(i);
-    let newId=0;
-    if(currentPage>1){
-      newId=(currentPage-1)*10+i;
-    }else{
-      newId=i;
+    let newId = 0;
+    if (currentPage > 1) {
+      newId = (currentPage - 1) * 10 + i;
+    } else {
+      newId = i;
     }
-   
-    setEditId(id1);    
-    setAll({...all,
-      ttl:mydata[newId].title,
-      que:mydata[newId].question,
-      answ:mydata[newId].answer,
-      exp:mydata[newId].explanation,
-      opt1:mydata[newId].options[0],
-      opt2:mydata[newId].options[1],
-      opt3:mydata[newId].options[2],
-      opt4:mydata[newId].options[3]
+
+    setEditId(id1);
+    setAll({
+      ...all,
+      ttl: mydata[newId].title,
+      que: mydata[newId].question,
+      answ: mydata[newId].answer,
+      exp: mydata[newId].explanation,
+      opt1: mydata[newId].options[0],
+      opt2: mydata[newId].options[1],
+      opt3: mydata[newId].options[2],
+      opt4: mydata[newId].options[3]
     });
 
     setAnsType("");
@@ -635,7 +637,7 @@ function AllQuestions() {
 
 
 
-  const handleTitleChange=(e)=> {
+  const handleTitleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
 
@@ -643,48 +645,50 @@ function AllQuestions() {
       ...all,
       [name]: value
     });
-    
+
   }
 
 
   return (
-    <div>
+    <>
       <div className="dash">
+
+        {/* admin sidebar */}
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
 
-          <div style={{display:"flex",flexDirection:"column",gap:"13px"}}>
-            <Link to="/dashboard" className="add-que" onClick={handleAdd}>
-              <MdLibraryAdd className="icon-side" />
-              Add Questions
-            </Link>
+            <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
 
-            <div className={css ? "add-que-hover" : "add-que"}>
-              <FaList className="icon-side" />
-              All Questions
+              {/* it will redirect to Dashboard.jsx */}
+              <Link to="/dashboard" className="add-que" onClick={handleAdd}>
+                <MdLibraryAdd className="icon-side" />
+                Add Questions
+              </Link>
+
+              <div className={css ? "add-que-hover" : "add-que"}>
+                <FaList className="icon-side" />
+                All Questions
+              </div>
+
+              <div onClick={() => { setLoginModalShow(true); setCss(false); }} className={css ? "add-que" : "add-que-hover"}>
+                <MdLibraryAdd className="icon-side" />
+                Add Resources
+              </div>
             </div>
 
-            <div  onClick={() => {setLoginModalShow(true);setCss(false);}} className={css ? "add-que" : "add-que-hover"}>
-              <MdLibraryAdd className="icon-side" />
-              Add Resources
-            </div>
-            </div>
+            <ModalResource show={loginModalShow} close={() => { setLoginModalShow(false); setCss(true) }} />
 
-            <ModalResource show={loginModalShow} close={() => {setLoginModalShow(false);setCss(true)}}/>
-            
-            <div style={{paddingLeft:"25px"}}>
-            <div className="add-que" onClick={handleLogout}>
-              <FiLogOut className="icon-side" />
-              Logout
+            <div style={{ paddingLeft: "25px" }}>
+              <div className="add-que" onClick={handleLogout}>
+                <FiLogOut className="icon-side" />
+                Logout
+              </div>
             </div>
-            </div>  
-            
-
-
-          </div>
+          </div>
         </div>
 
+        {/* admin nav */}
         <div className="dash-right">
           <div className="ad-nav">
             <div className="admin-name">
@@ -693,6 +697,7 @@ function AllQuestions() {
             </div>
           </div>
 
+{/* search bar */}
           <div className="admin-func">
             <div className="disp-all-ques">
               <div className="search-all">
@@ -732,7 +737,7 @@ function AllQuestions() {
 
                           <div className="additionals">
                             <FiEdit
-                              onClick={() => handleClick(index,data._id)}
+                              onClick={() => handleClick(index, data._id)}
                               size="20"
                               className=""
                             />
@@ -751,6 +756,7 @@ function AllQuestions() {
                           </div>
                         </div>
                       </div>
+
                       {open && index === id && (
                         <div>
                           {/* {data.answerType === "Text" ? ( */}
@@ -826,6 +832,7 @@ function AllQuestions() {
                                     ))}
                                 </select>
                               </div>
+
                               {ansType == "Mcq" && data.answerType != "Mcq" && (
                                 <>
                                   <div>
@@ -935,8 +942,8 @@ function AllQuestions() {
                                     placeholder="Select Firms"
                                     displayValue=""
                                     isObject={false}
-                                    onKeyPressFn={function noRefCheck() {}}
-                                    onSearch={function noRefCheck() {}}
+                                    onKeyPressFn={function noRefCheck() { }}
+                                    onSearch={function noRefCheck() { }}
                                     onSelect={(name) => setFirms(name)}
                                     onRemove={(name, removedItem) => {
                                       setRemovedFirm((arr) => [
@@ -956,14 +963,14 @@ function AllQuestions() {
                                   placeholder="Select Divisions"
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() {}}
+                                  onKeyPressFn={function noRefCheck() { }}
                                   onRemove={(name, removedItem) => {
                                     setRemovedDivision((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() {}}
+                                  onSearch={function noRefCheck() { }}
                                   onSelect={(name) => setDivisions(name)}
                                   options={divisionNames}
                                   selectedValues={data.divisions}
@@ -975,14 +982,14 @@ function AllQuestions() {
                                   placeholder="Select Positions"
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() {}}
+                                  onKeyPressFn={function noRefCheck() { }}
                                   onRemove={(name, removedItem) => {
                                     setRemovedPosition((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() {}}
+                                  onSearch={function noRefCheck() { }}
                                   onSelect={(name) => setPositions(name)}
                                   options={positionNames}
                                   selectedValues={data.position}
@@ -994,14 +1001,14 @@ function AllQuestions() {
                                   placeholder={data.tags}
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() {}}
+                                  onKeyPressFn={function noRefCheck() { }}
                                   onRemove={(name, removedItem) => {
                                     setRemovedTag((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() {}}
+                                  onSearch={function noRefCheck() { }}
                                   onSelect={(name) => setTags(name)}
                                   options={tagNames}
                                   selectedValues={data.tags}
@@ -1040,35 +1047,35 @@ function AllQuestions() {
                   </div>
                 ))}
 
-              { tableData.length>0 ? 
+              {tableData.length > 0 ?
                 <nav className="d-flex justify-content-center">
-                <ul className="pagination">
-                  <button
-                    onClick={goToPrev}
-                    className="prev"
-                    disabled={currentPage === 1}
-                  >
-                    <IoIosArrowBack fontSize={20} />
-                    Prev
-                  </button>
-                  <p className="nums">
-                    {selected && selected.length > 0
-                      ? `${currentPage}/${totalPages}`
-                      : "0/0"}
-                  </p>
-                  <button
-                    onClick={goToNext}
-                    className="next"
-                    disabled={currentPage >= totalPages}
-                  >
-                    Next
-                    <IoIosArrowForward fontSize={20} />
-                  </button>
-                </ul>
-              </nav>:
-              <div className="d-flex justify-content-center">No Data Found</div>
+                  <ul className="pagination">
+                    <button
+                      onClick={goToPrev}
+                      className="prev"
+                      disabled={currentPage === 1}
+                    >
+                      <IoIosArrowBack fontSize={20} />
+                      Prev
+                    </button>
+                    <p className="nums">
+                      {selected && selected.length > 0
+                        ? `${currentPage}/${totalPages}`
+                        : "0/0"}
+                    </p>
+                    <button
+                      onClick={goToNext}
+                      className="next"
+                      disabled={currentPage >= totalPages}
+                    >
+                      Next
+                      <IoIosArrowForward fontSize={20} />
+                    </button>
+                  </ul>
+                </nav> :
+                <div className="d-flex justify-content-center">No Data Found</div>
               }
-              
+
             </div>
           </div>
 
@@ -1092,10 +1099,10 @@ function AllQuestions() {
             </Modal>
           )}
 
-          
+
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

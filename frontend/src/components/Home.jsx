@@ -17,6 +17,8 @@ import {AiOutlineBranches} from 'react-icons/ai';
 import {BsGrid3X3Gap} from 'react-icons/bs';
 import {RiLineChartFill} from 'react-icons/ri';
 import {FaPuzzlePiece} from 'react-icons/fa';
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <div>
@@ -30,25 +32,25 @@ function Home() {
             prepare you with real quant interview questions from top firms to
             help you land a job.
           </div>
-          <button className="create-acc" onClick={()=>window.location.href='/signup'}>Create a Free Account</button>
+          <Link to="/signup" className="create-acc" >Create a Free Account</Link>
         </div>
       </div>
 
       <div className="services">
         <div className="home-serv">
           <div className="col-home">
-            <img src={review} alt="" />
+            <img className="col-img" src={review} alt="" />
             <div className="serv-head">Review quant basics</div>
-            <p>
+            <p className="col-text">
               Our tutorials will help refresh all key concepts you will need
               ranging from statistics, finance, modern portfolio theory,
               programming, times series, etc.
             </p>
           </div>
           <div className="col-home">
-            <img src={nail} alt="" />
+            <img className="col-img" src={nail} alt="" />
             <div className="serv-head">Nail the interview</div>
-            <p>
+            <p className="col-text">
               We offer over 200 questions informed by real world interview
               experience with top finance firms. We also give practical tips on
               interview etiquette and structure so that you know what to expect
@@ -56,9 +58,9 @@ function Home() {
             </p>
           </div>
           <div className="col-home">
-            <img src={recruit} alt="" />
+            <img className="col-img" src={recruit} alt="" />
             <div className="serv-head">Get recruited</div>
-            <p>
+            <p className="col-text">
               Quant Questions partners with companies and recruiters identify
               top talent for quant finance roles. Let us introduce you.
             </p>
@@ -68,7 +70,9 @@ function Home() {
 
       <div className="third">
         <div className="over">Over 1,500 quants train on Quant Questions.</div>
-        <button className="acc" onClick={()=>window.location.href='/signup'}>Create a Free Account</button>
+        <div className="over-acc">
+        <Link className="acc" to='/signup'>Create a Free Account</Link>
+        </div>
       </div>
 
       <div className="practice">
@@ -76,72 +80,150 @@ function Home() {
           Practice all core quant interview topics
         </div>
 
-        <div className="prac1">
+        <div className="prac1 prac-web">
           <div className="prac-part1">
             <div className="prac-head"><GrMoney size="20"/>Fixed Income</div>
-            <div>Bond Pricing</div>
-            <div>Duration/Convexity</div>
-            <div>Asset Backed</div>
-            <div>Securities</div>
-            <div>Interest Rates</div>
+            <div className="prac-p">Bond Pricing</div>
+            <div className="prac-p">Duration/Convexity</div>
+            <div className="prac-p">Asset Backed</div>
+            <div className="prac-p">Securities</div>
+            <div className="prac-p">Interest Rates</div>
           </div>
 
           <div className="prac-part1">
             <div className="prac-head"><GrOptimize size="20"/>Derivatives</div>
-            <div>Derivatives</div>
-            <div>Pricing</div>
-            <div>Options & Futures</div>
-            <div>The Greeks</div>
-            <div>Monte Carlo</div>
-            <div>Simulations</div>
+            <div className="prac-p">Derivatives</div>
+            <div className="prac-p">Pricing</div>
+            <div className="prac-p">Options & Futures</div>
+            <div className="prac-p">The Greeks</div>
+            <div className="prac-p">Monte Carlo</div>
+            <div className="prac-p">Simulations</div>
           </div>
 
           <div className="prac-part1">
             <div className="prac-head"><FaDice size="20"/>Probability</div>
-            <div>Expected Value</div>
-            <div>Combinatorics</div>
-            <div>Markov Chains</div>
-            <div>Martingales</div>
-            <div>Stochastic</div>
-            <div>Processes</div>
-            <div>Statistical Distributions</div>
+            <div className="prac-p">Expected Value</div>
+            <div className="prac-p">Combinatorics</div>
+            <div className="prac-p">Markov Chains</div>
+            <div className="prac-p">Martingales</div>
+            <div className="prac-p">Stochastic</div>
+            <div className="prac-p">Processes</div>
+            <div className="prac-p">Statistical Distributions</div>
           </div>
           <div className="prac-part1">
             <div className="prac-head"><AiOutlineBranches size="20"/>Computer Science</div>
-            <div>Algorithms</div>
-            <div>Data Structures</div>
-            <div>Numerical Methods</div>
-            <div>Databases</div>
+            <div className="prac-p">Algorithms</div>
+            <div className="prac-p">Data Structures</div>
+            <div className="prac-p">Numerical Methods</div>
+            <div className="prac-p">Databases</div>
           </div>
         </div>
 
-        <div className="prac2">
+        <div style={{marginTop:"20px",display:"flex",flexDirection:"column",gap:"25px"}}>
+        <div className="prac-ph">
+          <div className="prac-part1">
+            <div className="prac-head"><GrMoney size="20"/>Fixed Income</div>
+            <div className="prac-p">Bond Pricing</div>
+            <div className="prac-p">Duration/Convexity</div>
+            <div className="prac-p">Asset Backed</div>
+            <div className="prac-p">Securities</div>
+            <div className="prac-p">Interest Rates</div>
+          </div>
+
+          <div className="prac-part1">
+            <div className="prac-head"><GrOptimize size="20"/>Derivatives</div>
+            <div className="prac-p">Derivatives</div>
+            <div className="prac-p">Pricing</div>
+            <div className="prac-p">Options & Futures</div>
+            <div className="prac-p">The Greeks</div>
+            <div className="prac-p">Monte Carlo</div>
+            <div className="prac-p">Simulations</div>
+          </div>
+          </div>
+
+          <div className="prac-ph">
+          <div className="prac-part1">
+            <div className="prac-head"><FaDice size="20"/>Probability</div>
+            <div className="prac-p">Expected Value</div>
+            <div className="prac-p">Combinatorics</div>
+            <div className="prac-p">Markov Chains</div>
+            <div className="prac-p">Martingales</div>
+            <div className="prac-p">Stochastic</div>
+            <div className="prac-p">Processes</div>
+            <div className="prac-p">Statistical Distributions</div>
+          </div>
+          <div className="prac-part1">
+            <div className="prac-head"><AiOutlineBranches size="20"/>Computer Science</div>
+            <div className="prac-p">Algorithms</div>
+            <div className="prac-p">Data Structures</div>
+            <div className="prac-p">Numerical Methods</div>
+            <div className="prac-p">Databases</div>
+          </div>
+        </div>
+        </div>
+
+        <div style={{marginTop:"40px",display:"flex",flexDirection:"column",gap:"25px",paddingBottom:"30px"}}>
+        <div className="prac-ph">
           <div className="prac-part1">
             <div className="prac-head"><BsGrid3X3Gap size="20"/>Modelling</div>
-            <div>Econometrics</div>
-            <div>Unsupervised learning</div>
-            <div>Supervised learning</div>
-            <div>Time Series</div>
+            <div className="prac-p">Econometrics</div>
+            <div className="prac-p">Unsupervised learning</div>
+            <div className="prac-p">Supervised learning</div>
+            <div className="prac-p">Time Series</div>
           </div>
           <div className="prac-part1">
             <div className="prac-head"><FaBalanceScale size="20"/>Risk Management</div>
-            <div>Credit Risk</div>
-            <div>CCAR/DFAST</div>
-            <div>Value-at-Risk</div>
+            <div className="prac-p">Credit Risk</div>
+            <div className="prac-p">CCAR/DFAST</div>
+            <div className="prac-p">Value-at-Risk</div>
           </div>
+          </div>
+
+          <div className="prac-ph">
           <div className="prac-part1">
             <div className="prac-head"><RiLineChartFill size="20"/>Equities</div>
-            <div>CAPM</div>
-            <div>Factor Investing</div>
-            <div>Generating</div>
-            <div>Alpha</div>
+            <div className="prac-p">CAPM</div>
+            <div className="prac-p">Factor Investing</div>
+            <div className="prac-p">Generating</div>
+            <div className="prac-p">Alpha</div>
           </div>
           <div className="prac-part1">
             <div className="prac-head"><FaPuzzlePiece size="20"/>Other</div>
-            <div>Sequences</div>
-            <div>Estimation</div>
-            <div>Mental Math</div>
-            <div>Brainteasers</div>
+            <div className="prac-p">Sequences</div>
+            <div className="prac-p">Estimation</div>
+            <div className="prac-p">Mental Math</div>
+            <div className="prac-p">Brainteasers</div>
+          </div>
+        </div>
+        </div>
+
+        <div className="prac2 prac-web">
+          <div className="prac-part1">
+            <div className="prac-head"><BsGrid3X3Gap size="20"/>Modelling</div>
+            <div className="prac-p">Econometrics</div>
+            <div className="prac-p">Unsupervised learning</div>
+            <div className="prac-p">Supervised learning</div>
+            <div className="prac-p">Time Series</div>
+          </div>
+          <div className="prac-part1">
+            <div className="prac-head"><FaBalanceScale size="20"/>Risk Management</div>
+            <div className="prac-p">Credit Risk</div>
+            <div className="prac-p">CCAR/DFAST</div>
+            <div className="prac-p">Value-at-Risk</div>
+          </div>
+          <div className="prac-part1">
+            <div className="prac-head"><RiLineChartFill size="20"/>Equities</div>
+            <div className="prac-p">CAPM</div>
+            <div className="prac-p">Factor Investing</div>
+            <div className="prac-p">Generating</div>
+            <div className="prac-p">Alpha</div>
+          </div>
+          <div className="prac-part1">
+            <div className="prac-head"><FaPuzzlePiece size="20"/>Other</div>
+            <div className="prac-p">Sequences</div>
+            <div className="prac-p">Estimation</div>
+            <div className="prac-p">Mental Math</div>
+            <div className="prac-p">Brainteasers</div>
           </div>
         </div>
       </div>
@@ -168,7 +250,7 @@ function Home() {
         <div className="over-head">Who is Quant Questions for?</div>
         <div className="myhome-serv">
           <div className="col-home">
-            <img src={who1} alt="" />
+            <img className="serv-img" src={who1} alt="" />
             <div className="myserv-head">Undergraduates in STEM majors</div>
             <p className="my-text">
               You are majoring in engineering, applied math or computer science
@@ -179,7 +261,7 @@ function Home() {
             </p>
           </div>
           <div className="col-home">
-            <img src={who2} alt="" />
+            <img className="serv-img" src={who2} alt="" />
             <div className="myserv-head">Graduate students & PhD candidates</div>
             <p className="my-text">
               You are getting your masters in financial engineering, math
@@ -191,7 +273,7 @@ function Home() {
             </p>
           </div>
           <div className="col-home">
-            <img src={who3} alt="" />
+            <img className="serv-img" src={who3} alt="" />
             <div className="myserv-head">Early career quant professionals</div>
             <p className="my-text">
               You went through this quant interview rodeo once before and you

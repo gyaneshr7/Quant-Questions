@@ -157,7 +157,8 @@ td{
  }
 
  .mytable{
-    width:350px;
+    width:90%;
+    margin: auto;
  }
 
  .mytable td{

@@ -6,10 +6,10 @@ const User = require('../models/User');
 router.post("/register", async (req, res) => {
   try {
     console.log(req.body);
-    const { name, email, password, role } = req.body;
-
+    const { name, email, password,phoneNo,role } = req.body;
+    
     // Validate user input
-    if (!(email && password && name)) {
+    if (!(email && password && name )) {
       res.status(400).json("All input is required");
     } else {
       const oldUser = await User.findOne({ email });
@@ -21,7 +21,8 @@ router.post("/register", async (req, res) => {
           name,
           email: email.toLowerCase(), // sanitize: convert email to lowercase
           password: password,
-          role: role
+          role: role,
+          phoneNo:phoneNo
         });
 
         // return new user

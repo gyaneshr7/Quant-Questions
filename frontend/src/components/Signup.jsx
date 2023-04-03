@@ -46,18 +46,18 @@ function Signup() {
   return (
     <>
       <Header />
-      <div className='login-page'>
+      <div className='signin-page'>
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='inputBox' required value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
+            <input className='signinputBox' required value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
             
-            <input className='inputBox' required value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
+            <input className='signinputBox' required value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
             
-            <input className='inputBox' required value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
+            <input className='signinputBox' required value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
 
-            <div className='passwordfield'>
-              <input className='inputBox' required type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+            <div className='signpasswordfield'>
+              <input className='signinputBox' required type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
               <div className="eyePassword" onClick={() => setEye(!eye)}>
                 {eye ? (
                   <FontAwesomeIcon icon={faEyeSlash} />

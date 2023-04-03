@@ -54,9 +54,11 @@ function ChangePassword() {
           <div className='password'>
             <h3 className='change'>Change Password</h3>
             <div className='lock'>
+             
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
 
+                <div className='mypasswordfield'>
                 <input className='inputPass' value={current} autoComplete="off" onChange={(e) => setCurrent(e.target.value)} type={eye ? "password" : "text"} placeholder='Current Password' />
                 <div className="pass-eye" onClick={() => setEye(!eye)}>
                   {eye ? (
@@ -65,27 +67,34 @@ function ChangePassword() {
                     <FontAwesomeIcon icon={faEye} />
                   )}
                 </div>
+                </div>
               </div>
+              
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
+                <div className='mypasswordfield'>
                 <input className='inputPass' value={newpass} autoComplete="off" onChange={(e) => setNewPass(e.target.value)} type={eye1 ? "password" : "text"} placeholder='New Password' />
-                <div className="eye-pc" onClick={() => setEye1(!eye1)}>
+                <div className="pass-eye" onClick={() => setEye1(!eye1)}>
                   {eye1 ? (
                     <FontAwesomeIcon icon={faEyeSlash} />
                   ) : (
                     <FontAwesomeIcon icon={faEye} />
                   )}
                 </div>
+                </div>
               </div>
+             
               <div className='set-lock'>
                 <div className='locked'><FaLock size={20} className='icon-lock' /></div>
+                <div className='mypasswordfield'>
                 <input className='inputPass' value={confirmPassword} autoComplete="off" onChange={(e) => setConfirmPassword(e.target.value)} type={eye2 ? "password" : "text"} placeholder='Confirm Password' />
-                <div className="eye-con" onClick={() => setEye2(!eye2)}>
+                <div className="pass-eye" onClick={() => setEye2(!eye2)}>
                   {eye2 ? (
                     <FontAwesomeIcon icon={faEyeSlash} />
                   ) : (
                     <FontAwesomeIcon icon={faEye} />
                   )}
+                </div>
                 </div>
               </div>
             </div>

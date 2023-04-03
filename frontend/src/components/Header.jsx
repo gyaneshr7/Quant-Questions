@@ -31,10 +31,12 @@ function Header() {
     window.location.href = '/login'
   }
 
+ 
+  
   return (
     <div className="header">
-      <div className="main">
-        <div>
+      <div className={user? "main-user":"main"}>
+        <div className="logo-quant">
           <Link to="/questions">
             <img className="logo" src={logo3} onClick={() => { setClicked(true) }} alt="" />
           </Link>
@@ -47,16 +49,16 @@ function Header() {
                   <button className="que-btn ques-user" onClick={() => { setClicked(true) }}>Questions</button>
                 </Link>}
                 
-                <div onClick={()=>setOpen(!open)}>
+                <div className="show-my-user" onClick={()=>setOpen(!open)}>
                   <FaUserCircle className="curs" size="25"/>
                   <IoMdArrowDropdown className="curs" size="15"/>
                 </div>
                 {
-                  open && <div className="user-block">
+                  open &&
+                    <div className="user-block">
                        <Link to='/profile' className="mylinks"><div className="gap-user"><FaUser className="icon-user"/>{user.name}</div></Link>
                        <Link to='/progress' className="mylinks"><div className="gap-user"><FaChartPie className="icon-user"/>Progress</div></Link> 
                        <Link to='/submissions' className="mylinks"><div className="gap-user"><img className="icon-user my-sub" src={progress} alt=""/><div className="subm">Submissions</div></div></Link>
-                       {/* <div className="gap-user" ><GrNotes className="icon-user"/>Manage Subscriptions</div>  */}
                        <Link to='/faq' className="mylinks"><div className="gap-user"><FaQuestion className="icon-user"/>FAQs</div></Link>
                        <Link to='/resources' className="mylinks"><div className="gap-user"><GrResources className="icon-user"/>Resources</div></Link>
                        <Link to='/change_password' className="mylinks"><div className="gap-user"><FaExchangeAlt className="icon-user"/>Change Password</div></Link>
@@ -82,9 +84,9 @@ function Header() {
         {
           user ?
           <div className="right user-right">
-          { loc !== '/questions' && <Link to="/questions">
+          { loc !== '/questions' && <Link style={{textDecoration:"none"}} to="/questions">
             <button className="que-btn ques-user ques-web" onClick={() => { setClicked(true) }}>Questions</button>
-            <button className="ques-mobile" onClick={() => { setClicked(true) }}>Que</button>
+            <button className="ques-mobile"  onClick={() => { setClicked(true) }}>Questions</button>
           </Link>}
           
           <div onClick={()=>setOpen(!open)}>

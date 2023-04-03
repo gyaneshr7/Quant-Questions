@@ -5,6 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import './Progress.css';
 import { TiTick } from 'react-icons/ti';
 import { ImCross } from "react-icons/im";
+import { Link } from 'react-router-dom';
 
 function Progress() {
   const user = JSON.parse(localStorage.getItem('quantuser'));
@@ -139,7 +140,7 @@ function Progress() {
     <div>
       <Header />
       <div className='prog-page'>
-        <div className='row2-prog'>
+        <div className='row4-prog'>
         <div className='categ-head'>Submissions by Category</div>
         <div className='row1-prog'>
           <div className='doughnut'>
@@ -195,7 +196,7 @@ function Progress() {
                   {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
                     <tr>
                       <td>{data.date}</td>
-                      <td className="que-co">{data.question.title}</td>
+                      <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>
                       <td>
                         {
                           data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15}  color="red" />
@@ -226,11 +227,9 @@ function Progress() {
           <table className="table-sub table-striped phone-table">
             <thead className='table-head'>
               <tr>
-                {/* <th>Date Submitted</th> */}
                 <th>Question</th>
                 <th>Correct?</th>
                 <th>Difficulty</th>
-                {/* <th>Category</th> */}
               </tr>
             </thead>
 
@@ -240,7 +239,7 @@ function Progress() {
                   {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
                     <tr>
                       {/* <td>{data.date}</td> */}
-                      <td className="que-co">{data.question.title}</td>
+                      <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-com">{data.question.title}</td></Link>
                       <td>
                         {
                           data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15}  color="red" />
@@ -269,7 +268,8 @@ function Progress() {
         </div>
 
         <div className='row3-prog'>
-          <div className='recent'>Most Recent 30 Submissions</div>
+          <div className='recent recent-web'>Most Recent 30 Submissions</div>
+          <div className='recent recent-ph'>Most Recent 10 Submissions</div>
 
           <table className="table-sub table-striped web-table">
             <thead className='table-head'>
@@ -287,7 +287,7 @@ function Progress() {
               {submittedQuestions && submittedQuestions.slice(0, 31).map((data) => (
                 <tr>
                   <td>{data.date}</td>
-                  <td className="que-co">{data.question.title}</td>
+                  <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}> <td className="que-co">{data.question.title}</td></Link>
                   <td>
                     {
                       data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} className="imcross" color="red" />
@@ -318,20 +318,18 @@ function Progress() {
           <table className="table-sub table-striped phone-table">
             <thead className='table-head'>
               <tr>
-                {/* <th>Date Submitted</th> */}
                 <th>Question</th>
                 <th>Correct?</th>
                 <th>Difficulty</th>
-                {/* <th>Category</th> */}
               </tr>
             </thead>
             {
               submittedQuestions && submittedQuestions.length>0 ?
               <tbody>
-              {submittedQuestions && submittedQuestions.slice(0, 31).map((data) => (
+              {submittedQuestions && submittedQuestions.slice(0, 11).map((data) => (
                 <tr>
                   {/* <td>{data.date}</td> */}
-                  <td className="que-co">{data.question.title}</td>
+                  <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}> <td className="que-com">{data.question.title}</td></Link>
                   <td>
                     {
                       data.correctAns ? <TiTick color="green" size={25} /> : <ImCross size={15} className="imcross" color="red" />

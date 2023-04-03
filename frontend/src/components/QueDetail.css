@@ -83,6 +83,8 @@
     width:400px;
     height:40px;
     border:1px solid grey;
+    padding-left: 10px;
+    padding-top: 6px;
 }
 
 .submit{
@@ -664,13 +666,12 @@
 
     .detail-two{
         margin-top: -40px;
-        margin-left:-90px;
+        width:85%;
     }   
     
     .web-sidebar{
         display:none;
     }
-
 
     .mob-sidebar {
         display: block;

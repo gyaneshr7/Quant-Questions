@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import "./FAQ.css";
 import Header from "./Header";
-import ReactMarkdown from 'react-markdown';
-import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
 import { IoIosArrowForward } from "react-icons/io";
-function FAQ() {
-  const [open, setOpen] = useState(false);
-  const [id, setId] = useState("");
-  
 
+
+function FAQ() {
+  const [open, setOpen] = useState([]);
+
+ 
   const faq = [
     {
       id: 1,
@@ -39,15 +38,19 @@ function FAQ() {
     }
   ];
 
-  const setClicked = (id) => {
-    setOpen(true);
-    setId(id);
-    console.log(id);
-  };
+
+  const setClicked = (index) => {
+    if (open.includes(index)) {
+      setOpen(open.filter(i => i !== index));
+    } else {
+      setOpen([...open, index]);
+    }
+  }
 
   return (
-    <div>
+    <div >
       <Header />
+      
       <h1 className="faq-head">FAQs</h1>
       <div className="disp-faq">
         {faq.map((data, index) => (
@@ -55,18 +58,22 @@ function FAQ() {
             <div onClick={() => setClicked(index)}>
               <div className="faq-open">
                 <div>{data.q}</div>
-                <IoIosArrowForward className="faq-ios" />
+                {
+                  open.includes(index) ? <IoIosArrowForward className="faq-ios rotate" />
+                  : <IoIosArrowForward className="faq-ios" />
+                }
+                  
               </div>
             </div>
-            {open && index === id &&
-                  <div onClick={()=>setOpen(false)} className="faq-open-detail">
+            {open.includes(index) &&
+                  <div className="faq-open-detail">
                     <div>{data.d}</div>
                   </div>
                 }
           </div>
         ))}
-      </div>       
-    </div>
+      </div>  
+      </div>     
   );
 }
 

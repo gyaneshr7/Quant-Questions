@@ -8,14 +8,23 @@
 .box{
     border:1px solid rgb(209, 207, 207);
     border-radius: 4px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     padding:20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 .login-page{
     width:500px;
     margin: auto;
-    margin-top: 70px;
+    margin-top:5%;    
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
+
+.signin-page{
+    width:500px;
+    margin: auto;
+    margin-top: 5%;    
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
 
 .login-logo{
     width:200px;
@@ -25,6 +34,14 @@
 }
 
 .inputBox{
+    padding:10px;
+    border:1px solid rgb(209, 207, 207);
+    width:400px;
+    margin:10px;
+    border-radius: 4px;
+}
+
+.signinputBox{
     padding:10px;
     border:1px solid rgb(209, 207, 207);
     width:400px;
@@ -109,6 +126,15 @@
     left:10px;
 }
 
+.signpasswordfield{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    left:14px;
+    width:450px;
+}
+
+
 .having{
     display: flex;
     justify-content: center;
@@ -117,22 +143,36 @@
 
 @media screen and (max-width:540px){
    .login-page{
-    width:300px;
-    margin-top: 50px;
+    width:340px;
     /* height:450px; */
    }  
+
+   .signin-page{
+    width:85%;
+    margin-top: 20%;
+    /* height:450px; */
+   } 
    
    .inputBox{
-    width:240px;
-    padding:2px;
+    width:280px;
+    padding:6px;
    }
 
+   .signinputBox{
+    width:100%;
+    padding:6px;
+   }
+
+   .signpasswordfield{
+    width:113%;
+    left:10px;
+   }
    .logbtn{
-    width:240px;
+    width:280px;
    }
    
 .eyePassword{
-    top:12px;
+    top:16px;
     left:-40px;
 }
 

@@ -108,9 +108,10 @@ function QueDetail() {
   const fetchQuestions = async () => {
     const data = await fetch(`http://localhost:8000/question/getallquestions`);
     const res = await data.json();
+    console.log(location.state.id,"jhhjhjjhj");
     res &&
       res.map((ques, i) => {
-        if (ques.uniqueId == location.state.id) {
+        if (ques._id == location.state.id) {
           setCurrentQuestion(i);
         }
       });
@@ -532,9 +533,9 @@ function QueDetail() {
   //   console.log("hghfghb");
   // })
 
-  const formatted=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`);
+  // const formatted=katex.renderToString(`${allQuestions && allQuestions[currentQuestion].explanation}`);
 
-  // const formatted=chooseCategory ? categoryQuestions[currentQuestion] && (categoryQuestions[currentQuestion].explanation) : allQuestions && (allQuestions[currentQuestion].explanation)
+  const formatted=chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation;
 
   const equ='This is a Markdown paragraph with an inline equation: $x = y^2$, and a block equation:\n\n$$\n\\int_0^\\infty x^2 dx\n$$';
 
@@ -586,10 +587,10 @@ function QueDetail() {
       <div id="main" className="detail-side">
         <div className="que-side">
         <div id="main">
-        <button className="openbtn mob-btn" onClick={openMobNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Questions</button>  
+        <button className="openbtn mob-btn" onClick={openMobNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Categories</button>  
         </div>
         <div id="main">
-        <button className="openbtn web-btn" onClick={openNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Questions</button>  
+        <button className="openbtn web-btn" onClick={openNav}><MdFormatListBulleted style={{marginTop:"4px"}} size="20"/> Categories</button>  
         </div>
           <div className="detail-one">
             <div className="line-one">
@@ -752,7 +753,7 @@ function QueDetail() {
                   <div className="explain-head">Explanation:</div>
                   <div className="explain-cont" >
                     {/* <ReactMarkdown id="explain-convert" style={{ justifyContent: "left" }}>{chooseCategory ? categoryQuestions[currentQuestion] && categoryQuestions[currentQuestion].explanation : allQuestions && allQuestions[currentQuestion].explanation}</ReactMarkdown> */}
-                <div style={{fontStyle:"normal"}} dangerouslySetInnerHTML={{__html: formatted}}></div>
+                {/* <div style={{fontStyle:"normal"}} dangerouslySetInnerHTML={{__html: formatted}}></div> */}
                   
                   
                   {/* <ReactMarkdown

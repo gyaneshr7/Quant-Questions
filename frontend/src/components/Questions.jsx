@@ -74,7 +74,7 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Question Name</div>,
       selector: (row) => row.que,
       cell: (row) => (
-        <Link to="/quedetail" state={{ id: row.uniqueId }}>
+        <Link to="/quedetail" state={{ id: row._id }}>
           <div
             style={{
               fontSize: 15,
@@ -160,7 +160,7 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Question Name</div>,
       selector: (row) => row.que,
       cell: (row) => (
-        <Link to="/quedetail" state={{ id: row.uniqueId }}>
+        <Link to="/quedetail" state={{ id: row._id }}>
           <div
             style={{
               fontSize: 15,
@@ -221,7 +221,7 @@ function Questions() {
       name: <div style={{ fontSize: 10, fontWeight: 700 }}>Question Name</div>,
       selector: (row) => row.title,
       cell: (row) => (
-        <Link to="/quedetail" state={{ id: row.uniqueId }}>
+        <Link to="/quedetail" state={{ id: row._id }}>
           <div
             style={{
               fontSize: 15,
@@ -561,7 +561,7 @@ function Questions() {
               <div className="random-side">
                 <Link
                   to="/quedetail"
-                  state={{ id: random && data[random] && data[random].uniqueId }}
+                  state={{ id: random && data[random] && data[random]._id }}
                 >
                   <button className="random">Random Q</button>
                 </Link>
@@ -868,7 +868,7 @@ function Questions() {
                   className="search"
                 />
               </div>
-              <div className="any">
+              <div className="anyone">
                 <select
                   name="category"
                   required
@@ -903,74 +903,75 @@ function Questions() {
 
               </div>
 
-              <div className="any">
+              <div className="anyone">
                 <select
-                  name="category"
+                  name="firms"
                   required
-                  style={{ border: "none", width: "63px" }}
-                  onChange={(e) => setCategoryVal(e.target.value)}
+                  style={{ border: "none", width: "60px" }}
+                  onChange={(e) => setFirmVal(e.target.value)}
                   value="Firms"
                 >
-                  <option value="Category" disabled hidden>
+                  <option value="Firms" disabled hidden>
                     Firms
                   </option>
-                  {categories && categories.firms.map((item) => (
-                    <option value={item} onClick={() => setFirmVal(item.name)}>
-                      <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                    </option>
-                  ))}
+                  {
+                    categories && categories.firms.map((firm) => (
+                      <option value={firm.name}>{firm.name}</option>
+                    ))
+                  }
+                  
 
                 </select>
 
                 <select
-                  name="category"
+                  name="division"
                   required
-                  style={{ border: "none", width: "90px" }}
-                  onChange={(e) => setCategoryVal(e.target.value)}
+                  style={{ border: "none", width: "87px" }}
+                  onChange={(e) => setDivisionVal(e.target.value)}
                   value="Divisions"
                 >
-                  <option value="Category" disabled hidden>
+                  <option value="Divisions" disabled hidden>
                     Divisions
                   </option>
-                  {categories && categories.divisions.map((item) => (
-                    <option value={item} onClick={() => setDivisionVal(item.name.name)}>
-                      <div className="firm-item">{item.name.name}<span className="num-firm">56</span></div>
-                    </option>
-                  ))}
+                  {
+                    categories && categories.divisions.map((division) => (
+                      <option value={division.name}>{division.name}</option>
+                    ))
+                  }
                 </select>
 
                 <select
-                  name="category"
+                  name="positions"
                   required
                   style={{ border: "none", width: "90px" }}
-                  onChange={(e) => setCategoryVal(e.target.value)}
+                  onChange={(e) => setPositionVal(e.target.value)}
                   value="Positions"
                 >
-                  <option value="Category" disabled hidden>
+                  <option value="Positions" disabled hidden>
                     Positions
                   </option>
-                  {categories && categories.positions.map((item) => (
-                    <option value={item} onClick={() => setPositionVal(item.name.name)}>
-                      <div className="firm-item">{item.name.name}<span className="num-firm">56</span></div>
-                    </option>
-                  ))}
+                  {
+                    categories && categories.positions.map((position) => (
+                      <option value={position.name}>{position.name}</option>
+                    ))
+                  }
                 </select>
 
                 <select
-                  name="category"
+                  name="tags"
                   required
                   style={{ border: "none", width: "56px" }}
-                  onChange={(e) => setCategoryVal(e.target.value)}
+                  onChange={(e) => setTagVal(e.target.value)}
                   value="Tags"
                 >
-                  <option value="Category" disabled hidden>
+                  <option value="Tags" disabled hidden>
                     Tags
                   </option>
-                  {categories && categories.tags.map((item) => (
-                    <option value={item} onClick={() => setTagVal(item.name.name)}>
-                      <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                    </option>
-                  ))}
+                  {
+                    categories && categories.tags.map((tag) => (
+                      <option value={tag.name}>{tag.name}</option>
+                    ))
+                  }
                 </select>
 
               </div>
@@ -1141,65 +1142,7 @@ function Questions() {
                 </div>
               </div>
             </div>
-            {/* <div className="firms-block">
-              <div className="firm-head">
-                <GrNotes />
-                <div className="myfirm">Firms</div>
-              </div>
-
-              <div className="main-firms">
-                {categories && categories.firms.map((item) => (
-                  <div className="all-firms" value={item} onClick={() => setFirmVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="firms-block">
-              <div className="firm-head">
-                <FaUsers />
-                <div className="myfirm">Divisions</div>
-              </div>
-
-              <div className="main-firms">
-                {categories && categories.divisions.map((item) => (
-                  <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="firms-block">
-              <div className="firm-head">
-                <GrUserManager />
-                <div className="myfirm">Positions</div>
-              </div>
-
-              <div className="main-firms">
-                {categories && categories.positions.map((item) => (
-                  <div className="all-firms" onClick={() => setPositionVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="firms-block">
-              <div className="firm-head">
-                <FaTags />
-                <div className="myfirm">Tags</div>
-              </div>
-
-              <div className="main-firms">
-                {categories && categories.tags.map((item) => (
-                  <div className="all-firms" onClick={() => setTagVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-firm">56</span></div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
+           
 
 
           </div>

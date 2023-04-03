@@ -71,9 +71,9 @@
     width:200px;
     border-radius: 5px;
     border:1px solid #18d796;
-    margin-top: 10px;
+    margin-top: 25px;
     z-index: 999;
-
+    text-decoration: none;
     padding: 10px;
 }
 
@@ -117,7 +117,8 @@
 
 
 
-.col-home img{
+.col-img,
+.serv-img{
     object-fit: cover;
     width:150px;
     height:150px;
@@ -137,6 +138,7 @@
 .third{
 background-color: #212156!important;
 text-align:center;
+height: fit-content;
 }
 
 .over{
@@ -156,6 +158,11 @@ text-align:center;
     color:black;
     padding-top:50px;
 }
+
+.over-acc{
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
 .acc{
     color:#000;
     font-weight: 700!important;
@@ -163,7 +170,8 @@ text-align:center;
     width:200px;
     border-radius: 5px;
     border:1px solid #18d796;
-    margin-top: 30px;
+    /* margin-top: 40px; */
+    text-decoration: none;
     padding: 10px;
     margin-bottom: 30px;
 }
@@ -269,10 +277,20 @@ text-align:center;
     display:none;
 }
 
+.prac-ph{
+    display:none;
+}
+
+
 @media screen and (max-width:540px){
     .home{
         height:490px;
         width: 100%;
+    }
+
+    .home::before{
+        height:490px;
+        z-index: 1;
     }
     .ace{
         font-size: 30px;
@@ -293,56 +311,80 @@ text-align:center;
     }
 
     .services{
-        justify-content: center;
-        text-align: center;
-        align-items:center;
+        margin: auto;
     }
     .home-serv{
         flex-direction: column;
-        text-align: center;
-        justify-content: center;
         align-items: center;
-        padding-left: 0px;
-        padding-right: 0px;
-        gap:1px;
+        gap:10px;
+        padding-top: 30px;
         padding-bottom:50px;
     }
 
     .col-home{
-        justify-content:center;
-        text-align:center;
+        width:100%;
     }
-    .col-home p{
-        width:280px;
+   
+    .col-text{
+        width:95%;
+        text-align: justify;
+        font-size: 14px;
+        margin: auto;
+    }
+    .my-text{
+        width:70%;
+        text-align: justify;
+        font-size: 14px;
+        margin: auto;
     }
 
-    .col-home img{
+    .col-img{
+        object-fit: contain;
+        width:70%;
+        height:20%;
+        /* margin: auto; */
+    }
+
+    .serv-img{
         object-fit: cover;
-        width:110px;
-        height:110px;
+        width:30%;
+        height:10%;
+        margin: auto;
     }
 
-    .over,.over-head{
-        font-size: 23px;
+
+    .over{
+        font-size: 20px;
     }
 
-    .prac1{
-        display:flex;
-        flex-wrap: wrap;
-        gap:10px;
+    .over-head{
+        font-size: 22px;
+        width:85%;
+        margin: auto;
     }
 
+    .prac-web{
+        display: none;
+    }
+
+    .prac-ph{
+        display: flex;
+        padding-left: 30px;
+        padding-right: 10px;
+        gap:25%;
+    }
+ 
     .prac-part1{
-        height:200px;
-        width:160px;
-        margin-left:15px;
+        height:fit-content;
     }
-    .prac2{
-        display:flex;
-        flex-wrap: wrap;
-        gap:1px;
-        padding-top:46px;
-        /* margin-top:5px; */
+  
+
+    .prac-p{
+        font-size: 12px;
+    }
+    .prac-head{
+        font-size: 14px;
+        width:130px;
     }
 
 
@@ -373,15 +415,14 @@ text-align:center;
         padding-right: 0px;
         text-align: center;
         justify-content: center;
-        gap:1px;
+        gap:18px;
     }
 
-    .my-text{
-        text-align: justify;
-        justify-content: center;
-        align-items: center;
+    .myserv-head{
+        font-size: 16px;
+        width:70%;
     }
-
+   
     .footer{
         display: none;
     }
@@ -391,6 +432,7 @@ text-align:center;
 
     .mobile-footer{
         display: flex;
+        justify-content: center;
     }
 
 

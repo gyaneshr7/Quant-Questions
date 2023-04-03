@@ -37,10 +37,10 @@ function AllQuestions() {
   const [divisions, setDivisions] = useState([]);
   const [tags, setTags] = useState([]);
 
-  const [option1, setOption1] = useState();
-  const [option2, setOption2] = useState();
-  const [option3, setOption3] = useState();
-  const [option4, setOption4] = useState();
+  const [option1, setOption1] = useState('');
+  const [option2, setOption2] = useState('');
+  const [option3, setOption3] = useState('');
+  const [option4, setOption4] = useState('');
   const [categories, setCategories] = useState();
   const [deletebtn, setDeleteBtn] = useState(false);
   const [quesId, setQuesId] = useState();
@@ -53,6 +53,12 @@ function AllQuestions() {
   const [removedTag, setRemovedTag] = useState([]);
 
 
+  console.log(mydata);
+  // console.log(selected);
+  const [all,setAll]=useState({ttl:title,que:ques,answ:answer,exp:explanation,opt1:option1,opt2:option2,opt3:option3,opt4:option4});
+  const [editId,setEditId]=useState("");
+  
+  console.log(`all data: ${all}`);
   const url = "http://localhost:8000/question";
   const category_url = "http://localhost:8000/category";
 
@@ -61,6 +67,9 @@ function AllQuestions() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   let tableData = selected && selected.slice(startIndex, endIndex);
+
+//  const sliced=Object.entries(all).slice(0, 10);
+//  console.log(sliced);
 
   function goToPrev() {
     setCurrentPage((page) => page - 1);
@@ -120,18 +129,22 @@ function AllQuestions() {
     const res = await data.json();
     setData(res);
     setSelected(res);
+    // console.log(mydata);
   };
+
 
   useEffect(() => {
     fetchQuestions();
     fetchCategories();
     setLoading(false);
   }, [loading]);
+  
 
   const setClicked = (id) => {
     setOpen(true);
     setId(id);
     setEdit(true);
+    console.log(`first id ${id}`);
   };
 
   const setCancel = () => {
@@ -139,22 +152,38 @@ function AllQuestions() {
     setEdit(false);
   };
 
-  const handleClick = (i) => {
+  const handleClick = (i,id1) => {
     setClicked(i);
+    let newId=0;
+    if(currentPage>1){
+      newId=(currentPage-1)*10+i;
+    }else{
+      newId=i;
+    }
+   
+    setEditId(id1);    
+    setAll({...all,
+      ttl:mydata[newId].title,
+      que:mydata[newId].question,
+      answ:mydata[newId].answer,
+      exp:mydata[newId].explanation,
+      opt1:mydata[newId].options[0],
+      opt2:mydata[newId].options[1],
+      opt3:mydata[newId].options[2],
+      opt4:mydata[newId].options[3]
+    });
+
     setAnsType("");
   };
 
   const handleUpdate = async (id, catArray, options) => {
-    // console.log(title, ques, option1, option2, option3, option4, id);
-    // console.log(firms);
-    // console.log(removedFirm);
     console.log(options, "KIKM");
     let value = {};
-    if (ques) {
-      value.question = ques;
+    if (all.que) {
+      value.question = all.que;
     }
-    if (title) {
-      value.title = title;
+    if (all.ttl) {
+      value.title = all.ttl;
     }
     if (category) {
       value.category = category;
@@ -165,33 +194,33 @@ function AllQuestions() {
     if (ansType) {
       value.answerType = ansType;
     }
-    if (answer) {
-      value.answer = answer;
+    if (all.answ) {
+      value.answer = all.answ;
     }
-    if (explanation) {
-      value.explanation = explanation;
+    if (all.exp) {
+      value.explanation = all.exp;
     }
-    if (option1 || option2 || option3 || option4) {
+    if (all.opt1 || all.opt2 || all.opt3 || all.opt4) {
       let array = [];
-      if (option1) {
-        array.push(option1);
+      if (all.opt1) {
+        array.push(all.opt1);
       } else {
-        array.push(options[0]);
+        array.push(all.opt1);
       }
-      if (option2) {
-        array.push(option2);
+      if (all.opt2) {
+        array.push(all.opt2);
       } else {
-        array.push(options[1]);
+        array.push(all.opt2);
       }
-      if (option3) {
-        array.push(option3);
+      if (all.opt3) {
+        array.push(all.opt3);
       } else {
-        array.push(options[2]);
+        array.push(all.opt3);
       }
-      if (option4) {
-        array.push(option4);
+      if (all.opt4) {
+        array.push(all.opt4);
       } else {
-        array.push(options[3]);
+        array.push(all.opt4);
       }
       value.options = array;
     }
@@ -263,11 +292,6 @@ function AllQuestions() {
       }
     );
     const resup = await updatedata.json();
-
-    // console.log(catArray.firmArray)
-    // console.log(firms)
-    // console.log(removedFirm);
-    // console.log(firmNames)
 
     let fdec = [],
       finc = [];
@@ -390,11 +414,6 @@ function AllQuestions() {
         }
       });
     }
-
-    // console.log(fdec,finc);
-    // console.log(ddec,dinc);
-    // console.log(pdec,pinc);
-    // console.log(tdec,tinc);
 
     const data = await fetch("http://localhost:8000/category/getcategories");
     const res = await data.json();
@@ -594,7 +613,7 @@ function AllQuestions() {
   // search questions
   const matched = [];
   const searchHandler = (e) => {
-    if (e.target.value != "") {
+    if (e.target.value !== "") {
       let val = e.target.value;
       mydata.forEach((ques) => {
         const value = ques.title.toLowerCase().includes(val.toLowerCase());
@@ -613,6 +632,20 @@ function AllQuestions() {
       setSelected(mydata);
     }
   };
+
+
+
+  const handleTitleChange=(e)=> {
+    const { name, value } = e.target;
+    console.log(name, value);
+
+    setAll({
+      ...all,
+      [name]: value
+    });
+    
+  }
+
 
   return (
     <div>
@@ -688,9 +721,9 @@ function AllQuestions() {
                               <textarea
                                 className="quest1"
                                 type="text"
-                                // value={data.title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder={data.title}
+                                value={all.ttl}
+                                name='ttl'
+                                onChange={handleTitleChange}
                               />
                             </div>
                           ) : (
@@ -699,7 +732,7 @@ function AllQuestions() {
 
                           <div className="additionals">
                             <FiEdit
-                              onClick={() => handleClick(index)}
+                              onClick={() => handleClick(index,data._id)}
                               size="20"
                               className=""
                             />
@@ -730,9 +763,9 @@ function AllQuestions() {
                                 <textarea
                                   className="quest1"
                                   type="text"
-                                  value={ques}
-                                  onChange={(e) => setQues(e.target.value)}
-                                  placeholder={data.question}
+                                  value={all.que}
+                                  name='que'
+                                  onChange={handleTitleChange}
                                 />{" "}
                               </div>
                               <div>
@@ -799,40 +832,36 @@ function AllQuestions() {
                                     <span className="span-tag">Option 1:</span>
                                     <input
                                       type="text"
-                                      onChange={(e) =>
-                                        setOption1(e.target.value)
-                                      }
-                                      placeholder=""
+                                      name="opt1"
+                                      value={all.opt1}
+                                      onChange={handleTitleChange}
                                     />
                                   </div>
                                   <div>
                                     <span className="span-tag">Option 2:</span>
                                     <input
                                       type="text"
-                                      onChange={(e) =>
-                                        setOption2(e.target.value)
-                                      }
-                                      placeholder=""
+                                      name="opt2"
+                                      value={all.opt2}
+                                      onChange={handleTitleChange}
                                     />
                                   </div>
                                   <div>
                                     <span className="span-tag">Option 3:</span>
                                     <input
                                       type="text"
-                                      onChange={(e) =>
-                                        setOption3(e.target.value)
-                                      }
-                                      placeholder=""
+                                      name="opt3"
+                                      value={all.opt3}
+                                      onChange={handleTitleChange}
                                     />
                                   </div>
                                   <div>
                                     <span className="span-tag">Option 4:</span>
                                     <input
                                       type="text"
-                                      onChange={(e) =>
-                                        setOption4(e.target.value)
-                                      }
-                                      placeholder=""
+                                      name="opt4"
+                                      value={all.opt4}
+                                      onChange={handleTitleChange}
                                     />
                                   </div>
                                 </>
@@ -842,10 +871,9 @@ function AllQuestions() {
                                   <span className="span-tag">Option 1:</span>
                                   <input
                                     type="text"
-                                    onChange={(e) => setOption1(e.target.value)}
-                                    placeholder={
-                                      data.options[0] ? data.options[0] : ""
-                                    }
+                                    name="opt1"
+                                    value={all.opt1}
+                                    onChange={handleTitleChange}
                                   />
                                 </div>
                               )}
@@ -854,10 +882,9 @@ function AllQuestions() {
                                   <span className="span-tag">Option 2:</span>
                                   <input
                                     type="text"
-                                    onChange={(e) => setOption2(e.target.value)}
-                                    placeholder={
-                                      data.options[1] ? data.options[1] : ""
-                                    }
+                                    name="opt2"
+                                    value={all.opt2}
+                                    onChange={handleTitleChange}
                                   />
                                 </div>
                               )}
@@ -866,10 +893,9 @@ function AllQuestions() {
                                   <span className="span-tag">Option 3:</span>
                                   <input
                                     type="text"
-                                    onChange={(e) => setOption3(e.target.value)}
-                                    placeholder={
-                                      data.options[2] ? data.options[2] : ""
-                                    }
+                                    name="opt3"
+                                    value={all.opt3}
+                                    onChange={handleTitleChange}
                                   />
                                 </div>
                               )}
@@ -878,10 +904,9 @@ function AllQuestions() {
                                   <span className="span-tag">Option 4:</span>
                                   <input
                                     type="text"
-                                    onChange={(e) => setOption4(e.target.value)}
-                                    placeholder={
-                                      data.options[3] ? data.options[3] : ""
-                                    }
+                                    name="opt4"
+                                    value={all.opt4}
+                                    onChange={handleTitleChange}
                                   />
                                 </div>
                               )}
@@ -889,20 +914,18 @@ function AllQuestions() {
                                 <span className="span-tag">Answer:</span>
                                 <input
                                   type="text"
-                                  value={answer}
-                                  onChange={(e) => setAnswer(e.target.value)}
-                                  placeholder={data.answer}
+                                  value={all.answ}
+                                  name="answ"
+                                  onChange={handleTitleChange}
                                 />{" "}
                               </div>
                               <div>
                                 <span className="span-tag">Explanation:</span>
                                 <textarea
                                   type="text"
-                                  value={explanation}
-                                  onChange={(e) =>
-                                    setExplanation(e.target.value)
-                                  }
-                                  placeholder={data.explanation}
+                                  value={all.exp}
+                                  name="exp"
+                                  onChange={handleTitleChange}
                                 />{" "}
                               </div>
                               <div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import { Link } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 import { FaLock } from "react-icons/fa";
 import { FaLockOpen } from "react-icons/fa";
@@ -321,7 +322,7 @@ function Profile() {
                     {submittedQuestions &&
                       submittedQuestions.slice(0, 10).map((data, i) => (
                         <tr key={i}>
-                          <td className="que-co">{data.question.title}</td>
+                          <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>
                           <td>
                             {data.correctAns ? (
                               <TiTick color="green" size={25} />
@@ -369,7 +370,7 @@ function Profile() {
           <div className="bar-profile">
             <div className="pro">Badges & Achievements</div>
 
-            <div className="bar">
+            <div className="bar bar-web">
               <div>
                 <div className="locking">
                   {
@@ -451,6 +452,120 @@ function Profile() {
                 </div>
               </div>
 
+              <svg
+                style={{ position: "absolute", width: 0, height: 0 }}
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+              >
+                <defs>
+                  <filter id="goo">
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="8"
+                      result="blur"
+                    />
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2"/> */}
+                    {/* <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2" flood-opacity="0.3" /> */}
+                    <feColorMatrix
+                      // in="blur"
+                      mode="matrix"
+                      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+                      result="goo"
+                    />
+                    <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                  </filter>
+                </defs>
+              </svg>
+            </div>
+
+            <div className="bar bar-ph">
+              
+              <div className="line1-badge">
+              <div>
+                <div className="locking">
+                  {
+                    (checkStatus("bone") || checkStatus("btwo")  || checkStatus("bthree")  || checkStatus("bfour") ) && !checkStatus("bfive") ? <FaLockOpen size="25"/> : checkStatus("bfive") ? <FaLock className="notshow" /> : <FaLock size="25"/>
+                  }
+                </div>
+
+                <div className={checkStatus("bone") ? "hex bronze": "hex bronze star-class"}>
+                  <div className="gold-tag">Bronze</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("bone") ?'star active' :'star star-class'}  />
+                    <AiFillStar className={checkStatus("btwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("bfive") ?'star active' :'star star-class'} />
+                  </div>
+                </div>
+              </div>
+
+
+              <div>
+                <div className="locking">{
+                    (checkStatus("sone") || checkStatus("stwo")  || checkStatus("sthree")  || checkStatus("sfour") ) && !checkStatus("sfive")? <FaLockOpen size="25"/> : checkStatus("sfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("sone") ? "hex silver": "hex silver star-class"}>
+
+                  <div className="gold-tag">Silver</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("sone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("stwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("sfive") ?'star active' :'star star-class'} />
+                  </div>
+                </div>
+              </div>
+              </div>
+              
+
+              <div className="line1-badge">
+              <div>
+                <div className="locking">{
+                    (checkStatus("gone") || checkStatus("gtwo")  || checkStatus("gthree")  || checkStatus("gfour") ) && !checkStatus("gfive")? <FaLockOpen size="25"/> : checkStatus("gfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("gone") ? "hex gold": "hex gold star-class"}>
+                  <div className="gold-tag">Gold</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("gone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gtwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("gfive") ?'star active' :'star star-class'} />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="locking">{
+                    (checkStatus("pone") || checkStatus("ptwo")  || checkStatus("pthree")  || checkStatus("pfour") ) && !checkStatus("pfive") ? <FaLockOpen size="25"/> : checkStatus("pfive") ? <FaLock className="notshow"/> : <FaLock size="25"/>
+                  }</div>
+                <div className={checkStatus("pone") ? "hex platinum": "hex platinum star-class"}>
+                  <div className="gold-tag">Platinum</div>
+                  <div className="shield">
+                    <RiShieldStarLine />
+                  </div>
+                  <div className="ribbon">
+                    <AiFillStar className={checkStatus("pone") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("ptwo") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pthree") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfour") ?'star active' :'star star-class'} />
+                    <AiFillStar className={checkStatus("pfive") ?'star active' :'star star-class'} />
+                  </div>
+                </div>
+              </div>
+              </div>
+              
               <svg
                 style={{ position: "absolute", width: 0, height: 0 }}
                 xmlns="http://www.w3.org/2000/svg"

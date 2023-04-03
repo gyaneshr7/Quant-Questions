@@ -81,6 +81,7 @@ function ModalResource(props) {
 
 
   return (
+
     <Modal
       show={props.show}
       backdrop="static"
@@ -135,6 +136,7 @@ function ModalResource(props) {
         </form>
       </Modal.Body>
     </Modal>
+
   )
 }
 

@@ -105,6 +105,7 @@
   padding:5px;
   color:grey;
   border-radius: 5px;
+  width:250px;
 }
 
 .div3{
@@ -118,6 +119,11 @@
 .any{
     gap:17px;
     display: flex;
+}
+
+.anyone{
+  gap:12px;
+  display: flex;
 }
 
 
@@ -412,9 +418,18 @@
       flex-direction: column;
       gap:0px;
     }
+
     .find{
+      margin-left: 6%;
+      margin-right: 2%;
+      text-align: left;
+    }
+
+    .search{
+      width:90%;
       margin-top: 25px;
     }
+
     .first-left{
         margin-left: 7px;
     }
@@ -435,11 +450,7 @@
         flex-direction: column;
     }
 
-    .search{
-        width:350px;
-        margin-right: 8px;
-    }
-
+   
     .any{
         margin-top: 20px;
         justify-content: left;
@@ -450,18 +461,27 @@
         text-align: center;
     }
 
+
+    .anyone{
+      margin-top: 20px;
+      justify-content: left;
+      /* gap:153px; */
+      width:350px;
+      margin-left: 5.7%;
+      align-items: center;
+      text-align: center;
+  }
+
     .same-line-categ{
       margin-left:5.8%;
       margin-top: 10px;
     }
 
-    .div3{
-      width:300px;
-    }
 
     .same-line-firm{
       display: flex;
       margin-left: 5%;
+      flex-wrap: wrap;
     }
 
     .quest-progress-head{
@@ -472,5 +492,14 @@
       padding-bottom: 10px;
       padding-left: 30px;
       width:370px;
+    }
+
+    .category-class{
+      font-size: 15px;
+    }
+    .crossed-khushi{
+      margin-top: 4px;
+      font-size: 10px;
+      cursor:pointer;
     }
 }

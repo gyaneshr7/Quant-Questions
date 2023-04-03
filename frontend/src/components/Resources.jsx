@@ -128,7 +128,7 @@ function Resources() {
 
                         </th>
                         <td>
-                          <a href={data.pdf} target="_blank" className="res-view" >View</a>
+                          <a href={data.pdf} target="_blank" className="res-view">View</a>
                         </td>
                       </tr>
                     ))

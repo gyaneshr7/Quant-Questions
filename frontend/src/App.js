@@ -1,4 +1,5 @@
 import './App.css';
+import React, {useState} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Questions from './components/Questions';
@@ -16,6 +17,7 @@ import FAQ from './components/FAQ';
 import AllQuestions from './components/AllQuestions';
 import Forgotpassword from './components/Forgotpassword';
 import Resources from './components/Resources';
+import Header from './components/Header';
 
 function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));

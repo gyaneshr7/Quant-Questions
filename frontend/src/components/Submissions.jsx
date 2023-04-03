@@ -4,6 +4,7 @@ import "./Submissions.css";
 import { ImCross } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 function Submissions() {
   const [submittedQuestions, setSubmittedQuestions] = useState();
@@ -61,9 +62,13 @@ function Submissions() {
                 tableData.map((data) => (
                   <tr height="1%">
                     <td className="set">{data.date}</td>
+                    
                     <td className="quest set que-co">
+                    <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}>
                       {data.question && data.question.title}
+                      </Link>
                     </td>
+                    
                     <td>
                       {data.correctAns ? (
                         <TiTick color="green" size={25} className="tick" />
@@ -133,9 +138,15 @@ function Submissions() {
                 tableData.map((data) => (
                   <tr height="1%">
                     {/* <td className="set">{data.date}</td> */}
+                    
+                    
                     <td className="quest set que-co">
+                    <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}>
                       {data.question && data.question.title}
+                      </Link>
                     </td>
+                  
+
                     <td>
                       {data.correctAns ? (
                         <TiTick color="green" size={25} className="tick" />

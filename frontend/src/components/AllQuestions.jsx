@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Multiselect from "multiselect-react-dropdown";
 import "./AllQuestions.css";
 import ModalResource from "./ModalResource";
+import { slice } from 'lodash'
 
 function AllQuestions() {
   const [css, setCss] = useState(true);
@@ -52,6 +53,11 @@ function AllQuestions() {
   const [removedPosition, setRemovedPosition] = useState([]);
   const [removedTag, setRemovedTag] = useState([]);
 
+  // states for handling pagination
+  const [startIndex, setstartIndex] = useState(0);
+  const [endIndex, setendIndex] = useState(10)
+  let tableData = slice(selected, startIndex, endIndex)
+ 
 
   console.log(mydata);
   // console.log(selected);
@@ -64,19 +70,35 @@ function AllQuestions() {
 
   // Pagination
   const itemsPerPage = 10;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  let tableData = selected && selected.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
+  // let tableData = selected && selected.slice(startIndex, endIndex);
 
   //  const sliced=Object.entries(all).slice(0, 10);
   //  console.log(sliced);
 
   function goToPrev() {
-    setCurrentPage((page) => page - 1);
+    // setCurrentPage((page) => page - 1);
+    if (startIndex >= 10) {
+      setstartIndex(startIndex - 10);
+    }
+    setendIndex(endIndex - 10);
+    setCurrentPage(currentPage - 1);
+    setOpen(false);
+    edit(false);
+    setId(startIndex)
+    handleClick(startIndex+10,0);
   }
 
   function goToNext() {
-    setCurrentPage((page) => page + 1);
+    // setCurrentPage((page) => page + 1);
+    setstartIndex(startIndex + 10);
+    setendIndex(endIndex + 10);
+    setCurrentPage(currentPage + 1);
+    setOpen(false)
+    edit(false)
+    setId(startIndex)
+    handleClick(startIndex+10,0);
   }
 
   const totalPages = Math.ceil(selected && selected.length / itemsPerPage);
@@ -138,14 +160,14 @@ function AllQuestions() {
     fetchQuestions();
     fetchCategories();
     setLoading(false);
-  }, [loading]);
+  }, [loading, startIndex, endIndex]);
 
 
   const setClicked = (id) => {
     setOpen(true);
     setId(id);
     setEdit(true);
-    console.log(`first id ${id}`);
+    // console.log(`first id ${id}`);
   };
 
   const setCancel = () => {
@@ -155,27 +177,28 @@ function AllQuestions() {
 
   const handleClick = (i, id1) => {
     setClicked(i);
-    let newId = 0;
-    if (currentPage > 1) {
-      newId = (currentPage - 1) * 10 + i;
-    } else {
-      newId = i;
-    }
-
+    // let i = 0;
+    // if (currentPage > 1) {
+    //   i = (currentPage - 1) * 10 + i;
+    // } else {
+    //   i = i;
+    // }
     setEditId(id1);
     setAll({
       ...all,
-      ttl: mydata[newId].title,
-      que: mydata[newId].question,
-      answ: mydata[newId].answer,
-      exp: mydata[newId].explanation,
-      opt1: mydata[newId].options[0],
-      opt2: mydata[newId].options[1],
-      opt3: mydata[newId].options[2],
-      opt4: mydata[newId].options[3]
+      ttl: tableData[i].title,
+      que: tableData[i].question,
+      answ: tableData[i].answer,
+      exp: tableData[i].explanation,
+      opt1: tableData[i].options[0],
+      opt2: tableData[i].options[1],
+      opt3: tableData[i].options[2],
+      opt4: tableData[i].options[3]
     });
 
     setAnsType("");
+
+
   };
 
   const handleUpdate = async (id, catArray, options) => {
@@ -617,9 +640,11 @@ function AllQuestions() {
   const searchHandler = (e) => {
     if (e.target.value !== "") {
       let val = e.target.value;
+
       mydata.forEach((ques) => {
         const value = ques.title.toLowerCase().includes(val.toLowerCase());
         if (value) {
+          // console.log(value)
           matched.push(ques);
         }
       });
@@ -697,7 +722,7 @@ function AllQuestions() {
             </div>
           </div>
 
-{/* search bar */}
+          {/* search bar */}
           <div className="admin-func">
             <div className="disp-all-ques">
               <div className="search-all">
@@ -719,27 +744,15 @@ function AllQuestions() {
                     >
                       <div>
                         <div className="ques1-drop">
-                          {edit && index === id ? (
-                            <div className="ques-d">
-                              <span className="span-tag">Title:</span>
-
-                              <textarea
-                                className="quest1"
-                                type="text"
-                                value={all.ttl}
-                                name='ttl'
-                                onChange={handleTitleChange}
-                              />
-                            </div>
-                          ) : (
+                          
                             <div>{data.title}</div>
-                          )}
+                        
 
                           <div className="additionals">
                             <FiEdit
                               onClick={() => handleClick(index, data._id)}
                               size="20"
-                              className=""
+                              
                             />
                             <MdDelete
                               size="20"
@@ -762,6 +775,17 @@ function AllQuestions() {
                           {/* {data.answerType === "Text" ? ( */}
                           <div>
                             <div className="detail-ques">
+                            <div className="ques-d">
+                              <span className="span-tag">Title:</span>
+
+                              <textarea
+                                className="quest1"
+                                type="text"
+                                value={all.ttl}
+                                name='ttl'
+                                onChange={handleTitleChange}
+                              />
+                            </div>
                               <div>
                                 <span className="span-tag span-ques">
                                   Question:

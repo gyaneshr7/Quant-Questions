@@ -48,7 +48,7 @@ export default function Forgotpassword() {
                 'callback': (response) => {
                     // reCAPTCHA solved, allow signInWithPhoneNumber.
                     // handleSendOtp();
-                    console.log("Recaptca varified")
+                    // console.log("Recaptca varified")
                 },
                 defaultCountry: "IN"
             });
@@ -67,13 +67,13 @@ export default function Forgotpassword() {
                 setOtpEdit(true);
                 setLoading(false);
             }).catch((error) => {
-                console.log(error)
+                // console.log(error)
             });
     };
 
     const submitPhoneNo = (e) => {
         e.preventDefault();
-        console.log(phoneNo);
+        // console.log(phoneNo);
         if (phoneNo) {
             validator.isMobilePhone(phoneNo)
                 ? handleSendOtp()
@@ -93,7 +93,7 @@ export default function Forgotpassword() {
             alert("User is verified");
             let count = 0;
             users.map((data) => {
-                console.log(data.phoneNo,phoneNo)
+                // console.log(data.phoneNo,phoneNo)
                 if (data.phoneNo == phoneNo) {
                     setChangeEdit(true);
                     count = 1;
@@ -114,7 +114,7 @@ export default function Forgotpassword() {
 
     const submitPassword = async (e) => {
         e.preventDefault();
-        console.log(newPass, confirmnewPass, phoneNo);
+        // console.log(newPass, confirmnewPass, phoneNo);
         if (newPass === confirmnewPass) {
             const data = await fetch(`http://localhost:8000/auth/update/new/password/${phoneNo}`, {
                 method: 'PUT',

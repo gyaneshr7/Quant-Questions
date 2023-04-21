@@ -108,7 +108,7 @@ function QueDetail() {
   const fetchQuestions = async () => {
     const data = await fetch(`http://localhost:8000/question/getallquestions`);
     const res = await data.json();
-    console.log(location.state.id,"jhhjhjjhj");
+    // console.log(location.state.id,"jhhjhjjhj");
     res &&
       res.map((ques, i) => {
         if (ques._id == location.state.id) {
@@ -167,7 +167,7 @@ function QueDetail() {
 
     const a = await fetch(`http://localhost:8000/user/${user.id}`);
     const updateduser = await a.json();
-    console.log(updateduser, "updateduser1");
+    // console.log(updateduser, "updateduser1");
     let score;
 
     if (chooseCategory ? categoryQuestions[currentQuestion].difficulty === "hard" : allQuestions[currentQuestion].difficulty === "hard") {
@@ -188,13 +188,13 @@ function QueDetail() {
       let val;
       let ans=answer.replace(/ /g,'');
       let correctanswer=chooseCategory ? categoryQuestions[currentQuestion].answer.replace(/ /g,'') : allQuestions[currentQuestion].answer.replace(/ /g,''); 
-      console.log(ans.toLowerCase(),correctanswer.toLowerCase());
+      // console.log(ans.toLowerCase(),correctanswer.toLowerCase());
       if (ans.toLowerCase() ==correctanswer.toLowerCase()) {
         setCorrectAns(true);
         setWrongAns(false);
         status = "correct";
         quesAcceptance = 1;
-        console.log("correctanswer");
+        // console.log("correctanswer");
 
         val = {
           userId: updateduser._id,
@@ -220,7 +220,7 @@ function QueDetail() {
           }
         );
         const updateUser = await data.json();
-        console.log(updateUser, "updateduser2");
+        // console.log(updateUser, "updateduser2");
       } else {
         setCorrectAns(false);
         setWrongAns(true);
@@ -249,7 +249,7 @@ function QueDetail() {
           }
         );
         const res = await data.json();
-        console.log(res, "wrong");
+        // console.log(res, "wrong");
       }
 
       // set questions submission and accepted value
@@ -270,7 +270,7 @@ function QueDetail() {
         }
       );
       const updatedResp = await updateQues.json();
-      console.log(updatedResp, "3")
+      // console.log(updatedResp, "3")
 
       // update current question status
       const userUpdation = {
@@ -289,7 +289,7 @@ function QueDetail() {
         }
       );
       const updatedUserResp = await updateUser.json();
-      console.log(updatedUserResp, "kmjbvtfcrdt");
+      // console.log(updatedUserResp, "kmjbvtfcrdt");
 
       // update badge status
       let count = 0;
@@ -298,7 +298,7 @@ function QueDetail() {
           count++;
         }
       })
-      console.log(count, "countttttt");
+      // console.log(count, "countttttt");
       let badgeval = {};
       let highestCount = updatedUserResp.highestCount;
       if (count >= 0 && count <= 100) {
@@ -508,7 +508,7 @@ function QueDetail() {
           badgeval
         }
       }
-      console.log(badgeval,count,highestCount);
+      // console.log(badgeval,count,highestCount);
 
       const updatebadge = await fetch(`http://localhost:8000/user/update/badge/status/${userData._id}`, {
         method: "PUT",
@@ -518,7 +518,7 @@ function QueDetail() {
         }
       })
       const badgeres = await updatebadge.json();
-      console.log(badgeres)
+      // console.log(badgeres)
     }
   };
 

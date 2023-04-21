@@ -55,7 +55,7 @@ function Profile() {
 
       // console.log(category.name, wrongquescount, categorycount);
       if (wrongquescount >= (60 * categorycount) / 100 && wrongquescount > 0) {
-        console.log(wrongquescount, (60 * categorycount) / 100);
+        // console.log(wrongquescount, (60 * categorycount) / 100);
         weaknessarray.push({
           category: category.name,
           count: wrongquescount,
@@ -121,7 +121,7 @@ function Profile() {
         `http://localhost:8000/user/get/all/attempted/question/${user.id}`
       );
       const res = await data.json();
-      console.log(res.badges.filter(obj=>obj.name=='bfour' && obj.status==true))
+      // console.log(res.badges.filter(obj=>obj.name=='bfour' && obj.status==true))
       setUserData(res);
       setSubmittedQuestions(res.submittedQuestions.reverse());
     };
@@ -214,7 +214,7 @@ function Profile() {
   };
 
   function checkStatus(name){
-    if(userData && userData.badges.filter(obj=>obj.name==name && obj.status==true).length>0){
+    if(userData && userData.badges.filter(obj=>obj.name===name && obj.status===true).length>0){
       return true;
     }else{
       return false; 
@@ -322,7 +322,8 @@ function Profile() {
                     {submittedQuestions &&
                       submittedQuestions.slice(0, 10).map((data, i) => (
                         <tr key={i}>
-                          <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>
+                          {data.question &&
+                          <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>}
                           <td>
                             {data.correctAns ? (
                               <TiTick color="green" size={25} />

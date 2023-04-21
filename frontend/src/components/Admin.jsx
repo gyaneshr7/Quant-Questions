@@ -22,7 +22,7 @@ function Admin() {
       password:password,
       role:"admin"
     }
-    console.log(val);
+  
     try {
       const data = await fetch(`${URL}/login`, {
         method: "POST",
@@ -32,7 +32,7 @@ function Admin() {
         }
       })
       const user = await data.json();
-      console.log(user);
+      // console.log(user);
       if(user=='wrong email or password' ||  user=='Not a valid user!'){
         alert(user);
       }else{
@@ -40,7 +40,7 @@ function Admin() {
         window.location.href='/dashboard'
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

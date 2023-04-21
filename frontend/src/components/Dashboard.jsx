@@ -56,7 +56,7 @@ function Dashboard() {
   const [tagsArray, setTagsArray] = useState();
   const [css, setCss] = useState(true);
   const [loading, setLoading] = useState(false);
-  const[loginModalShow,setLoginModalShow]=useState(false);
+  const [loginModalShow, setLoginModalShow] = useState(false);
 
   let firmNames = [],
     divisionNames = [],
@@ -99,7 +99,7 @@ function Dashboard() {
     let val = '';
     const questions = await fetch(`http:///localhost:8000/question/getallquestions`);
     const quesres = await questions.json();
-    console.log(quesres.length, "length");
+    // console.log(quesres.length, "length");
     if (title != '' && question != '' && answer != '' && difficulty != '' && category != '' && anstype != '' && firms != '' && divisions != '' && positions != '' && tags !== '') {
       if (anstype === 'Mcq') {
         val = {
@@ -133,23 +133,31 @@ function Dashboard() {
           explanation: explanation
         };
       }
-      console.log(val);
-      const data = await fetch("http://localhost:8000/question/add", {
+      // console.log(val);
+
+      // make post request for saving question in database
+      await fetch("http://localhost:8000/question/add", {
         method: "POST",
         body: JSON.stringify(val),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      });
-      const res = await data.json();
-      console.log(res);
-      setAnsType("");
-      setAnswer("");
-      setTitle("");
-      setQuestion("");
-      setCategory("");
-      setDifficulty("");
-      setExplanation("");
+      }).then(() => alert("question added Successfully"))
+        .then(() => {
+          setAnsType("");
+          setAnswer("");
+          setTitle("");
+          setQuestion("");
+          setCategory("");
+          setDifficulty("");
+          setExplanation("");
+        })
+        .catch((err)=>{
+          alert(err)
+        });
+      // const res = await data.json();
+      // console.log(res);
+
     } else {
       alert("Enter value in all fields...")
     }
@@ -189,7 +197,7 @@ function Dashboard() {
     });
     resp.tags.map((data) => {
       if (tagsArray.includes(data.name)) {
-        console.log(data);
+        // console.log(data);
         let val = {
           name: data.name,
           count: data.count + 1,
@@ -204,7 +212,7 @@ function Dashboard() {
       tagscount,
       positionscount,
     };
-    console.log(value);
+    // console.log(value);
     const data = await fetch(
       "http://localhost:8000/category/updatecategory/firms",
       {
@@ -261,7 +269,7 @@ function Dashboard() {
 
   // send data to backend
   const addcategory = async (name, val) => {
-    console.log(name, val);
+    // console.log(name, val);
     const data = await fetch(
       `http://localhost:8000/category/addcategory/${name}`,
       {
@@ -273,7 +281,7 @@ function Dashboard() {
       }
     );
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     setLoading(true);
   };
 
@@ -317,7 +325,7 @@ function Dashboard() {
       }
     } else if (name == "category") {
       if (categoryVal) {
-        console.log(name, categoryVal, color);
+        // console.log(name, categoryVal, color);
         val = {
           value: categoryVal,
           color: color
@@ -343,39 +351,42 @@ function Dashboard() {
   return (
     <div>
       <div className="dash">
+
+        {/* admin sidebar */}
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
 
-            <div style={{display:"flex",flexDirection:"column",gap:"13px"}}>
-            <div className={css ? "add-que-hover" : "add-que"}>
-              <MdLibraryAdd className="icon-side" />
-              Add Questions
+            <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
+              <div className={css ? "add-que-hover" : "add-que"}>
+                <MdLibraryAdd className="icon-side" />
+                Add Questions
+              </div>
+
+              <Link to="/all-ques" className="add-que" onClick={handleQues}>
+                <FaList className="icon-side" />
+                All Questions
+              </Link>
+
+              <div onClick={() => { setLoginModalShow(true); setCss(false); }} className={css ? "add-que" : "add-que-hover"}>
+                <MdLibraryAdd className="icon-side" />
+                Add Resources
+              </div>
             </div>
 
-            <Link to="/all-ques" className="add-que" onClick={handleQues}>
-              <FaList className="icon-side" />
-              All Questions
-            </Link>
+            <ModalResource show={loginModalShow} close={() => { setLoginModalShow(false); setCss(true) }} />
 
-            <div  onClick={() => {setLoginModalShow(true);setCss(false);}} className={css ? "add-que" : "add-que-hover"}>
-              <MdLibraryAdd className="icon-side" />
-              Add Resources
-            </div>
-            </div>
-
-            <ModalResource show={loginModalShow} close={() => {setLoginModalShow(false);setCss(true)}}/>
-
-            <div style={{paddingLeft:"25px"}}>
-            <div className="add-que" onClick={handleLogout}>
-              <FiLogOut className="icon-side" />
-              Logout
-            </div>
+            <div style={{ paddingLeft: "25px" }}>
+              <div className="add-que" onClick={handleLogout}>
+                <FiLogOut className="icon-side" />
+                Logout
+              </div>
             </div>
 
           </div>
         </div>
 
+{/* admin nav */}
         <div className="dash-right">
           <div className="ad-nav">
             <div className="admin-name">
@@ -887,7 +898,7 @@ function Dashboard() {
               </div>
             </div>
           </div>
-        </div>         
+        </div>
       </div>
     </div>
   );

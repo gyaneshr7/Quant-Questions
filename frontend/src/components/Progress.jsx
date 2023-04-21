@@ -37,8 +37,8 @@ function Progress() {
   categoryLabels.map((label)=>{
     let count=0;
     userdata && userdata.submittedQuestions.map((data,i)=>{
-      console.log(data,i);
-      if(data.question && data.question.category==label){
+      // console.log(data,i);
+      if(data.question && data.question.category===label){
         count++;
       }
     })
@@ -59,15 +59,17 @@ function Progress() {
   }
 
   submittedQuestions && submittedQuestions.map((item) => {
-    var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
-    if (!findItem) {
-      uniqueAttemptedQuestions.push(item)
-    };
+    if(item.question){
+      var findItem = uniqueAttemptedQuestions.find((x) => x.question._id === item.question._id);
+      if (!findItem) {
+        uniqueAttemptedQuestions.push(item)
+      };
+    }
   })
 
   const correct = [], wrong = [];
   userdata && userdata.currentAttempted.map((data) => {
-    if (data.status == 'correct') {
+    if (data.status === 'correct') {
       correct.push(data);
     } else {
       wrong.push(data);
@@ -79,21 +81,21 @@ function Progress() {
       const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
       const res = await data.json();
       setUserData(res);
-      console.log(res,"sldai");
+      // console.log(res,"sldai");
       setSubmittedQuestions(res.submittedQuestions.reverse());
       res.submittedQuestions.map((category) => {
-        if (category.question.category == 'Brainteasers') {
+        if (category.question.category === 'Brainteasers') {
           setBrainTeasers(arr => [...new Set(arr), category]);
-        } else if (category.question.category == 'Derivatives') {
+        } else if (category.question.category === 'Derivatives') {
           setDerivatives(arr => [...new Set(arr), category]);
-        } else if (category.question.category == 'Finance') {
+        } else if (category.question.category === 'Finance') {
           setFinance(arr => [...new Set(arr), category]);
-        } else if (category.question.category == 'Math') {
+        } else if (category.question.category === 'Math') {
           setMath(arr => [...new Set(arr), category]);
-        } else if (category.question.category == 'NonQuant') {
+        } else if (category.question.category === 'NonQuant') {
           setNonQuant(arr => [...new Set(arr), category]);
         }
-        else if (category.question.category == 'Marketing') {
+        else if (category.question.category === 'Marketing') {
           // setMarketing(arr => [...new Set(arr), category]);
         }
       })

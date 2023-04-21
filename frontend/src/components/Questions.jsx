@@ -25,7 +25,7 @@ function Questions() {
   const [data, setData] = useState();
   const url = "http://localhost:8000/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
-  console.log(user);
+  // console.log(user);
 
   const [firmData, setFirmData] = useState();
   const [firmVal, setFirmVal] = useState('');
@@ -321,7 +321,7 @@ function Questions() {
     res.map((ques, i) => {
       ques.serial = i + 1;
     })
-    console.log(res, "resss");
+    // console.log(res, "resss");
     setData(res);
   };
 
@@ -431,21 +431,21 @@ function Questions() {
     let array = [];
     if (categoryVal.length > 0 && difficultyVal.length > 0) {
       data.map((ques) => {
-        if (ques.category == categoryVal && ques.difficulty == difficultyVal) {
+        if (ques.category === categoryVal && ques.difficulty === difficultyVal) {
           array.push(ques);
         }
       })
       setSearched(array);
     } else if (categoryVal.length > 0) {
       data.map((ques) => {
-        if (ques.category == categoryVal) {
+        if (ques.category === categoryVal) {
           array.push(ques);
         }
       })
       setSearched(array);
     } else if (difficultyVal.length > 0) {
       data.map((ques) => {
-        if (ques.difficulty == difficultyVal) {
+        if (ques.difficulty === difficultyVal) {
           array.push(ques);
         }
       })
@@ -482,14 +482,14 @@ function Questions() {
   // search questions
   const matched = [];
   const searchHandler = (e) => {
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       setEnableSearch(false);
     } else {
       setEnableSearch(true);
     }
     setSearchVal(e.target.value);
     const val = e.target.value;
-    console.log(val);
+    // console.log(val);
     if (categoryVal.length < 1 && difficultyVal.length < 1) {
       data.forEach((user) => {
         const value = user.title.toLowerCase().includes(val.toLowerCase());
@@ -500,7 +500,7 @@ function Questions() {
       setSearched(matched);
     } else if (categoryVal.length > 0 || difficultyVal.length > 0) {
       searched.forEach((user) => {
-        console.log(user, "userrr");
+        // console.log(user, "userrr");
         const value = user.title.toLowerCase().includes(val.toLowerCase());
         if (value) {
           matched.push(user);
@@ -511,17 +511,17 @@ function Questions() {
   };
 
   const handleCross = (value) => {
-    if (value == "difficult") {
+    if (value === "difficult") {
       setDifficultyVal("");
-    } else if (value == "category") {
+    } else if (value === "category") {
       setCategoryVal("");
-    } else if (value == 'firm') {
+    } else if (value === 'firm') {
       setFirmVal("");
-    } else if (value == 'division') {
+    } else if (value === 'division') {
       setDivisionVal("");
-    } else if (value == 'position') {
+    } else if (value === 'position') {
       setPositionVal("");
-    } else if (value == 'tag') {
+    } else if (value === 'tag') {
       setTagVal("");
     }
   };

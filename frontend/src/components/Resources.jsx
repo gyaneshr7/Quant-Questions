@@ -15,7 +15,7 @@ function Resources() {
     const fetchResources = async () => {
       const data = await fetch(`http://localhost:8000/resources/`);
       const res = await data.json();
-      console.log(res);
+      // console.log(res);
       setresources(res);
       setSelected(res);
       // let resources=[];
@@ -37,7 +37,7 @@ function Resources() {
   const tableData =
     selected && selected.slice(startIndex, endIndex);
 
-  console.log(tableData);
+  // console.log(tableData);
 
   function goToPrev() {
     setCurrentPage((page) => page - 1);
@@ -52,8 +52,8 @@ function Resources() {
   let matched = [];
   const searchHandler = (e) => {
     setSearch(e.target.value)
-    if (e.target.value != "") {
-      console.log(e.target.value);
+    if (e.target.value !== "") {
+      // console.log(e.target.value);
       let val = e.target.value;
       resources.forEach((ques) => {
         const value = ques.name.toLowerCase().includes(val.toLowerCase());

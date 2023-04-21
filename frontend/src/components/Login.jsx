@@ -36,13 +36,13 @@ function Login() {
         }
       })
       const user = await data.json();
-      console.log(user);
+      // console.log(user);
 
       if(!(email || password))
       {
         alert("All Input fields required");
       }
-      else if (user == 'wrong email or password' || user == 'Not a valid user!') {
+      else if (user === 'wrong email or password' || user === 'Not a valid user!') {
         alert(user);
       } 
       else {
@@ -50,7 +50,7 @@ function Login() {
         window.location.href = '/questions'
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

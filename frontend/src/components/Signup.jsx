@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import logo2 from '../images/logo2.png'
 import './Login.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,10 +14,44 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [error, seterror] = useState("")
   const URL = 'http://localhost:8000/auth'
 
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+  function isValidPhone(phone){
+    return phone.length===10;
+  }
+
+const handleChange = (e) => {
+
+  if(e.target.name==="email"){
+    if(!isValidEmail(e.target.value)){
+      seterror('Email is invalid');
+    }
+    else{
+      seterror("");
+    }
+    setEmail(e.target.value)
+    console.log(email)
+  }
+  if(e.target.name==="phone"){
+    if(!isValidPhone(e.target.value)){
+      seterror('Phone is invalid');
+    }
+    else{
+      seterror("");
+    }
+    setPhone(e.target.value)
+    console.log(phone)
+  }
+}
+
   const handlesignup = async () => {
-    console.log(name, email, password,phone);
+    // console.log(name, email, password,phone);
+   
+  if(error===""){
     const val = {
       name: name,
       email: email,
@@ -35,13 +69,21 @@ function Signup() {
       })
       const user = await data.json();
       alert(user);
-      if(user=="Registered Successfully!"){
+      if(user==="Registered Successfully!"){
         window.location.href='/login'
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
+  else{
+    alert("Please check Email and Phone number")
+  }
+  }
+
+useEffect(() => {
+
+}, [email, phone])
 
   return (
     <>
@@ -50,11 +92,11 @@ function Signup() {
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='signinputBox' required value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' />
+            <input className='signinputBox' required value={name} autoComplete="off" onChange={(e)=> setName(e.target.value)} type="text" placeholder='Full Name' name='name' />
             
-            <input className='signinputBox' required value={email} autoComplete="new-password" onChange={(e) => setEmail(e.target.value)} type="text" placeholder='E-mail address' />
+            <input className='signinputBox' required value={email} autoComplete="new-password" onChange={(e)=> handleChange(e)} type="text" placeholder='E-mail address' name='email' />
             
-            <input className='signinputBox' required value={phone} autoComplete="new-password" onChange={(e) => setPhone(e.target.value)} type="number" placeholder='Contact Number' />
+            <input className='signinputBox' required value={phone} autoComplete="new-password" onChange={(e)=> handleChange(e)} type="number" placeholder='Contact Number' pattern={"[0-9]{10}"} title="please enter valid number" name='phone' />
 
             <div className='signpasswordfield'>
               <input className='signinputBox' required type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
@@ -72,6 +114,7 @@ function Signup() {
             <a href="/login" className='sign-pass'>Having an account ? Login</a>
           </div>
         </div>
+        {error && <div style={{color:"red"}}>{error}</div>}
       </div>
       {/* <Footer/> */}
     </>

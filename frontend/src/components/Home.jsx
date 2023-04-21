@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import "./Home.css";
 import nail from "../images/nail.png";
@@ -9,21 +9,37 @@ import who2 from "../images/who2.png";
 import who3 from "../images/who3.png";
 import invert from '../images/invert.png';
 import rotate from '../images/rotate.png';
-import {GrMoney} from 'react-icons/gr';
-import {FaBalanceScale} from 'react-icons/fa';
-import {GrOptimize} from 'react-icons/gr';
-import {FaDice} from 'react-icons/fa';
-import {AiOutlineBranches} from 'react-icons/ai';
-import {BsGrid3X3Gap} from 'react-icons/bs';
-import {RiLineChartFill} from 'react-icons/ri';
-import {FaPuzzlePiece} from 'react-icons/fa';
-import { Link } from "react-router-dom";
+import { GrMoney } from 'react-icons/gr';
+import { FaBalanceScale } from 'react-icons/fa';
+import { GrOptimize } from 'react-icons/gr';
+import { FaDice } from 'react-icons/fa';
+import { AiOutlineBranches } from 'react-icons/ai';
+import { BsGrid3X3Gap } from 'react-icons/bs';
+import { RiLineChartFill } from 'react-icons/ri';
+import { FaPuzzlePiece } from 'react-icons/fa';
+import { Link, useNavigate } from "react-router-dom";
 
-function Home() {
+const Home = () => {
+
+  // if user already logged in, redirect to questions page
+  const navigate = useNavigate()
+  const handleAuth = async() => {
+
+    const isLoggedIn = localStorage.getItem("quantuser");
+    if (isLoggedIn !== "null") {
+      // alert("loggedin")
+      navigate('/questions')
+    }
+  }
+
+  useEffect(() => {
+  handleAuth();
+  }, [])
+
   return (
+
     <div>
       <Header />
-
       <div className="home">
         <div className="home-head">
           <div className="ace">Ace Your Next Quant Interview</div>
@@ -71,7 +87,7 @@ function Home() {
       <div className="third">
         <div className="over">Over 1,500 quants train on Quant Questions.</div>
         <div className="over-acc">
-        <Link className="acc" to='/signup'>Create a Free Account</Link>
+          <Link className="acc" to='/signup'>Create a Free Account</Link>
         </div>
       </div>
 
@@ -82,7 +98,7 @@ function Home() {
 
         <div className="prac1 prac-web">
           <div className="prac-part1">
-            <div className="prac-head"><GrMoney size="20"/>Fixed Income</div>
+            <div className="prac-head"><GrMoney size="20" />Fixed Income</div>
             <div className="prac-p">Bond Pricing</div>
             <div className="prac-p">Duration/Convexity</div>
             <div className="prac-p">Asset Backed</div>
@@ -91,7 +107,7 @@ function Home() {
           </div>
 
           <div className="prac-part1">
-            <div className="prac-head"><GrOptimize size="20"/>Derivatives</div>
+            <div className="prac-head"><GrOptimize size="20" />Derivatives</div>
             <div className="prac-p">Derivatives</div>
             <div className="prac-p">Pricing</div>
             <div className="prac-p">Options & Futures</div>
@@ -101,7 +117,7 @@ function Home() {
           </div>
 
           <div className="prac-part1">
-            <div className="prac-head"><FaDice size="20"/>Probability</div>
+            <div className="prac-head"><FaDice size="20" />Probability</div>
             <div className="prac-p">Expected Value</div>
             <div className="prac-p">Combinatorics</div>
             <div className="prac-p">Markov Chains</div>
@@ -111,7 +127,7 @@ function Home() {
             <div className="prac-p">Statistical Distributions</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head"><AiOutlineBranches size="20"/>Computer Science</div>
+            <div className="prac-head"><AiOutlineBranches size="20" />Computer Science</div>
             <div className="prac-p">Algorithms</div>
             <div className="prac-p">Data Structures</div>
             <div className="prac-p">Numerical Methods</div>
@@ -119,107 +135,107 @@ function Home() {
           </div>
         </div>
 
-        <div style={{marginTop:"20px",display:"flex",flexDirection:"column",gap:"25px"}}>
-        <div className="prac-ph">
-          <div className="prac-part1">
-            <div className="prac-head"><GrMoney size="20"/>Fixed Income</div>
-            <div className="prac-p">Bond Pricing</div>
-            <div className="prac-p">Duration/Convexity</div>
-            <div className="prac-p">Asset Backed</div>
-            <div className="prac-p">Securities</div>
-            <div className="prac-p">Interest Rates</div>
-          </div>
+        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "25px" }}>
+          <div className="prac-ph">
+            <div className="prac-part1">
+              <div className="prac-head"><GrMoney size="20" />Fixed Income</div>
+              <div className="prac-p">Bond Pricing</div>
+              <div className="prac-p">Duration/Convexity</div>
+              <div className="prac-p">Asset Backed</div>
+              <div className="prac-p">Securities</div>
+              <div className="prac-p">Interest Rates</div>
+            </div>
 
-          <div className="prac-part1">
-            <div className="prac-head"><GrOptimize size="20"/>Derivatives</div>
-            <div className="prac-p">Derivatives</div>
-            <div className="prac-p">Pricing</div>
-            <div className="prac-p">Options & Futures</div>
-            <div className="prac-p">The Greeks</div>
-            <div className="prac-p">Monte Carlo</div>
-            <div className="prac-p">Simulations</div>
-          </div>
+            <div className="prac-part1">
+              <div className="prac-head"><GrOptimize size="20" />Derivatives</div>
+              <div className="prac-p">Derivatives</div>
+              <div className="prac-p">Pricing</div>
+              <div className="prac-p">Options & Futures</div>
+              <div className="prac-p">The Greeks</div>
+              <div className="prac-p">Monte Carlo</div>
+              <div className="prac-p">Simulations</div>
+            </div>
           </div>
 
           <div className="prac-ph">
-          <div className="prac-part1">
-            <div className="prac-head"><FaDice size="20"/>Probability</div>
-            <div className="prac-p">Expected Value</div>
-            <div className="prac-p">Combinatorics</div>
-            <div className="prac-p">Markov Chains</div>
-            <div className="prac-p">Martingales</div>
-            <div className="prac-p">Stochastic</div>
-            <div className="prac-p">Processes</div>
-            <div className="prac-p">Statistical Distributions</div>
+            <div className="prac-part1">
+              <div className="prac-head"><FaDice size="20" />Probability</div>
+              <div className="prac-p">Expected Value</div>
+              <div className="prac-p">Combinatorics</div>
+              <div className="prac-p">Markov Chains</div>
+              <div className="prac-p">Martingales</div>
+              <div className="prac-p">Stochastic</div>
+              <div className="prac-p">Processes</div>
+              <div className="prac-p">Statistical Distributions</div>
+            </div>
+            <div className="prac-part1">
+              <div className="prac-head"><AiOutlineBranches size="20" />Computer Science</div>
+              <div className="prac-p">Algorithms</div>
+              <div className="prac-p">Data Structures</div>
+              <div className="prac-p">Numerical Methods</div>
+              <div className="prac-p">Databases</div>
+            </div>
           </div>
-          <div className="prac-part1">
-            <div className="prac-head"><AiOutlineBranches size="20"/>Computer Science</div>
-            <div className="prac-p">Algorithms</div>
-            <div className="prac-p">Data Structures</div>
-            <div className="prac-p">Numerical Methods</div>
-            <div className="prac-p">Databases</div>
-          </div>
-        </div>
         </div>
 
-        <div style={{marginTop:"40px",display:"flex",flexDirection:"column",gap:"25px",paddingBottom:"30px"}}>
-        <div className="prac-ph">
-          <div className="prac-part1">
-            <div className="prac-head"><BsGrid3X3Gap size="20"/>Modelling</div>
-            <div className="prac-p">Econometrics</div>
-            <div className="prac-p">Unsupervised learning</div>
-            <div className="prac-p">Supervised learning</div>
-            <div className="prac-p">Time Series</div>
-          </div>
-          <div className="prac-part1">
-            <div className="prac-head"><FaBalanceScale size="20"/>Risk Management</div>
-            <div className="prac-p">Credit Risk</div>
-            <div className="prac-p">CCAR/DFAST</div>
-            <div className="prac-p">Value-at-Risk</div>
-          </div>
+        <div style={{ marginTop: "40px", display: "flex", flexDirection: "column", gap: "25px", paddingBottom: "30px" }}>
+          <div className="prac-ph">
+            <div className="prac-part1">
+              <div className="prac-head"><BsGrid3X3Gap size="20" />Modelling</div>
+              <div className="prac-p">Econometrics</div>
+              <div className="prac-p">Unsupervised learning</div>
+              <div className="prac-p">Supervised learning</div>
+              <div className="prac-p">Time Series</div>
+            </div>
+            <div className="prac-part1">
+              <div className="prac-head"><FaBalanceScale size="20" />Risk Management</div>
+              <div className="prac-p">Credit Risk</div>
+              <div className="prac-p">CCAR/DFAST</div>
+              <div className="prac-p">Value-at-Risk</div>
+            </div>
           </div>
 
           <div className="prac-ph">
-          <div className="prac-part1">
-            <div className="prac-head"><RiLineChartFill size="20"/>Equities</div>
-            <div className="prac-p">CAPM</div>
-            <div className="prac-p">Factor Investing</div>
-            <div className="prac-p">Generating</div>
-            <div className="prac-p">Alpha</div>
+            <div className="prac-part1">
+              <div className="prac-head"><RiLineChartFill size="20" />Equities</div>
+              <div className="prac-p">CAPM</div>
+              <div className="prac-p">Factor Investing</div>
+              <div className="prac-p">Generating</div>
+              <div className="prac-p">Alpha</div>
+            </div>
+            <div className="prac-part1">
+              <div className="prac-head"><FaPuzzlePiece size="20" />Other</div>
+              <div className="prac-p">Sequences</div>
+              <div className="prac-p">Estimation</div>
+              <div className="prac-p">Mental Math</div>
+              <div className="prac-p">Brainteasers</div>
+            </div>
           </div>
-          <div className="prac-part1">
-            <div className="prac-head"><FaPuzzlePiece size="20"/>Other</div>
-            <div className="prac-p">Sequences</div>
-            <div className="prac-p">Estimation</div>
-            <div className="prac-p">Mental Math</div>
-            <div className="prac-p">Brainteasers</div>
-          </div>
-        </div>
         </div>
 
         <div className="prac2 prac-web">
           <div className="prac-part1">
-            <div className="prac-head"><BsGrid3X3Gap size="20"/>Modelling</div>
+            <div className="prac-head"><BsGrid3X3Gap size="20" />Modelling</div>
             <div className="prac-p">Econometrics</div>
             <div className="prac-p">Unsupervised learning</div>
             <div className="prac-p">Supervised learning</div>
             <div className="prac-p">Time Series</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head"><FaBalanceScale size="20"/>Risk Management</div>
+            <div className="prac-head"><FaBalanceScale size="20" />Risk Management</div>
             <div className="prac-p">Credit Risk</div>
             <div className="prac-p">CCAR/DFAST</div>
             <div className="prac-p">Value-at-Risk</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head"><RiLineChartFill size="20"/>Equities</div>
+            <div className="prac-head"><RiLineChartFill size="20" />Equities</div>
             <div className="prac-p">CAPM</div>
             <div className="prac-p">Factor Investing</div>
             <div className="prac-p">Generating</div>
             <div className="prac-p">Alpha</div>
           </div>
           <div className="prac-part1">
-            <div className="prac-head"><FaPuzzlePiece size="20"/>Other</div>
+            <div className="prac-head"><FaPuzzlePiece size="20" />Other</div>
             <div className="prac-p">Sequences</div>
             <div className="prac-p">Estimation</div>
             <div className="prac-p">Mental Math</div>
@@ -231,18 +247,18 @@ function Home() {
       <div className="third">
         <div className="over">What our users are saying</div>
         <div className="names">
-            <div className="name1">
-              <div className="name-disc"><img src={rotate} alt=""/>Thank you so much for creating such brilliant platform.<img src={invert} alt=""/></div>
-              <div className="name-main">Liumeng</div>
-            </div>
-            <div className="name1 named1">
-              <div className="name-disc"><img src={rotate} alt=""/>Great site! Thanks for the hard work.<img src={invert} alt=""/></div>
-              <div className="name-main">Calvin</div>
-            </div>
-            <div className="name1">
-              <div className="name-disc"><img src={rotate} alt=""/>The site is great, by the way<img src={invert} alt=""/></div>
-              <div className="name-main">Kedar</div>
-            </div>
+          <div className="name1">
+            <div className="name-disc"><img src={rotate} alt="" />Thank you so much for creating such brilliant platform.<img src={invert} alt="" /></div>
+            <div className="name-main">Liumeng</div>
+          </div>
+          <div className="name1 named1">
+            <div className="name-disc"><img src={rotate} alt="" />Great site! Thanks for the hard work.<img src={invert} alt="" /></div>
+            <div className="name-main">Calvin</div>
+          </div>
+          <div className="name1">
+            <div className="name-disc"><img src={rotate} alt="" />The site is great, by the way<img src={invert} alt="" /></div>
+            <div className="name-main">Kedar</div>
+          </div>
         </div>
       </div>
 
@@ -287,28 +303,30 @@ function Home() {
       </div>
 
       <div className="footer web-footer">
-         <div className="all-foots">
+        <div className="all-foots">
           <a href="/">&copy;Quant Questions</a>
           <a href="/">Contact Us</a>
           <a href="/">Terms</a>
           <a href="/">Privacy Policy</a>
           <a href="/">Blogs</a>
           <a href="/">FAQs</a>
-         </div>
+        </div>
       </div>
 
       <div className="footer mobile-footer">
-         <div className="all-foots">
+        <div className="all-foots">
           <a href='/'>Home</a>
           <a href="/">Contact</a>
           <a href="/">Terms</a>
           <a href="/">Privacy</a>
           <a href="/">Blogs</a>
           <a href="/">FAQs</a>
-         </div>
+        </div>
       </div>
+
     </div>
-  );
+  )
 }
+
 
 export default Home;

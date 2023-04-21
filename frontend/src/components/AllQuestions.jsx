@@ -54,28 +54,26 @@ function AllQuestions() {
   const [removedTag, setRemovedTag] = useState([]);
 
   // states for handling pagination
+  const [searchActive, setsearchActive] = useState(false)
   const [startIndex, setstartIndex] = useState(0);
-  const [endIndex, setendIndex] = useState(10)
-  let tableData = slice(selected, startIndex, endIndex)
+  const [endIndex, setendIndex] = useState(0)
+
+  let tableData
+  searchActive ? (tableData = slice(selected, 0, 10)):
+  (tableData = slice(selected, startIndex, endIndex))
  
 
-  console.log(mydata);
-  // console.log(selected);
+  // console.log(mydata);
+
   const [all, setAll] = useState({ ttl: title, que: ques, answ: answer, exp: explanation, opt1: option1, opt2: option2, opt3: option3, opt4: option4 });
   const [editId, setEditId] = useState("");
 
-  console.log(`all data: ${all}`);
+  // console.log(`all data: ${all}`);
   const url = "http://localhost:8000/question";
   const category_url = "http://localhost:8000/category";
 
   // Pagination
   const itemsPerPage = 10;
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // let tableData = selected && selected.slice(startIndex, endIndex);
-
-  //  const sliced=Object.entries(all).slice(0, 10);
-  //  console.log(sliced);
 
   function goToPrev() {
     // setCurrentPage((page) => page - 1);
@@ -84,9 +82,7 @@ function AllQuestions() {
     }
     setendIndex(endIndex - 10);
     setCurrentPage(currentPage - 1);
-    setOpen(false);
-    edit(false);
-    setId(startIndex)
+   
     handleClick(startIndex+10,0);
   }
 
@@ -94,11 +90,9 @@ function AllQuestions() {
     // setCurrentPage((page) => page + 1);
     setstartIndex(startIndex + 10);
     setendIndex(endIndex + 10);
-    setCurrentPage(currentPage + 1);
-    setOpen(false)
-    edit(false)
-    setId(startIndex)
-    handleClick(startIndex+10,0);
+    setCurrentPage(currentPage);
+
+    handleClick(startIndex,0);
   }
 
   const totalPages = Math.ceil(selected && selected.length / itemsPerPage);
@@ -202,7 +196,7 @@ function AllQuestions() {
   };
 
   const handleUpdate = async (id, catArray, options) => {
-    console.log(options, "KIKM");
+    // console.log(options, "KIKM");
     let value = {};
     if (all.que) {
       value.question = all.que;
@@ -323,7 +317,7 @@ function AllQuestions() {
     if (removedFirm.length > 0 && firms.length > 0) {
       firmNames.map((firm) => {
         if (removedFirm.includes(firm) && firms.includes(firm)) {
-          console.log(firm);
+          // console.log(firm);
         } else if (
           removedFirm.includes(firm) &&
           catArray.firmArray.includes(firm)
@@ -352,7 +346,7 @@ function AllQuestions() {
     if (removedDivision.length > 0 && divisions.length > 0) {
       divisionNames.map((div) => {
         if (removedDivision.includes(div) && divisions.includes(div)) {
-          console.log(div);
+          // console.log(div);
         } else if (
           removedDivision.includes(div) &&
           catArray.divisionsArray.includes(div)
@@ -384,7 +378,7 @@ function AllQuestions() {
     if (removedPosition.length > 0 && positions.length > 0) {
       positionNames.map((pos) => {
         if (removedPosition.includes(pos) && positions.includes(pos)) {
-          console.log(pos);
+          // console.log(pos);
         } else if (
           removedPosition.includes(pos) &&
           catArray.positionsArray.includes(pos)
@@ -416,7 +410,7 @@ function AllQuestions() {
     if (removedTag.length > 0 && tags.length > 0) {
       tagNames.map((tag) => {
         if (removedTag.includes(tag) && tags.includes(tag)) {
-          console.log(tag);
+          // console.log(tag);
         } else if (
           removedTag.includes(tag) &&
           catArray.tagsArray.includes(tag)
@@ -548,7 +542,7 @@ function AllQuestions() {
       }
     );
     const response = await dataa.json();
-    console.log(response);
+    // console.log(response);
 
     setLoading(true);
     setOpen(false);
@@ -561,7 +555,7 @@ function AllQuestions() {
   };
 
   const handleDeleteQuestion = async () => {
-    console.log(quesId);
+    // console.log(quesId);
     const dataa = await fetch("http://localhost:8000/category/getcategories");
     const resp = await dataa.json();
     let firmscount = [],
@@ -610,7 +604,7 @@ function AllQuestions() {
       tagscount,
       positionscount,
     };
-    console.log(value);
+    // console.log(value);
     const deletedata = await fetch(`http://localhost:8000/question/${quesId}`, {
       method: "DELETE",
       headers: {
@@ -641,6 +635,9 @@ function AllQuestions() {
     if (e.target.value !== "") {
       let val = e.target.value;
 
+      setsearchActive(true);
+      setOpen(false);
+
       mydata.forEach((ques) => {
         const value = ques.title.toLowerCase().includes(val.toLowerCase());
         if (value) {
@@ -653,10 +650,15 @@ function AllQuestions() {
         var findItem = uniquematched.find((x) => x._id === item._id);
         if (!findItem) uniquematched.push(item);
       });
+      // startIndex(0);
+      // endIndex(10);
       setSelected(uniquematched);
-      setCurrentPage(1)
+      // setCurrentPage(1)
+      
     } else {
       setSelected(mydata);
+      setsearchActive(false)
+      setOpen(false);
     }
   };
 
@@ -664,7 +666,7 @@ function AllQuestions() {
 
   const handleTitleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
 
     setAll({
       ...all,

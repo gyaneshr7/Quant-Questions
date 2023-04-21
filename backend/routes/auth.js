@@ -2,6 +2,9 @@ const router = require('express').Router();
 const { response } = require('express');
 const mongoose = require('mongoose')
 const User = require('../models/User');
+var AES = require("crypto-js/aes");
+var CryptoJS = require("crypto-js");
+var jwt = require('jsonwebtoken');
 
 router.post("/register", async (req, res) => {
   try {
@@ -16,11 +19,12 @@ router.post("/register", async (req, res) => {
       if (oldUser) {
         return res.status(409).json("User Already Exist. Please Login");
       } else {
+        // localStorage.setItem(process.env.JWT_SecretKey)
         // Create user in our database
         const user = await User.create({
           name,
           email: email.toLowerCase(), // sanitize: convert email to lowercase
-          password: password,
+          password: CryptoJS.AES.encrypt(req.body.password, process.env.JWT_SecretKey).toString(),
           role: role,
           phoneNo:phoneNo
         });
@@ -41,13 +45,15 @@ router.post("/login", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const role = req.body.role;
-    console.log(email, password);
     const user = await User.aggregate([{ $match: { email: email } }]);
-    console.log(user);
+    console.log(user[0].password)
+    var bytes = CryptoJS.AES.decrypt(user[0].password, process.env.JWT_SecretKey);
+    var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+    // localStorage.setItem(process.env.JWT_SecretKey)
  
     if (!user || user.length < 1) {
       res.status(401).json("wrong email or password");
-    } else if (user[0].password != password) {
+    } else if (originalPassword !== password) {
       res.status(401).json("wrong email or password")
     } else if (user[0].role != role) {
       res.status(401).json("Not a valid user!")
@@ -69,11 +75,18 @@ router.post("/login", async (req, res) => {
 router.put("/change/password/:id", async (req, res) => {
   try {
     const user = await User.find({ _id: req.params.id });
+    var bytes = CryptoJS.AES.decrypt(user[0].password, process.env.JWT_SecretKey);
+    var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+
+    // console.log(originalPassword)
+
     if (user.length > 0) {
-      if (req.body.currpass == user[0].password) {
-        if (req.body.newpaas != "") {
-          console.log(req.body.currpass, user[0].password);
-          const updateduser = await User.updateOne({ _id: req.params.id }, { password: req.body.newpass }, { new: true })
+      if (req.body.currpass === originalPassword) {
+        if (req.body.newpass !== "") {
+          // console.log(req.body.newpass, user[0].password);
+          const updatedPassword = CryptoJS.AES.encrypt(req.body.newpass, process.env.JWT_SecretKey).toString()
+          // console.log(updatedPassword)
+          await User.updateOne({ _id: req.params.id }, { password: updatedPassword }, { new: true })
           res.status(200).json("Password Changed Successfully...");
         } else {
           res.status(200).json("Please Provide New Password!");

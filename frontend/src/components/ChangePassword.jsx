@@ -20,8 +20,8 @@ function ChangePassword() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
   const ChangePasswordHandler = async () => {
-    console.log(current, newpass, confirmPassword);
-    if (newpass == confirmPassword) {
+    // console.log(current, newpass, confirmPassword);
+    if (newpass === confirmPassword) {
       const val = {
         currpass: current,
         newpass: newpass,
@@ -38,7 +38,7 @@ function ChangePassword() {
       setConfirmPassword('');
       setCurrent('');
       setNewPass('');
-      if(res=='Password Changed Successfully...'){
+      if(res==='Password Changed Successfully...'){
         localStorage.setItem("quantuser", null)
         window.location.href = '/login'
       }

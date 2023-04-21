@@ -19,6 +19,7 @@ function ModalResource(props) {
   const fetchResources = async () => {
     const data = await fetch(`http://localhost:8000/resources/`);
     const res = await data.json();
+    // localStorage.setItem("res",res)
     setResources(res);
   }
 
@@ -44,13 +45,13 @@ function ModalResource(props) {
 
       if (exist) {
         const result = window.confirm("Do you want to override existing file ?");
-        console.log(result, "askjhgdvtfsdy");
+        // console.log(result, "askjhgdvtfsdy");
         if (result) {
           setLoading(true);
           axios
             .put(`http://localhost:8000/resources/update`, formData)
             .then(async (res) => {
-              console.log(res);
+              // console.log(res);
               alert("File Updated Successfully");
               setLoading(false);
               setFile("");
@@ -64,7 +65,7 @@ function ModalResource(props) {
         axios
           .post(`http://localhost:8000/resources/add/pdf`, formData)
           .then(async (res) => {
-            console.log(res);
+            // console.log(res);
             alert("File Uploaded Successfully");
             setLoading(false);
             setFile("");

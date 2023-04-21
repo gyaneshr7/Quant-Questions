@@ -197,7 +197,7 @@ function Dashboard() {
     });
     resp.tags.map((data) => {
       if (tagsArray.includes(data.name)) {
-        console.log(data);
+        // console.log(data);
         let val = {
           name: data.name,
           count: data.count + 1,
@@ -212,7 +212,7 @@ function Dashboard() {
       tagscount,
       positionscount,
     };
-    console.log(value);
+    // console.log(value);
     const data = await fetch(
       "http://localhost:8000/category/updatecategory/firms",
       {
@@ -269,7 +269,7 @@ function Dashboard() {
 
   // send data to backend
   const addcategory = async (name, val) => {
-    console.log(name, val);
+    // console.log(name, val);
     const data = await fetch(
       `http://localhost:8000/category/addcategory/${name}`,
       {
@@ -281,7 +281,7 @@ function Dashboard() {
       }
     );
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     setLoading(true);
   };
 
@@ -325,7 +325,7 @@ function Dashboard() {
       }
     } else if (name == "category") {
       if (categoryVal) {
-        console.log(name, categoryVal, color);
+        // console.log(name, categoryVal, color);
         val = {
           value: categoryVal,
           color: color

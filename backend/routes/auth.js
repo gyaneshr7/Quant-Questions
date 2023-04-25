@@ -46,14 +46,14 @@ router.post("/login", async (req, res) => {
     const password = req.body.password;
     const role = req.body.role;
     const user = await User.aggregate([{ $match: { email: email } }]);
-    console.log(user[0].password)
+    console.log(user[0].password);
+    console.log(user[0].email);
     var bytes = CryptoJS.AES.decrypt(user[0].password, process.env.JWT_SecretKey);
     var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
-    // localStorage.setItem(process.env.JWT_SecretKey)
  
     if (!user || user.length < 1) {
       res.status(401).json("wrong email or password");
-    } else if (originalPassword !== password) {
+    } else if (originalPassword !== password || !user[0].email) {
       res.status(401).json("wrong email or password")
     } else if (user[0].role != role) {
       res.status(401).json("Not a valid user!")
@@ -67,7 +67,7 @@ router.post("/login", async (req, res) => {
       }
       res.status(200).json(userDetails)
     }
-  } catch (error) {
+  }catch (error) {
     console.log(error);
   }
 })

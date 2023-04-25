@@ -7,17 +7,19 @@ import { FaArrowCircleRight } from 'react-icons/fa';
 function Resources() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState([]);
   const [resources, setresources] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [loading,setLoading]=useState(false);
 
   useEffect(() => {
     const fetchResources = async () => {
+      setLoading(true);
       const data = await fetch(`http://localhost:8000/resources/`);
       const res = await data.json();
       // console.log(res);
       setresources(res);
       setSelected(res);
+      setLoading(false);
       // let resources=[];
       // res.map((data) => {
       //   if (!resources.includes(data.name)) {
@@ -102,8 +104,8 @@ function Resources() {
             </div>
 
             <div className="res-table-div">
-              <table class="table table-hover">
-                <thead class="">
+              <table class="table">
+                <thead>
 
                   <tr className="res-table-head">
                     <th scope="col" className='first-col'>
@@ -114,11 +116,11 @@ function Resources() {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-
-
-                  {
-                    tableData &&
+                {
+                  !loading ?
+                  <tbody>
+                  { 
+                    tableData && tableData.length>0 ?
                     tableData.map((data) => (
                       <tr>
                         <th scope="row">
@@ -131,14 +133,31 @@ function Resources() {
                           <a href={data.pdf} target="_blank" className="res-view">View</a>
                         </td>
                       </tr>
-                    ))
+                    )):
+                   
+                      <td colspan="4" >
+                        <div className="text-center font-weight-bold">No Resources Added yet !</div>
+                      </td>
+          
+                  
                   }
 
-                </tbody>
+                </tbody>:
+                <tbody>
+                <tr>
+                  <td className="text-center  font-weight-bold" colspan="2">
+                   <h5> Loading....</h5>
+                  </td>
+                  </tr>
+              </tbody>
+                }
+                
               </table>
             </div>
 
-            <div className='res-pagination'>
+            {
+              tableData.length>0 ?
+              <div className='res-pagination'>
               <button
                 onClick={goToPrev}
                 style={{ border: "none", background: "transparent" }}
@@ -161,6 +180,10 @@ function Resources() {
                 <FaArrowCircleRight size="30" />
               </button>
             </div>
+            :
+            ""
+            }
+            
 
           </div>
         </div>

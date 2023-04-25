@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 import Multiselect from "multiselect-react-dropdown";
 import "./AllQuestions.css";
 import ModalResource from "./ModalResource";
-import { slice } from 'lodash'
+import { slice } from "lodash";
 
 function AllQuestions() {
   const [css, setCss] = useState(true);
@@ -38,15 +38,16 @@ function AllQuestions() {
   const [divisions, setDivisions] = useState([]);
   const [tags, setTags] = useState([]);
 
-  const [option1, setOption1] = useState('');
-  const [option2, setOption2] = useState('');
-  const [option3, setOption3] = useState('');
-  const [option4, setOption4] = useState('');
+  const [option1, setOption1] = useState("");
+  const [option2, setOption2] = useState("");
+  const [option3, setOption3] = useState("");
+  const [option4, setOption4] = useState("");
   const [categories, setCategories] = useState();
   const [deletebtn, setDeleteBtn] = useState(false);
   const [quesId, setQuesId] = useState();
   const [categoryData, setCategoryData] = useState();
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
   const [removedFirm, setRemovedFirm] = useState([]);
   const [removedDivision, setRemovedDivision] = useState([]);
@@ -54,21 +55,28 @@ function AllQuestions() {
   const [removedTag, setRemovedTag] = useState([]);
 
   // states for handling pagination
-  const [searchActive, setsearchActive] = useState(false)
+  const [searchActive, setsearchActive] = useState(false);
   const [startIndex, setstartIndex] = useState(0);
-  const [endIndex, setendIndex] = useState(0)
+  const [endIndex, setendIndex] = useState(10);
+  const [prevPage, setPrevPage] = useState(1);
 
-  let tableData
-  searchActive ? (tableData = slice(selected, 0, 10)):
-  (tableData = slice(selected, startIndex, endIndex))
- 
+  let tableData;
+  searchActive
+    ? (tableData = selected.slice(0, 10))
+    : (tableData = selected.slice(startIndex, endIndex));
 
-  // console.log(mydata);
-
-  const [all, setAll] = useState({ ttl: title, que: ques, answ: answer, exp: explanation, opt1: option1, opt2: option2, opt3: option3, opt4: option4 });
+  const [all, setAll] = useState({
+    ttl: title,
+    que: ques,
+    answ: answer,
+    exp: explanation,
+    opt1: option1,
+    opt2: option2,
+    opt3: option3,
+    opt4: option4,
+  });
   const [editId, setEditId] = useState("");
 
-  // console.log(`all data: ${all}`);
   const url = "http://localhost:8000/question";
   const category_url = "http://localhost:8000/category";
 
@@ -76,27 +84,28 @@ function AllQuestions() {
   const itemsPerPage = 10;
 
   function goToPrev() {
-    // setCurrentPage((page) => page - 1);
     if (startIndex >= 10) {
       setstartIndex(startIndex - 10);
     }
     setendIndex(endIndex - 10);
-    setCurrentPage(currentPage - 1);
-   
-    handleClick(startIndex+10,0);
+    setCurrentPage((page) => page - 1);
+    setPrevPage((page) => page - 1);
+    // setCurrentPage(currentPage - 1);
+
+    // handleClick(startIndex+10,0);
   }
 
   function goToNext() {
-    // setCurrentPage((page) => page + 1);
+    setCurrentPage((page) => page + 1);
+    setPrevPage((page) => page + 1);
     setstartIndex(startIndex + 10);
     setendIndex(endIndex + 10);
-    setCurrentPage(currentPage);
+    // setCurrentPage(currentPage);
 
-    handleClick(startIndex,0);
+    // handleClick(startIndex,0);
   }
 
   const totalPages = Math.ceil(selected && selected.length / itemsPerPage);
-
 
   // Firms, divisions, categories and tags names
   let firmNames = [],
@@ -146,9 +155,7 @@ function AllQuestions() {
     const res = await data.json();
     setData(res);
     setSelected(res);
-    // console.log(mydata);
   };
-
 
   useEffect(() => {
     fetchQuestions();
@@ -156,12 +163,10 @@ function AllQuestions() {
     setLoading(false);
   }, [loading, startIndex, endIndex]);
 
-
   const setClicked = (id) => {
     setOpen(true);
     setId(id);
     setEdit(true);
-    // console.log(`first id ${id}`);
   };
 
   const setCancel = () => {
@@ -171,12 +176,6 @@ function AllQuestions() {
 
   const handleClick = (i, id1) => {
     setClicked(i);
-    // let i = 0;
-    // if (currentPage > 1) {
-    //   i = (currentPage - 1) * 10 + i;
-    // } else {
-    //   i = i;
-    // }
     setEditId(id1);
     setAll({
       ...all,
@@ -187,16 +186,14 @@ function AllQuestions() {
       opt1: tableData[i].options[0],
       opt2: tableData[i].options[1],
       opt3: tableData[i].options[2],
-      opt4: tableData[i].options[3]
+      opt4: tableData[i].options[3],
     });
 
     setAnsType("");
-
-
   };
 
   const handleUpdate = async (id, catArray, options) => {
-    // console.log(options, "KIKM");
+    setLoading2(true);
     let value = {};
     if (all.que) {
       value.question = all.que;
@@ -317,7 +314,6 @@ function AllQuestions() {
     if (removedFirm.length > 0 && firms.length > 0) {
       firmNames.map((firm) => {
         if (removedFirm.includes(firm) && firms.includes(firm)) {
-          // console.log(firm);
         } else if (
           removedFirm.includes(firm) &&
           catArray.firmArray.includes(firm)
@@ -346,7 +342,6 @@ function AllQuestions() {
     if (removedDivision.length > 0 && divisions.length > 0) {
       divisionNames.map((div) => {
         if (removedDivision.includes(div) && divisions.includes(div)) {
-          // console.log(div);
         } else if (
           removedDivision.includes(div) &&
           catArray.divisionsArray.includes(div)
@@ -378,7 +373,6 @@ function AllQuestions() {
     if (removedPosition.length > 0 && positions.length > 0) {
       positionNames.map((pos) => {
         if (removedPosition.includes(pos) && positions.includes(pos)) {
-          // console.log(pos);
         } else if (
           removedPosition.includes(pos) &&
           catArray.positionsArray.includes(pos)
@@ -410,7 +404,6 @@ function AllQuestions() {
     if (removedTag.length > 0 && tags.length > 0) {
       tagNames.map((tag) => {
         if (removedTag.includes(tag) && tags.includes(tag)) {
-          // console.log(tag);
         } else if (
           removedTag.includes(tag) &&
           catArray.tagsArray.includes(tag)
@@ -542,11 +535,11 @@ function AllQuestions() {
       }
     );
     const response = await dataa.json();
-    // console.log(response);
 
     setLoading(true);
     setOpen(false);
     setEdit(false);
+    setLoading2(false);
   };
 
   const handleDelete = (id) => {
@@ -604,7 +597,6 @@ function AllQuestions() {
       tagscount,
       positionscount,
     };
-    // console.log(value);
     const deletedata = await fetch(`http://localhost:8000/question/${quesId}`, {
       method: "DELETE",
       headers: {
@@ -641,7 +633,6 @@ function AllQuestions() {
       mydata.forEach((ques) => {
         const value = ques.title.toLowerCase().includes(val.toLowerCase());
         if (value) {
-          // console.log(value)
           matched.push(ques);
         }
       });
@@ -650,43 +641,35 @@ function AllQuestions() {
         var findItem = uniquematched.find((x) => x._id === item._id);
         if (!findItem) uniquematched.push(item);
       });
-      // startIndex(0);
-      // endIndex(10);
       setSelected(uniquematched);
-      // setCurrentPage(1)
-      
+      setCurrentPage(1);
     } else {
       setSelected(mydata);
-      setsearchActive(false)
+      setsearchActive(false);
       setOpen(false);
+      setCurrentPage(prevPage);
     }
   };
 
-
-
   const handleTitleChange = (e) => {
     const { name, value } = e.target;
-    // console.log(name, value);
 
     setAll({
       ...all,
-      [name]: value
+      [name]: value,
     });
-
-  }
-
+  };
 
   return (
     <>
       <div className="dash">
-
         {/* admin sidebar */}
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
-
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "13px" }}
+            >
               {/* it will redirect to Dashboard.jsx */}
               <Link to="/dashboard" className="add-que" onClick={handleAdd}>
                 <MdLibraryAdd className="icon-side" />
@@ -698,13 +681,25 @@ function AllQuestions() {
                 All Questions
               </div>
 
-              <div onClick={() => { setLoginModalShow(true); setCss(false); }} className={css ? "add-que" : "add-que-hover"}>
+              <div
+                onClick={() => {
+                  setLoginModalShow(true);
+                  setCss(false);
+                }}
+                className={css ? "add-que" : "add-que-hover"}
+              >
                 <MdLibraryAdd className="icon-side" />
                 Add Resources
               </div>
             </div>
 
-            <ModalResource show={loginModalShow} close={() => { setLoginModalShow(false); setCss(true) }} />
+            <ModalResource
+              show={loginModalShow}
+              close={() => {
+                setLoginModalShow(false);
+                setCss(true);
+              }}
+            />
 
             <div style={{ paddingLeft: "25px" }}>
               <div className="add-que" onClick={handleLogout}>
@@ -746,15 +741,12 @@ function AllQuestions() {
                     >
                       <div>
                         <div className="ques1-drop">
-                          
-                            <div>{data.title}</div>
-                        
+                          <div>{data.title}</div>
 
                           <div className="additionals">
                             <FiEdit
                               onClick={() => handleClick(index, data._id)}
                               size="20"
-                              
                             />
                             <MdDelete
                               size="20"
@@ -777,17 +769,17 @@ function AllQuestions() {
                           {/* {data.answerType === "Text" ? ( */}
                           <div>
                             <div className="detail-ques">
-                            <div className="ques-d">
-                              <span className="span-tag">Title:</span>
+                              <div className="ques-d">
+                                <span className="span-tag">Title:</span>
 
-                              <textarea
-                                className="quest1"
-                                type="text"
-                                value={all.ttl}
-                                name='ttl'
-                                onChange={handleTitleChange}
-                              />
-                            </div>
+                                <textarea
+                                  className="quest1"
+                                  type="text"
+                                  value={all.ttl}
+                                  name="ttl"
+                                  onChange={handleTitleChange}
+                                />
+                              </div>
                               <div>
                                 <span className="span-tag span-ques">
                                   Question:
@@ -796,7 +788,7 @@ function AllQuestions() {
                                   className="quest1"
                                   type="text"
                                   value={all.que}
-                                  name='que'
+                                  name="que"
                                   onChange={handleTitleChange}
                                 />{" "}
                               </div>
@@ -968,8 +960,8 @@ function AllQuestions() {
                                     placeholder="Select Firms"
                                     displayValue=""
                                     isObject={false}
-                                    onKeyPressFn={function noRefCheck() { }}
-                                    onSearch={function noRefCheck() { }}
+                                    onKeyPressFn={function noRefCheck() {}}
+                                    onSearch={function noRefCheck() {}}
                                     onSelect={(name) => setFirms(name)}
                                     onRemove={(name, removedItem) => {
                                       setRemovedFirm((arr) => [
@@ -989,14 +981,14 @@ function AllQuestions() {
                                   placeholder="Select Divisions"
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() { }}
+                                  onKeyPressFn={function noRefCheck() {}}
                                   onRemove={(name, removedItem) => {
                                     setRemovedDivision((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() { }}
+                                  onSearch={function noRefCheck() {}}
                                   onSelect={(name) => setDivisions(name)}
                                   options={divisionNames}
                                   selectedValues={data.divisions}
@@ -1008,14 +1000,14 @@ function AllQuestions() {
                                   placeholder="Select Positions"
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() { }}
+                                  onKeyPressFn={function noRefCheck() {}}
                                   onRemove={(name, removedItem) => {
                                     setRemovedPosition((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() { }}
+                                  onSearch={function noRefCheck() {}}
                                   onSelect={(name) => setPositions(name)}
                                   options={positionNames}
                                   selectedValues={data.position}
@@ -1027,14 +1019,14 @@ function AllQuestions() {
                                   placeholder={data.tags}
                                   displayValue=""
                                   isObject={false}
-                                  onKeyPressFn={function noRefCheck() { }}
+                                  onKeyPressFn={function noRefCheck() {}}
                                   onRemove={(name, removedItem) => {
                                     setRemovedTag((arr) => [
                                       ...arr,
                                       removedItem,
                                     ]);
                                   }}
-                                  onSearch={function noRefCheck() { }}
+                                  onSearch={function noRefCheck() {}}
                                   onSelect={(name) => setTags(name)}
                                   options={tagNames}
                                   selectedValues={data.tags}
@@ -1042,23 +1034,42 @@ function AllQuestions() {
                               </div>
                             </div>
                             <div className="add-ons">
-                              <button
-                                className="add-btn-save"
-                                onClick={() =>
-                                  handleUpdate(
-                                    data._id,
-                                    {
-                                      firmArray: data.firms,
-                                      divisionsArray: data.divisions,
-                                      positionsArray: data.position,
-                                      tagsArray: data.tags,
-                                    },
-                                    data.options
-                                  )
-                                }
-                              >
-                                Save
+                              <button className="add-btn-save">
+                                {
+                                loading2 ? (
+                                  <div
+                                    className="spinner-border text-white"
+                                    role="status"
+                                    style={{
+                                      height: "15px",
+                                      width: "15px",
+                                      padding:"2px"
+                                    }}
+                                  >
+                                    <span className="visually-hidden">
+                                      Loading...
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div
+                                    onClick={() =>
+                                      handleUpdate(
+                                        data._id,
+                                        {
+                                          firmArray: data.firms,
+                                          divisionsArray: data.divisions,
+                                          positionsArray: data.position,
+                                          tagsArray: data.tags,
+                                        },
+                                        data.options
+                                      )
+                                    }
+                                  >
+                                    Save
+                                  </div>
+                                )}
                               </button>
+
                               <button
                                 className="add-btn-save"
                                 onClick={setCancel}
@@ -1073,7 +1084,7 @@ function AllQuestions() {
                   </div>
                 ))}
 
-              {tableData.length > 0 ?
+              {tableData.length > 0 ? (
                 <nav className="d-flex justify-content-center">
                   <ul className="pagination">
                     <button
@@ -1098,10 +1109,12 @@ function AllQuestions() {
                       <IoIosArrowForward fontSize={20} />
                     </button>
                   </ul>
-                </nav> :
-                <div className="d-flex justify-content-center">No Data Found</div>
-              }
-
+                </nav>
+              ) : (
+                <div className="d-flex justify-content-center">
+                  No Data Found
+                </div>
+              )}
             </div>
           </div>
 
@@ -1124,8 +1137,6 @@ function AllQuestions() {
               </Modal.Footer>
             </Modal>
           )}
-
-
         </div>
       </div>
     </>

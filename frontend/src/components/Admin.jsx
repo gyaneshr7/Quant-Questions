@@ -9,6 +9,7 @@ function Admin() {
   const [eye, setEye] = useState(true);
   const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
+  const [loading,setLoading]=useState(false);
   const URL = 'http://localhost:8000/auth'
 
   window.history.forward();
@@ -17,6 +18,7 @@ function Admin() {
   }
 
   const submitHandler=async ()=>{
+    setLoading(true);
     const val={
       email:email,
       password:password,
@@ -33,7 +35,7 @@ function Admin() {
       })
       const user = await data.json();
       // console.log(user);
-      if(user=='wrong email or password' ||  user=='Not a valid user!'){
+      if(user==='wrong email or password' ||  user=='Not a valid user!'){
         alert(user);
       }else{
         localStorage.setItem("quantuser",JSON.stringify(user));
@@ -42,6 +44,7 @@ function Admin() {
     } catch (error) {
       // console.log(error);
     }
+    setLoading(false);
   }
 
   return (
@@ -77,9 +80,28 @@ function Admin() {
             </div>
           </div>
 
-          <button type="button" className="logbtn" onClick={submitHandler}>
+          <button type="button" className='logbtn'>
+              {
+                loading ?
+                <div
+                className="spinner-border text-white"
+                role="status"
+                style={{
+                  height: "15px",
+                  width: "15px",
+                  padding:"2px"
+                }}
+              >
+                <span className="visually-hidden">
+                  Loading...
+                </span>
+              </div>:
+              <div onClick={submitHandler}>Log In</div>
+              }
+            </button>
+          {/* <button type="button" className="logbtn" onClick={submitHandler}>
             Log In
-          </button>
+          </button> */}
         </div>
         </div>
       </div>

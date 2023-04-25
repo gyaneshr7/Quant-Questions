@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import logo2 from '../images/logo2.png'
 import './Login.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { ToastContainer, toast } from "react-toastify";
 import {
   faEye,
   faEyeSlash
@@ -14,7 +16,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, seterror] = useState("")
+  const [error, seterror] = useState("");
+  const [loading,setLoading]=useState(false);
   const URL = 'http://localhost:8000/auth'
 
   function isValidEmail(email) {
@@ -22,6 +25,9 @@ function Signup() {
   }
   function isValidPhone(phone){
     return phone.length===10;
+  }
+  if (typeof window !== "undefined") {
+    injectStyle();
   }
 
 const handleChange = (e) => {
@@ -50,7 +56,7 @@ const handleChange = (e) => {
 
   const handlesignup = async () => {
     // console.log(name, email, password,phone);
-   
+  setLoading(true); 
   if(error===""){
     const val = {
       name: name,
@@ -68,16 +74,27 @@ const handleChange = (e) => {
         }
       })
       const user = await data.json();
-      alert(user);
+      setLoading(false);
+      
       if(user==="Registered Successfully!"){
-        window.location.href='/login'
+        toast.dark(user);
+        setTimeout(()=>{
+          window.location.href='/login'
+        },5000);
+      }
+      else if(user==="User Already Exist. Please Login")
+      {
+        toast.info(user);
+        setTimeout(()=>{
+          window.location.href='/login'
+        },6000);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
   else{
-    alert("Please check Email and Phone number")
+    toast.warning("Please check Email and Phone number")
   }
   }
 
@@ -108,7 +125,26 @@ useEffect(() => {
                 )}
               </div>
             </div>
-            <button type="button" className='logbtn' onClick={handlesignup}>Sign Up</button>
+            <button type="button" className='logbtn'>
+              {
+                loading ?
+                <div
+                className="spinner-border text-white"
+                role="status"
+                style={{
+                  height: "15px",
+                  width: "15px",
+                  padding:"2px"
+                }}
+              >
+                <span className="visually-hidden">
+                  Loading...
+                </span>
+              </div>
+              :
+              <div onClick={handlesignup}>Sign Up</div>
+              }
+             </button>
           </div>
           <div className='last-block having'>
             <a href="/login" className='sign-pass'>Having an account ? Login</a>
@@ -116,7 +152,7 @@ useEffect(() => {
         </div>
         {error && <div style={{color:"red"}}>{error}</div>}
       </div>
-      {/* <Footer/> */}
+      <ToastContainer/>
     </>
   )
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Modal from "react-bootstrap/Modal";
 import axios from "axios"
-
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { ToastContainer, toast } from "react-toastify";
 
 function ModalResource(props) {
   const [categories, setCategories] = useState([]);
@@ -15,6 +16,10 @@ function ModalResource(props) {
     fetchResources();
     setFormSubmit(false)
   }, [formsubmit])
+
+  if (typeof window !== "undefined") {
+    injectStyle();
+  }
 
   const fetchResources = async () => {
     const data = await fetch(`http://localhost:8000/resources/`);
@@ -52,12 +57,14 @@ function ModalResource(props) {
             .put(`http://localhost:8000/resources/update`, formData)
             .then(async (res) => {
               // console.log(res);
-              alert("File Updated Successfully");
-              setLoading(false);
+              toast.success("File Updated Successfully");
               setFile("");
               setCategory("");
               setFormSubmit(true);
-              window.location.href = '/all-ques'
+              setLoading(false);
+              setTimeout(()=>{
+                window.location.href = '/all-ques'
+              },5000)
             })
         }
       } else {
@@ -65,17 +72,18 @@ function ModalResource(props) {
         axios
           .post(`http://localhost:8000/resources/add/pdf`, formData)
           .then(async (res) => {
-            // console.log(res);
-            alert("File Uploaded Successfully");
-            setLoading(false);
+            toast.success("File Uploaded Successfully");
             setFile("");
             setCategory("");
             setFormSubmit(true);
-            window.location.href = '/all-ques'
+            setLoading(false);
+            setTimeout(()=>{
+              window.location.href = '/all-ques'
+            },5000)
           })
       }
     } else {
-      alert("Please select category...")
+      toast.warning("Please select category...")
     }
 
   }
@@ -135,8 +143,10 @@ function ModalResource(props) {
           }
 
         </form>
+        <ToastContainer/>
       </Modal.Body>
     </Modal>
+   
 
   )
 }

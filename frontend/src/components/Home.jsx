@@ -26,7 +26,7 @@ const Home = () => {
   const handleAuth = async() => {
 
     const isLoggedIn = localStorage.getItem("quantuser");
-    if (isLoggedIn !== "null") {
+    if (isLoggedIn !== null) {
       // alert("loggedin")
       navigate('/questions')
     }
@@ -265,6 +265,7 @@ const Home = () => {
       <div className="services2">
         <div className="over-head">Who is Quant Questions for?</div>
         <div className="myhome-serv">
+          
           <div className="col-home">
             <img className="serv-img" src={who1} alt="" />
             <div className="myserv-head">Undergraduates in STEM majors</div>
@@ -276,6 +277,7 @@ const Home = () => {
               and you need to prepare in order to succeed.
             </p>
           </div>
+
           <div className="col-home">
             <img className="serv-img" src={who2} alt="" />
             <div className="myserv-head">Graduate students & PhD candidates</div>
@@ -288,6 +290,7 @@ const Home = () => {
               you practice all the quant interview questions you need to know.
             </p>
           </div>
+
           <div className="col-home">
             <img className="serv-img" src={who3} alt="" />
             <div className="myserv-head">Early career quant professionals</div>
@@ -299,31 +302,10 @@ const Home = () => {
               time just a little bit less painful.
             </p>
           </div>
+          
         </div>
       </div>
-
-      <div className="footer web-footer">
-        <div className="all-foots">
-          <a href="/">&copy;Quant Questions</a>
-          <a href="/">Contact Us</a>
-          <a href="/">Terms</a>
-          <a href="/">Privacy Policy</a>
-          <a href="/">Blogs</a>
-          <a href="/">FAQs</a>
-        </div>
-      </div>
-
-      <div className="footer mobile-footer">
-        <div className="all-foots">
-          <a href='/'>Home</a>
-          <a href="/">Contact</a>
-          <a href="/">Terms</a>
-          <a href="/">Privacy</a>
-          <a href="/">Blogs</a>
-          <a href="/">FAQs</a>
-        </div>
-      </div>
-
+      
     </div>
   )
 }

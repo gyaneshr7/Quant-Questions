@@ -45,7 +45,7 @@ function Submissions() {
       <div className={submittedQuestions && submittedQuestions.length>0 ? "sub":"sub-bet" }>
       
         <div className="whole-table">
-          <table className="mytable table-striped web-table">
+          <table className="mytable table-striped web-table web-table-bottom">
             <thead className="table-head">
               <tr height="1%">
                 <th width="2%">Date Submitted</th>

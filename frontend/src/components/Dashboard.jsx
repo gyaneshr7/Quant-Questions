@@ -11,6 +11,8 @@ import { Link, useLocation } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 import { CategoryScale } from "chart.js";
 import ModalResource from "./ModalResource";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { ToastContainer, toast } from "react-toastify";
 
 function Dashboard() {
   const [color, setColor] = useState('');
@@ -58,6 +60,10 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [loginModalShow, setLoginModalShow] = useState(false);
 
+  if (typeof window !== "undefined") {
+    injectStyle();
+  }
+
   let firmNames = [],
     divisionNames = [],
     positionNames = [],
@@ -100,7 +106,7 @@ function Dashboard() {
     const questions = await fetch(`http:///localhost:8000/question/getallquestions`);
     const quesres = await questions.json();
     // console.log(quesres.length, "length");
-    if (title != '' && question != '' && answer != '' && difficulty != '' && category != '' && anstype != '' && firms != '' && divisions != '' && positions != '' && tags !== '') {
+    if (title !== '' && question !== '' && answer !== '' && difficulty !== '' && category !== '' && anstype !== '' && (firms !== '' || divisions !== '' || positions !== '' || tags !== '')) {
       if (anstype === 'Mcq') {
         val = {
           uniqueId: quesres.length + 1,
@@ -142,7 +148,16 @@ function Dashboard() {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      }).then(() => alert("question added Successfully"))
+      }).then(() => {
+        toast.dark("Question added Successfully")
+        setAnsType("");
+        setAnswer("");
+        setTitle("");
+        setQuestion("");
+        setCategory("");
+        setDifficulty("");
+        setExplanation("");
+      })
         .then(() => {
           setAnsType("");
           setAnswer("");
@@ -151,6 +166,7 @@ function Dashboard() {
           setCategory("");
           setDifficulty("");
           setExplanation("");
+
         })
         .catch((err)=>{
           alert(err)
@@ -159,7 +175,7 @@ function Dashboard() {
       // console.log(res);
 
     } else {
-      alert("Enter value in all fields...")
+      toast.warning("Enter value in all fields...")
     }
 
     const dataa = await fetch("http://localhost:8000/category/getcategories");
@@ -888,7 +904,7 @@ function Dashboard() {
                   </div>
                 )}
 
-
+                <ToastContainer/>
               <div className="add-btn-admin">
                 <button className="add-btn" onClick={submitHandler}>
                   Add Question

@@ -273,7 +273,7 @@ function Progress() {
           <div className='recent recent-web'>Most Recent 30 Submissions</div>
           <div className='recent recent-ph'>Most Recent 10 Submissions</div>
 
-          <table className="table-sub table-striped web-table">
+          <table className="table-sub table-striped web-table web-table-bottom">
             <thead className='table-head'>
               <tr>
                 <th>Date Submitted</th>

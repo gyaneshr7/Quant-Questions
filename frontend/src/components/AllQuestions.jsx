@@ -1085,9 +1085,13 @@ function AllQuestions() {
                 ))}
 
               {tableData.length > 0 ? (
-                <nav className="d-flex justify-content-center">
+                <nav className="quest-page">
                   <ul className="pagination">
-                    <button
+                    {
+                      edit ?
+                      "":
+                      <div style={{display:"flex",gap:"10px"}}>
+                      <button
                       onClick={goToPrev}
                       className="prev"
                       disabled={currentPage === 1}
@@ -1108,6 +1112,8 @@ function AllQuestions() {
                       Next
                       <IoIosArrowForward fontSize={20} />
                     </button>
+                    </div>
+                    }
                   </ul>
                 </nav>
               ) : (

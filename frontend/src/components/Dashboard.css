@@ -23,12 +23,12 @@
     /* flex-direction: column; */
     gap:150px;
     margin-top: 20px;
-    /* margin-bottom: 10px; */
+    margin-bottom: 130px;
     margin-left: 150px;
     padding:30px;
     margin-right: 150px;
     justify-content: center;
-    height:86vh;
+    height:78vh;
     text-align: center;
     overflow-y: scroll;
     /* align-items: center; */

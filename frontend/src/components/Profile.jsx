@@ -368,7 +368,7 @@ function Profile() {
         </div>
 
         <div className="second-box">
-          <div className="bar-profile">
+          <div className="bar-profile bar-profile-bottom">
             <div className="pro">Badges & Achievements</div>
 
             <div className="bar bar-web">

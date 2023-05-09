@@ -790,7 +790,10 @@ function Questions() {
                 </div>
               </div>
             </div>
-            <div className="firms-block">
+
+            {
+              categories && categories.firms.length > 0?
+              <div className="firms-block">
               <div className="firm-head">
                 <GrNotes />
                 <div className="myfirm">Firms</div>
@@ -804,23 +807,34 @@ function Questions() {
                 ))}
               </div>
             </div>
-
+              :
+              ""
+            }
+            
+            
+            {
+            categories && categories.divisions.length>0?
             <div className="firms-block">
-              <div className="firm-head">
-                <FaUsers />
-                <div className="myfirm">Divisions</div>
-              </div>
-
-              <div className="main-firms">
-                {categories && categories.divisions.map((item) => (
-                  item.count > 0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
-                    <div className="firm-item">{item.name}<span className="num-divi">{item.count}</span></div>
-                  </div>
-                ))}
-              </div>
+            <div className="firm-head">
+              <FaUsers />
+              <div className="myfirm">Divisions</div>
             </div>
 
-            <div className="firms-block">
+            <div className="main-firms">
+              {categories && categories.divisions.map((item) => (
+                item.count > 0 && <div className="all-firms" onClick={() => setDivisionVal(item.name)}>
+                  <div className="firm-item">{item.name}<span className="num-divi">{item.count}</span></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          :
+          ""
+            }
+            
+            {
+             categories &&  categories.positions.length>0 ?
+              <div className="firms-block">
               <div className="firm-head">
                 <GrUserManager />
                 <div className="myfirm">Positions</div>
@@ -834,8 +848,13 @@ function Questions() {
                 ))}
               </div>
             </div>
-
-            <div className="firms-block">
+              :
+              ""
+            }
+            
+            {
+             categories &&  categories.tags.length > 0 ?
+              <div className="firms-block">
               <div className="firm-head">
                 <FaTags />
                 <div className="myfirm">Tags</div>
@@ -849,6 +868,10 @@ function Questions() {
                 ))}
               </div>
             </div>
+            :
+            ""
+            }
+            
           </div>
         </div>
 

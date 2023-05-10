@@ -18,7 +18,7 @@ function Signup() {
   const [phone, setPhone] = useState("");
   const [error, seterror] = useState("");
   const [loading,setLoading]=useState(false);
-  const URL = 'http://localhost:8000/auth'
+  const URL = '/auth'
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);

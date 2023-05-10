@@ -78,7 +78,7 @@ function Progress() {
   
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`http://localhost:8000/user/get/all/attempted/question/${user.id}`)
+      const data = await fetch(`/user/get/all/attempted/question/${user.id}`)
       const res = await data.json();
       setUserData(res);
       // console.log(res,"sldai");
@@ -101,13 +101,13 @@ function Progress() {
       })
     }
     const fetchCategory = async () => {
-      const data = await fetch(`http://localhost:8000/category/getcategories`);
+      const data = await fetch(`/category/getcategories`);
       const res = await data.json();
       setCategories(res.category);
     };
   
     const fetchQuestions = async () => {
-      const data = await fetch(`http://localhost:8000/question/getallquestions`);
+      const data = await fetch(`/question/getallquestions`);
       const res = await data.json();
       setQuestions(res);
     }

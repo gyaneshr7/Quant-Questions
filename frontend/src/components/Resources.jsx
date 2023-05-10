@@ -14,7 +14,7 @@ function Resources() {
   useEffect(() => {
     const fetchResources = async () => {
       setLoading(true);
-      const data = await fetch(`http://localhost:8000/resources/`);
+      const data = await fetch(`/resources/`);
       const res = await data.json();
       // console.log(res);
       setresources(res);

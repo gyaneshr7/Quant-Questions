@@ -109,7 +109,7 @@ function Profile() {
 
   // fetch categories
   const fetchCategories = async () => {
-    const data = await fetch(`http://localhost:8000/category/getcategories`);
+    const data = await fetch(`/category/getcategories`);
     const res = await data.json();
     setCategories(res.category);
   }
@@ -118,7 +118,7 @@ function Profile() {
     let score = [];
     const fetchData = async () => {
       const data = await fetch(
-        `http://localhost:8000/user/get/all/attempted/question/${user.id}`
+        `/user/get/all/attempted/question/${user.id}`
       );
       const res = await data.json();
       // console.log(res.badges.filter(obj=>obj.name=='bfour' && obj.status==true))
@@ -127,13 +127,13 @@ function Profile() {
     };
     const fetchQuestions = async () => {
       const data = await fetch(
-        `http://localhost:8000/question/getallquestions`
+        `/question/getallquestions`
       );
       const res = await data.json();
       setQuestions(res);
     };
     const fetchScore = async () => {
-      const data = await fetch(`http://localhost:8000/user/get/scores`);
+      const data = await fetch(`/user/get/scores`);
       const res = await data.json();
       res &&
         res.map((data) => {

@@ -77,8 +77,8 @@ function AllQuestions() {
   });
   const [editId, setEditId] = useState("");
 
-  const url = "http://localhost:8000/question";
-  const category_url = "http://localhost:8000/category";
+  const url = "/question";
+  const category_url = "/category";
 
   // Pagination
   const itemsPerPage = 10;
@@ -298,7 +298,7 @@ function AllQuestions() {
     }
 
     const updatedata = await fetch(
-      `http://localhost:8000/question/update/questions/${id}`,
+      `/question/update/questions/${id}`,
       {
         method: "PUT",
         body: JSON.stringify(value),
@@ -427,7 +427,7 @@ function AllQuestions() {
       });
     }
 
-    const data = await fetch("http://localhost:8000/category/getcategories");
+    const data = await fetch("/category/getcategories");
     const res = await data.json();
     let firmscount = [],
       divisionscount = [],
@@ -525,7 +525,7 @@ function AllQuestions() {
     };
 
     const dataa = await fetch(
-      "http://localhost:8000/category/updatecategory/firms",
+      "/category/updatecategory/firms",
       {
         method: "PUT",
         body: JSON.stringify(val),
@@ -549,7 +549,7 @@ function AllQuestions() {
 
   const handleDeleteQuestion = async () => {
     // console.log(quesId);
-    const dataa = await fetch("http://localhost:8000/category/getcategories");
+    const dataa = await fetch("/category/getcategories");
     const resp = await dataa.json();
     let firmscount = [],
       divisionscount = [],
@@ -597,7 +597,7 @@ function AllQuestions() {
       tagscount,
       positionscount,
     };
-    const deletedata = await fetch(`http://localhost:8000/question/${quesId}`, {
+    const deletedata = await fetch(`/question/${quesId}`, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -605,7 +605,7 @@ function AllQuestions() {
     });
     const deleted = await deletedata.json();
     const data = await fetch(
-      "http://localhost:8000/category/updatecategory/firms",
+      "/category/updatecategory/firms",
       {
         method: "PUT",
         body: JSON.stringify(value),

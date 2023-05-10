@@ -21,7 +21,7 @@ export default function Forgotpassword() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const data = await fetch("http://localhost:8000/user");
+            const data = await fetch("/user");
             const res = await data.json();
             setUsers(res);
         }
@@ -116,7 +116,7 @@ export default function Forgotpassword() {
         e.preventDefault();
         // console.log(newPass, confirmnewPass, phoneNo);
         if (newPass === confirmnewPass) {
-            const data = await fetch(`http://localhost:8000/auth/update/new/password/${phoneNo}`, {
+            const data = await fetch(`/auth/update/new/password/${phoneNo}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password: newPass })

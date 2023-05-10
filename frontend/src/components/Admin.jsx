@@ -10,7 +10,7 @@ function Admin() {
   const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
   const [loading,setLoading]=useState(false);
-  const URL = 'http://localhost:8000/auth'
+  const URL = '/auth'
 
   window.history.forward();
   function noBack() {

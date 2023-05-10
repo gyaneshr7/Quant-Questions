@@ -111,7 +111,7 @@ function QueDetail() {
     : allQuestions && currentQuestion === allQuestions.length - 1;
 
   const fetchQuestions = async () => {
-    const data = await fetch(`http://localhost:8000/question/getallquestions`);
+    const data = await fetch(`/question/getallquestions`);
     const res = await data.json();
     // console.log(location.state.id,"jhhjhjjhj");
     res &&
@@ -131,13 +131,13 @@ function QueDetail() {
   };
 
   const fetchUser = async () => {
-    const data = await fetch(`http://localhost:8000/user/${user.id}`);
+    const data = await fetch(`/user/${user.id}`);
     const res = await data.json();
     setUserData(res);
   };
 
   // const fetchCategories = async () => {
-  //   const data = await fetch(`http://localhost:8000/category/getcategories`);
+  //   const data = await fetch(`/category/getcategories`);
   //   const res = await data.json();
   //   setCategories(res.category);
   // };
@@ -150,7 +150,7 @@ function QueDetail() {
       setChooseCategory(true);
     } else {
       const data = await fetch(
-        `http://localhost:8000/question/getquestions/category/${category}`
+        `/question/getquestions/category/${category}`
       );
       const res = await data.json();
       setCategoryQuestions(res);
@@ -173,7 +173,7 @@ function QueDetail() {
       return;
     }
 
-    const a = await fetch(`http://localhost:8000/user/${user.id}`);
+    const a = await fetch(`/user/${user.id}`);
     const updateduser = await a.json();
     // console.log(updateduser, "updateduser1");
     let score;
@@ -231,7 +231,7 @@ function QueDetail() {
         };
         // update user with submission and correct answers data
         const data = await fetch(
-          `http://localhost:8000/user/submittedans/${userData._id}`,
+          `/user/submittedans/${userData._id}`,
           {
             method: "PUT",
             body: JSON.stringify(val),
@@ -262,7 +262,7 @@ function QueDetail() {
         };
         // update details of user
         const data = await fetch(
-          `http://localhost:8000/user/submittedans/${userData._id}`,
+          `/user/submittedans/${userData._id}`,
           {
             method: "PUT",
             body: JSON.stringify(val),
@@ -287,7 +287,7 @@ function QueDetail() {
 
       // update question for submissions and acceptance
       const updateQues = await fetch(
-        `http://localhost:8000/question/updateans/${
+        `/question/updateans/${
           chooseCategory
             ? categoryQuestions[currentQuestion]._id
             : allQuestions[currentQuestion]._id
@@ -314,7 +314,7 @@ function QueDetail() {
         status: status,
       };
       const updateUser = await fetch(
-        `http://localhost:8000/user/update/ans/status/${userData._id}/${
+        `/user/update/ans/status/${userData._id}/${
           chooseCategory
             ? categoryQuestions[currentQuestion]._id
             : allQuestions[currentQuestion]._id
@@ -569,7 +569,7 @@ function QueDetail() {
       // console.log(badgeval,count,highestCount);
 
       const updatebadge = await fetch(
-        `http://localhost:8000/user/update/badge/status/${userData._id}`,
+        `/user/update/badge/status/${userData._id}`,
         {
           method: "PUT",
           body: JSON.stringify(badgeCountVal),

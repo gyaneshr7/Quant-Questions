@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "../images/logo.png";
-import logo3 from "../images/logo3.png";
+import logo3 from "../images/logo3.svg";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -36,11 +36,11 @@ function Header() {
   return (
     <div className="header">
       <div className={user? "main-user":"main"}>
-        <div className="logo-quant">
-          <Link to="/questions">
+        {/* <div className="logo-quant"> */}
+          <Link to="/questions" >
             <img className="logo" src={logo3} onClick={() => { setClicked(true) }} alt="" />
           </Link>
-        </div>
+        {/* </div> */}
         {
           user ?
             <>

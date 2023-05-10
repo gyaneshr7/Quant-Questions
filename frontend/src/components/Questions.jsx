@@ -23,7 +23,7 @@ function Questions() {
   const [categoryVal, setCategoryVal] = useState("");
   let [random, setRandom] = useState();
   const [data, setData] = useState();
-  const url = "http://localhost:8000/question";
+  const url = "/question";
   const user = JSON.parse(localStorage.getItem("quantuser"));
   // console.log(user);
 
@@ -210,108 +210,108 @@ function Questions() {
 
   // Mobile view
 
-  const columnmobile = [
-    {
-      name: <div style={{ fontSize: 10, fontWeight: 700 }}>#</div>,
-      selector: (row) => row.id,
-      cell: (row) => <div style={{ fontSize: 15 }}>{row.id}</div>,
-      sortable: true,
-    },
-    {
-      name: <div style={{ fontSize: 10, fontWeight: 700 }}>Question Name</div>,
-      selector: (row) => row.title,
-      cell: (row) => (
-        <Link to="/quedetail" state={{ id: row._id }}>
-          <div
-            style={{
-              fontSize: 15,
-              color: "#0378a6",
-              fontWeight: 600,
-              cursor: "pointer",
-              textAlign: "left"
-            }}
-          >
-            {row.title}
-          </div>
-        </Link>
-      ),
-      width: "300px",
-      sortable: true,
-    },
-    {
-      name: <div style={{ fontSize: 10, fontWeight: 700 }}>Difficulty</div>,
-      selector: (row) => row.difficulty,
-      cell: (row) => (
+  // const columnmobile = [
+  //   {
+  //     name: <div style={{ fontSize: 10, fontWeight: 700 }}>#</div>,
+  //     selector: (row) => row.id,
+  //     cell: (row) => <div style={{ fontSize: 15 }}>{row.id}</div>,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: <div style={{ fontSize: 10, fontWeight: 700 }}>Question Name</div>,
+  //     selector: (row) => row.title,
+  //     cell: (row) => (
+  //       <Link to="/quedetail" state={{ id: row._id }}>
+  //         <div
+  //           style={{
+  //             fontSize: 15,
+  //             color: "#0378a6",
+  //             fontWeight: 600,
+  //             cursor: "pointer",
+  //             textAlign: "left"
+  //           }}
+  //         >
+  //           {row.title}
+  //         </div>
+  //       </Link>
+  //     ),
+  //     width: "300px",
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: <div style={{ fontSize: 10, fontWeight: 700 }}>Difficulty</div>,
+  //     selector: (row) => row.difficulty,
+  //     cell: (row) => (
 
-        <div
-          className={
-            row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
-          }
-        >
-          {row.difficulty}
-        </div>
-      ),
-      sortable: true,
-    },
-    {
-      name: <div style={{ fontSize: 10, fontWeight: 700 }}>Accept</div>,
-      selector: (row) => row.accept,
-      cell: (row) => (
-        <div>{row.accept}</div>
-      ),
+  //       <div
+  //         className={
+  //           row.difficulty === "easy" ? "success1" : row.difficulty === 'hard' ? "danger1" : "medium1"
+  //         }
+  //       >
+  //         {row.difficulty}
+  //       </div>
+  //     ),
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: <div style={{ fontSize: 10, fontWeight: 700 }}>Accept</div>,
+  //     selector: (row) => row.accept,
+  //     cell: (row) => (
+  //       <div>{row.accept}</div>
+  //     ),
 
-      sortable: true,
-    },
-    {
-      name: <div style={{ fontSize: 10, fontWeight: 700 }}>Status</div>,
-      selector: (row) => row.status,
-      cell: (row) => (
-        <div
-          style={{
-            fontSize: 15,
-            backgroundColor: "#021775",
-            borderRadius: 11,
-            padding: 3,
-            color: "white",
-          }}
-        >
-          {row.status}
-        </div>
-      ),
-      sortable: true,
-    },
-  ];
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: <div style={{ fontSize: 10, fontWeight: 700 }}>Status</div>,
+  //     selector: (row) => row.status,
+  //     cell: (row) => (
+  //       <div
+  //         style={{
+  //           fontSize: 15,
+  //           backgroundColor: "#021775",
+  //           borderRadius: 11,
+  //           padding: 3,
+  //           color: "white",
+  //         }}
+  //       >
+  //         {row.status}
+  //       </div>
+  //     ),
+  //     sortable: true,
+  //   },
+  // ];
 
-  const tableData = [
-    {
-      id: "1",
-      title: "Two Drawers with Black and White Balls",
-      difficulty: "easy",
-      accept: "11",
-      status: "unsolved"
-    },
-    {
-      id: "2",
-      title: "Forwards vs Futures",
-      difficulty: "hard",
-      accept: "14",
-      status: "unsolved"
-    },
-    {
-      id: "3",
-      title: "First Ace",
-      difficulty: "easy",
-      accept: "13",
-      status: "solved"
-    },
-    {
-      id: "4",
-      title: "Mental Math 2-Digit Squared",
-      difficulty: "easy",
-      accept: "17",
-      status: "unsolved"
-    }
-  ]
+  // const tableData = [
+  //   {
+  //     id: "1",
+  //     title: "Two Drawers with Black and White Balls",
+  //     difficulty: "easy",
+  //     accept: "11",
+  //     status: "unsolved"
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Forwards vs Futures",
+  //     difficulty: "hard",
+  //     accept: "14",
+  //     status: "unsolved"
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "First Ace",
+  //     difficulty: "easy",
+  //     accept: "13",
+  //     status: "solved"
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Mental Math 2-Digit Squared",
+  //     difficulty: "easy",
+  //     accept: "17",
+  //     status: "unsolved"
+  //   }
+  // ]
 
   const fetchQuestions = async () => {
     const data = await fetch(`${url}/getallquestions`);
@@ -326,13 +326,13 @@ function Questions() {
   };
 
   const fetchUser = async () => {
-    const data = await fetch(`http://localhost:8000/user/${user.id}`);
+    const data = await fetch(`/user/${user.id}`);
     const res = await data.json();
     setUserData(res);
   }
 
   const fetchCategory = async () => {
-    const data = await fetch(`http://localhost:8000/category/getcategories`);
+    const data = await fetch(`/category/getcategories`);
     const res = await data.json();
     setCategories(res);
   };
@@ -597,10 +597,7 @@ function Questions() {
                     ))
                   }
 
-                  {/* <option value="Derivatives">Derivatives</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Math">Math</option>
-                  <option value="NonQuant">NonQuant</option> */}
+            
                 </select>
 
                 <select
@@ -635,13 +632,11 @@ function Questions() {
               </div>
             }
             {categoryVal && !difficultyVal &&
-              // <div className="same-line-categ">
               <div className="category-class">
                 <ImCross size={15} className="crossed-khushi" onClick={() => handleCross("category")} color="white" />
 
                 {categoryVal}
               </div>
-              // </div>
             }
             {difficultyVal && !categoryVal && (
               <div className="same-line-categ">
@@ -892,23 +887,25 @@ function Questions() {
                 />
               </div>
               <div className="anyone">
+               
                 <select
-                  name="category"
-                  required
-                  style={{ border: "none", width: "86px" }}
-                  onChange={(e) => setCategoryVal(e.target.value)}
-                  value="Category"
-                >
-                  <option value="Category" disabled hidden>
-                    Category
-                  </option>
-                  {
-                    categories && categories.category.map((category) => (
-                      <option value={category.name}>{category.name}</option>
-                    ))
-                  }
-                </select>
-
+                name="category"
+                required
+                style={{ border: "none", width: "86px" }}
+                onChange={(e) => setCategoryVal(e.target.value)}
+                value="Category"
+              >
+                <option value="Category" disabled hidden>
+                  Category
+                </option>
+                {
+                  categories && categories.category.map((category) => (
+                    <option value={category.name}>{category.name}</option>
+                  ))
+                }
+              </select>
+               
+                
                 <select
                   name="difficulty"
                   required
@@ -927,7 +924,9 @@ function Questions() {
               </div>
 
               <div className="anyone">
-                <select
+                {
+                  categories && categories.firms.length>0 ?
+                  <select
                   name="firms"
                   required
                   style={{ border: "none", width: "60px" }}
@@ -942,11 +941,14 @@ function Questions() {
                       <option value={firm.name}>{firm.name}</option>
                     ))
                   }
-                  
-
                 </select>
-
-                <select
+                :
+                ""
+                }
+                
+                {
+                  categories && categories.divisions.length>0 ?
+                  <select
                   name="division"
                   required
                   style={{ border: "none", width: "87px" }}
@@ -962,8 +964,13 @@ function Questions() {
                     ))
                   }
                 </select>
-
-                <select
+                :
+                ""
+                }
+                
+                {
+                  categories && categories.positions.length>0 ?
+                  <select
                   name="positions"
                   required
                   style={{ border: "none", width: "90px" }}
@@ -979,8 +986,12 @@ function Questions() {
                     ))
                   }
                 </select>
-
-                <select
+                :""
+                }
+                
+                {
+                  categories && categories.tags.length>0 ?
+                  <select
                   name="tags"
                   required
                   style={{ border: "none", width: "56px" }}
@@ -996,6 +1007,9 @@ function Questions() {
                     ))
                   }
                 </select>
+                :""
+                }
+                
 
               </div>
 
@@ -1074,8 +1088,8 @@ function Questions() {
             <div className="div3">
               {!difficultyVal && !categoryVal && !enableSearch && !firmVal.length > 0 && !divisionVal.length > 0 && !positionVal.length > 0 && !tagVal.length > 0 && (
                 <DataTable
-                  columns={user ? columnlogin : columnmobile}
-                  data={user ? data : tableData}
+                  columns={user ? columnlogin : columnlogout}
+                  data={data}
                   striped={true}
                   highlightOnHover={true}
                   pagination={true}

@@ -26,7 +26,7 @@ function ChangePassword() {
         currpass: current,
         newpass: newpass,
       }
-      const data = await fetch(`http://localhost:8000/auth/change/password/${user.id}`, {
+      const data = await fetch(`/auth/change/password/${user.id}`, {
         method: "PUT",
         body: JSON.stringify(val),
         headers: {

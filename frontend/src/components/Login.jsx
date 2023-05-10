@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import logo2 from '../images/logo2.png'
+import logo2 from '../images/logo3.svg'
 import './Login.css'
 import Footer from './Footer';
 import { injectStyle } from "react-toastify/dist/inject-style";
@@ -16,7 +16,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading,setLoading]=useState(false);
-  const URL = 'http://localhost:8000/auth'
+  const URL = '/auth'
 
   if (typeof window !== "undefined") {
     injectStyle();

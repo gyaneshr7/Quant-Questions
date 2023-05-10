@@ -142,7 +142,7 @@ function Dashboard() {
       // console.log(val);
 
       // make post request for saving question in database
-      await fetch("http://localhost:8000/question/add", {
+      await fetch("/question/add", {
         method: "POST",
         body: JSON.stringify(val),
         headers: {
@@ -178,7 +178,7 @@ function Dashboard() {
       toast.warning("Enter value in all fields...")
     }
 
-    const dataa = await fetch("http://localhost:8000/category/getcategories");
+    const dataa = await fetch("/category/getcategories");
     const resp = await dataa.json();
     let firmscount = [],
       divisionscount = [],
@@ -245,7 +245,7 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchcategories = async () => {
-      const data = await fetch("http://localhost:8000/category/getcategories");
+      const data = await fetch("/category/getcategories");
       const res = await data.json();
       setallCategories(res);
       setFirms(res.firms);
@@ -287,7 +287,7 @@ function Dashboard() {
   const addcategory = async (name, val) => {
     // console.log(name, val);
     const data = await fetch(
-      `http://localhost:8000/category/addcategory/${name}`,
+      `/category/addcategory/${name}`,
       {
         method: "PUT",
         body: JSON.stringify(val),

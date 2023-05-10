@@ -22,14 +22,14 @@ function ModalResource(props) {
   }
 
   const fetchResources = async () => {
-    const data = await fetch(`http://localhost:8000/resources/`);
+    const data = await fetch(`/resources/`);
     const res = await data.json();
     // localStorage.setItem("res",res)
     setResources(res);
   }
 
   const fetchCategory = async () => {
-    const data = await fetch(`http://localhost:8000/category/getcategories`);
+    const data = await fetch(`/category/getcategories`);
     const res = await data.json();
     setCategories(res.category);
   };
@@ -54,7 +54,7 @@ function ModalResource(props) {
         if (result) {
           setLoading(true);
           axios
-            .put(`http://localhost:8000/resources/update`, formData)
+            .put(`/resources/update`, formData)
             .then(async (res) => {
               // console.log(res);
               toast.success("File Updated Successfully");
@@ -70,7 +70,7 @@ function ModalResource(props) {
       } else {
         setLoading(true);
         axios
-          .post(`http://localhost:8000/resources/add/pdf`, formData)
+          .post(`/resources/add/pdf`, formData)
           .then(async (res) => {
             toast.success("File Uploaded Successfully");
             setFile("");

@@ -12,7 +12,7 @@ function Submissions() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(
-        `http://localhost:8000/user/get/all/attempted/question/${user.id}`
+        `/user/get/all/attempted/question/${user.id}`
       );
       const res = await data.json();
       setSubmittedQuestions(res.submittedQuestions.reverse());

@@ -15,92 +15,94 @@ function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [intervieweeFeedboxChecked, setIntervieweeFeedboxChecked] = useState(false);
   const [phone, setPhone] = useState("");
   const [error, seterror] = useState("");
-  const [loading,setLoading]=useState(false);
-  const URL = '/auth'
-
+  const [loading, setLoading] = useState(false);
+  const URL = 'auth'
+  // const PORT = "http://localhost:8000";
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
   }
-  function isValidPhone(phone){
-    return phone.length===10;
+  function isValidPhone(phone) {
+    return phone.length === 10;
   }
   if (typeof window !== "undefined") {
     injectStyle();
   }
 
-const handleChange = (e) => {
+  const handleChange = (e) => {
 
-  if(e.target.name==="email"){
-    if(!isValidEmail(e.target.value)){
-      seterror('Email is invalid');
+    if (e.target.name === "email") {
+      if (!isValidEmail(e.target.value)) {
+        seterror('Email is invalid');
+      }
+      else {
+        seterror("");
+      }
+      setEmail(e.target.value)
+      console.log(email)
     }
-    else{
-      seterror("");
+    if (e.target.name === "phone") {
+      if (!isValidPhone(e.target.value)) {
+        seterror('Phone is invalid');
+      }
+      else {
+        seterror("");
+      }
+      setPhone(e.target.value)
+      console.log(phone)
     }
-    setEmail(e.target.value)
-    console.log(email)
   }
-  if(e.target.name==="phone"){
-    if(!isValidPhone(e.target.value)){
-      seterror('Phone is invalid');
-    }
-    else{
-      seterror("");
-    }
-    setPhone(e.target.value)
-    console.log(phone)
-  }
-}
 
   const handlesignup = async () => {
     // console.log(name, email, password,phone);
-  setLoading(true); 
-  if(error===""){
-    const val = {
-      name: name,
-      email: email,
-      password: password,
-      phoneNo:phone,
-      role:"user"
-    }
-    try {
-      const data = await fetch(`${URL}/register`, {
-        method: "POST",
-        body: JSON.stringify(val),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
+    setLoading(true);
+    if (error === "") {
+      const val = {
+        name: name,
+        email: email,
+        password: password,
+        phoneNo: phone,
+        role: "user",
+        intervieweeFeedbox: intervieweeFeedboxChecked
+      }
+      try {
+        const fetchsignup = `/${URL}/register`
+        const data = await fetch(fetchsignup, {
+          method: "POST",
+          body: JSON.stringify(val),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+        const user = await data.json();
+        setLoading(false);
+
+        if (user === "Registered Successfully!") {
+          toast.dark(user);
+          setTimeout(() => {
+            window.location.href = '/login'
+          }, 5000);
         }
-      })
-      const user = await data.json();
-      setLoading(false);
-      
-      if(user==="Registered Successfully!"){
-        toast.dark(user);
-        setTimeout(()=>{
-          window.location.href='/login'
-        },5000);
+        else if (user === "User Already Exist. Please Login") {
+          toast.info(user);
+          setTimeout(() => {
+            window.location.href = '/login'
+          }, 6000);
+        }
+      } catch (error) {
+        console.log(error);
       }
-      else if(user==="User Already Exist. Please Login")
-      {
-        toast.info(user);
-        setTimeout(()=>{
-          window.location.href='/login'
-        },6000);
-      }
-    } catch (error) {
-      console.log(error);
+    }
+    else {
+      toast.warning("Please check Email and Phone number")
     }
   }
-  else{
-    toast.warning("Please check Email and Phone number")
-  }
-  }
 
-useEffect(() => {
+  useEffect(() => {
 
-}, [email, phone])
+  }, [email, phone])
 
   return (
     <>
@@ -109,11 +111,11 @@ useEffect(() => {
         <div className='box'>
           <div className='login'>
             <img src={logo2} className="login-logo" alt="" />
-            <input className='signinputBox' required value={name} autoComplete="off" onChange={(e)=> setName(e.target.value)} type="text" placeholder='Full Name' name='name' />
-            
-            <input className='signinputBox' required value={email} autoComplete="new-password" onChange={(e)=> handleChange(e)} type="text" placeholder='E-mail address' name='email' />
-            
-            <input className='signinputBox' required value={phone} autoComplete="new-password" onChange={(e)=> handleChange(e)} type="number" placeholder='Contact Number' pattern={"[0-9]{10}"} title="please enter valid number" name='phone' />
+            <input className='signinputBox' required value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} type="text" placeholder='Full Name' name='name' />
+
+            <input className='signinputBox' required value={email} autoComplete="new-password" onChange={(e) => handleChange(e)} type="text" placeholder='E-mail address' name='email' />
+
+            <input className='signinputBox' required value={phone} autoComplete="new-password" onChange={(e) => handleChange(e)} type="number" placeholder='Contact Number' pattern={"[0-9]{10}"} title="please enter valid number" name='phone' />
 
             <div className='signpasswordfield'>
               <input className='signinputBox' required type={eye ? "password" : "text"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
@@ -125,34 +127,44 @@ useEffect(() => {
                 )}
               </div>
             </div>
+            <div style={{ display: "flex",gap: "30px",alignItems: "center",justifyContent: "flex-start",padding:"25px",width: "98%" }}>
+              <input
+                type="checkbox"
+                onChange={() => setIntervieweeFeedboxChecked(!intervieweeFeedboxChecked)}
+                checked={intervieweeFeedboxChecked}
+              />
+              <label style={{position: "relative",bottom: "-4px"}}>
+                Are you an Interviewee for Feedbox
+              </label>
+            </div>
             <button type="button" className='logbtn'>
               {
                 loading ?
-                <div
-                className="spinner-border text-white"
-                role="status"
-                style={{
-                  height: "15px",
-                  width: "15px",
-                  padding:"2px"
-                }}
-              >
-                <span className="visually-hidden">
-                  Loading...
-                </span>
-              </div>
-              :
-              <div onClick={handlesignup}>Sign Up</div>
+                  <div
+                    className="spinner-border text-white"
+                    role="status"
+                    style={{
+                      height: "15px",
+                      width: "15px",
+                      padding: "2px"
+                    }}
+                  >
+                    <span className="visually-hidden">
+                      Loading...
+                    </span>
+                  </div>
+                  :
+                  <div onClick={handlesignup}>Sign Up</div>
               }
-             </button>
+            </button>
           </div>
           <div className='last-block having'>
             <a href="/login" className='sign-pass'>Having an account ? Login</a>
           </div>
         </div>
-        {error && <div style={{color:"red"}}>{error}</div>}
+        {error && <div style={{ color: "red" }}>{error}</div>}
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }

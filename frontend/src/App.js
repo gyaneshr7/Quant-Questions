@@ -1,6 +1,6 @@
 import './App.css';
 import React, {useState} from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import Questions from './components/Questions';
 import Home from './components/Home';
@@ -8,6 +8,7 @@ import Signup from './components/Signup';
 import Admin from './components/Admin';
 import Dashboard from './components/Dashboard';
 import QueDetail from './components/QueDetail';
+import RandomQue from './components/RandomQue'
 import ChangePassword from './components/ChangePassword';
 import Submissions from './components/Submissions';
 import Profile from './components/Profile';
@@ -25,6 +26,7 @@ function App() {
   const user = JSON.parse(localStorage.getItem("quantuser"));
   const userRole = user && user.role;
 
+
   return (
     <div className='App'>
       <BrowserRouter>
@@ -35,7 +37,8 @@ function App() {
           <Route path='/signup' element={userRole==null || userRole=="admin" ?<Signup />: <ErrorPage />}></Route>
           <Route path='/forgotpassword' element={user === null ? <Forgotpassword /> : <ErrorPage />}></Route>
           
-          <Route path='/quedetail' element={userRole === 'user' || userRole==null ?  <QueDetail /> : <ErrorPage />}></Route>
+          <Route path='/quedetail/:id' element={userRole === 'user' || userRole==null ?  <QueDetail /> : <ErrorPage />}></Route>
+          <Route path='/randomque' element={userRole === 'user' || userRole==null ?  <RandomQue /> : <ErrorPage />}></Route>
           <Route path='/questions' element={userRole === 'user' || userRole==null ? <Questions /> : <ErrorPage />}></Route>
           <Route path='/change_password' element={userRole === 'user' ? <ChangePassword /> : <ErrorPage />}></Route>
           <Route path='/submissions' element={userRole === 'user' ? <Submissions /> : <ErrorPage />}></Route>
@@ -44,11 +47,11 @@ function App() {
           <Route path='/faq' element={userRole === 'user' ? <FAQ /> : <ErrorPage />}></Route>
           <Route path='/resources' element={userRole === 'user' ? <Resources /> : <ErrorPage />}></Route>
           <Route path='/team' element={userRole === 'user' ? <Team /> : <ErrorPage />}></Route>
-          <Route path='/dashboard' element={userRole === 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
-          <Route path='/all-ques' element={userRole === 'admin' ? <AllQuestions /> : <ErrorPage />}></Route>
+          <Route path='/dashboard/:isInterviewee' element={userRole === 'admin' ? <Dashboard /> : <ErrorPage />}></Route>
+          <Route path='/all-ques/:isInterviewee' element={userRole === 'admin' ? <AllQuestions /> : <ErrorPage />}></Route>
         </Routes>
-      </BrowserRouter>
       <Footer/>
+      </BrowserRouter>
     </div>
   );
 }

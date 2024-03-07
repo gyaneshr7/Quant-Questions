@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Questions.css";
 import Header from "./Header";
-import { Link, useLocation } from "react-router-dom";
+import ConfirmModal from './ConfirmModal'
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { ImCross } from 'react-icons/im';
 import { GrNotes } from "react-icons/gr";
@@ -23,9 +24,10 @@ function Questions() {
   const [categoryVal, setCategoryVal] = useState("");
   let [random, setRandom] = useState();
   const [data, setData] = useState();
-  const url = "/question";
+  const url = "question";
+  // const port="http://localhost:8000";
   const user = JSON.parse(localStorage.getItem("quantuser"));
-  // console.log(user);
+  const navigate = useNavigate();
 
   const [firmData, setFirmData] = useState();
   const [firmVal, setFirmVal] = useState('');
@@ -34,13 +36,16 @@ function Questions() {
   const [tagVal, setTagVal] = useState('');
   const [reset, setReset] = useState(false);
   const [categories, setCategories] = useState();
-
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [idToNavigate, setIdToNavigate] = useState(null);
+  
   if (user!=null) {
     window.history.pushState(null, null, location.href);
     window.onpopstate = function (event) {
       window.history.go(1);
     };
   }
+
 
   const correct = [], wrong = [];
   userData && userData.currentAttempted && userData.currentAttempted.map((data) => {
@@ -50,7 +55,7 @@ function Questions() {
       wrong.push(data);
     }
   })
-
+// console.log(userData);
   const easy = [], medium = [], hard = [];
   data && data.map((ques) => {
     if (ques.difficulty == 'easy') {
@@ -61,6 +66,20 @@ function Questions() {
       hard.push(ques);
     }
   })
+
+  const questionHandler = (id) => {
+    setIsConfirmOpen(true);
+    setIdToNavigate(id);
+  }
+
+  const handleCloseConfirm = () => {
+    setIsConfirmOpen(false);
+  };
+
+  const handleConfirm = (id) => {
+    // Navigate to a specific route
+    navigate(`/quedetail/${id}`);
+  };
 
   // colums of the table
   const columnlogin = [
@@ -74,7 +93,7 @@ function Questions() {
       name: <div style={{ fontSize: 15, fontWeight: 800 }}>Question Name</div>,
       selector: (row) => row.que,
       cell: (row) => (
-        <Link to="/quedetail" state={{ id: row._id }}>
+        // <Link to="/quedetail" state={{ id: row._id }}>
           <div
             style={{
               fontSize: 15,
@@ -83,10 +102,12 @@ function Questions() {
               cursor: "pointer",
               textAlign: "left"
             }}
+
+            onClick={() => questionHandler(row._id)}
           >
             {row.title}
           </div>
-        </Link>
+        // </Link>
       ),
       width: "300px",
       sortable: true,
@@ -314,9 +335,18 @@ function Questions() {
   // ]
 
   const fetchQuestions = async () => {
-    const data = await fetch(`${url}/getallquestions`);
+    const getuser=`/user/${user.id}`
+    const data1=await fetch(getuser)
+    const res1=await data1.json();
+    console.log(res1);
+    const isinterviewee=res1.intervieweeFeedbox;
+
+    const fetchQuestionsUrl=`/${url}/getallquestions/${isinterviewee}`
+    const data = await fetch(fetchQuestionsUrl);
     const res = await data.json();
+    console.log(res)
     random = res && Math.floor(Math.random() * (res.length)) + 1;
+    // console.log(res);
     setRandom(random);
     res.map((ques, i) => {
       ques.serial = i + 1;
@@ -326,13 +356,16 @@ function Questions() {
   };
 
   const fetchUser = async () => {
-    const data = await fetch(`/user/${user.id}`);
+    const fetchUsersUrl=`/user/${user.id}`
+    const data = await fetch(fetchUsersUrl);
     const res = await data.json();
     setUserData(res);
   }
-
+  
+  console.log("This is user id",user)
   const fetchCategory = async () => {
-    const data = await fetch(`/category/getcategories`);
+    const fetchCategoryUrl=`/category/getcategories`
+    const data = await fetch(fetchCategoryUrl);
     const res = await data.json();
     setCategories(res);
   };
@@ -460,7 +493,7 @@ function Questions() {
       handleCategoryAndDifficulty();
     } else if (difficultyVal.length > 0) {
       handleCategoryAndDifficulty();
-    } else {
+    } else if(user) {
       fetchQuestions();
       fetchUser();
     }
@@ -532,7 +565,7 @@ function Questions() {
     datasets: [
       {
         label: '',
-        data: [data && data.length, correct.length, wrong.length],
+        data: [data && data.length-(correct.length+wrong.length), correct && correct.length, wrong && correct && (wrong.length+correct.length)],
         backgroundColor: [
           '#3f497f',
           '#539165',
@@ -547,6 +580,13 @@ function Questions() {
 
   return (
     <>
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={handleCloseConfirm}
+        onConfirm={handleConfirm}
+        id={idToNavigate}
+        text={"Start the test?"}
+      />
       <Header />
       <div className="web-view">
         <div className="quest-two">
@@ -560,7 +600,7 @@ function Questions() {
               </div>
               <div className="random-side">
                 <Link
-                  to="/quedetail"
+                  to="/randomque"
                   state={{ id: random && data[random] && data[random]._id }}
                 >
                   <button className="random">Random Q</button>
@@ -685,7 +725,7 @@ function Questions() {
 
 
             <hr style={{ height: "0.5px", borderwidth: "0", color: "rgb(148, 148, 148)", backgroundcolor: "rgb(148, 148, 148)", marginTop: "15px" }} />
-
+            { user ?
             <div className="div3">
               {!difficultyVal && !categoryVal && !enableSearch && !firmVal.length > 0 && !divisionVal.length > 0 && !positionVal.length > 0 && !tagVal.length > 0 && (
                 <DataTable
@@ -757,8 +797,11 @@ function Questions() {
                 />
               }
             </div>
+            : 
+            <div>There is nothing Show</div>
+            }
           </div>
-
+          {user &&
           <div className="quest-right-block">
             <div className="quest-progress-head">
               <img src={progressimg} alt="" />
@@ -771,17 +814,17 @@ function Questions() {
               <div className="prog-define">
                 <div className="define-prog prog1 prog-text">
                   <p>Todo</p>
-                  <p style={{ textAlign: "center" }}>{data && data.length}</p>
+                  <p style={{ textAlign: "center" }}>{data && (data.length-(correct.length+wrong.length))}</p>
                 </div>
 
                 <div className="define-prog prog2 prog-text">
                   <p>Solved</p>
-                  <p style={{ textAlign: "center" }}>{correct.length}</p>
+                  <p style={{ textAlign: "center" }}>{correct && correct.length}</p>
                 </div>
 
                 <div className="define-prog prog3 prog-text">
                   <p>Attempted</p>
-                  <p style={{ textAlign: "center" }}>{wrong.length}</p>
+                  <p style={{ textAlign: "center" }}>{wrong && correct && (wrong.length+correct.length)}</p>
                 </div>
               </div>
             </div>
@@ -868,6 +911,7 @@ function Questions() {
             }
             
           </div>
+}
         </div>
 
       </div>

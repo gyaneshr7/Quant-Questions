@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema(
         token: { type: String },
         phoneNo: { type: String },
         role: { type: String, enum: ['admin', 'user'] },
+        intervieweeFeedbox:{type: Boolean,required:true}, 
         rank: { type: String, default: 0 },
         score: { type: Number, default: 0 },
         totalSubmissions: { type: Number, default: 0 },

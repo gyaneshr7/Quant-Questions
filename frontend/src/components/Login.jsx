@@ -16,8 +16,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading,setLoading]=useState(false);
-  const URL = '/auth'
-
+  const URL = 'auth'
+  // const PORT="http://localhost:8000";
   if (typeof window !== "undefined") {
     injectStyle();
   }
@@ -32,16 +32,18 @@ function Login() {
     const val = {
       email: email,
       password: password,
-      role: "user"
+      role: "user",
+      
     }
     try {
-      if(!(email || password))
+      if(email === "" || password === "")
       {
         setLoading(false);
         toast.warning("All Input Fields Required");
       }
       else{
-        const data = await fetch(`${URL}/login`, {
+        const login= `/${URL}/login`
+        const data = await fetch(login, {
           method: "POST",
           body: JSON.stringify(val),
           headers: {
@@ -85,6 +87,8 @@ function Login() {
                 )}
               </div>
             </div>
+
+            
 
             <button type="button" className='logbtn'>
               {

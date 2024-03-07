@@ -1,0 +1,14 @@
+.counterTimer{
+    display: flex;
+    justify-content: center;
+    gap:10px;
+}
+.minutes{
+    padding: 3px;
+}
+.seconds{
+    padding: 3px;
+}
+.hours{
+    padding: 3px;
+}

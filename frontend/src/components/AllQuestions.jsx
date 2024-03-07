@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { FaList } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -60,6 +62,17 @@ function AllQuestions() {
   const [endIndex, setendIndex] = useState(10);
   const [prevPage, setPrevPage] = useState(1);
 
+  const [showSubDivs, setShowSubDivs] = useState(false);
+  const [showSubDivs1, setShowSubDivs1] = useState(false);
+  
+
+  // const port="http://localhost:8000";
+  const location = useLocation();
+  console.log(location)
+  // const {isInterviewee} = location.state;
+  const {isInterviewee} = useParams();
+  console.log(isInterviewee)
+
   let tableData;
   searchActive
     ? (tableData = selected.slice(0, 10))
@@ -79,6 +92,11 @@ function AllQuestions() {
 
   const url = "/question";
   const category_url = "/category";
+
+  useEffect(() => {
+    console.log('component rendered')
+  })
+  
 
   // Pagination
   const itemsPerPage = 10;
@@ -142,26 +160,31 @@ function AllQuestions() {
   // This will open add questions section
   const handleAdd = () => {
     setCss(false);
+    setShowSubDivs1(!showSubDivs1);
   };
 
   const fetchCategories = async () => {
-    const data = await fetch(`${category_url}/getcategories`);
+    
+    const qs1=`${category_url}/getcategories`;
+    const data = await fetch(qs1);
     const res = await data.json();
     setCategories(res);
   };
 
   const fetchQuestions = async () => {
-    const data = await fetch(`${url}/getallquestions`);
+    const qs2=`${url}/getallquestions/${isInterviewee}`;
+    const data = await fetch(qs2);
     const res = await data.json();
     setData(res);
     setSelected(res);
+    console.log(res);
   };
 
   useEffect(() => {
     fetchQuestions();
     fetchCategories();
     setLoading(false);
-  }, [loading, startIndex, endIndex]);
+  }, [loading, startIndex, endIndex, isInterviewee]);
 
   const setClicked = (id) => {
     setOpen(true);
@@ -296,9 +319,10 @@ function AllQuestions() {
       });
       value.tags = tval;
     }
-
+    const qs3=`/question/update/questions/${id}`;
     const updatedata = await fetch(
-      `/question/update/questions/${id}`,
+      
+      qs3,
       {
         method: "PUT",
         body: JSON.stringify(value),
@@ -426,8 +450,8 @@ function AllQuestions() {
         }
       });
     }
-
-    const data = await fetch("/category/getcategories");
+    const qs4=`/category/getcategories`;
+    const data = await fetch(qs4);
     const res = await data.json();
     let firmscount = [],
       divisionscount = [],
@@ -523,9 +547,9 @@ function AllQuestions() {
       tagscount,
       positionscount,
     };
-
+    const qs5=`/category/updatecategory/firms`
     const dataa = await fetch(
-      "/category/updatecategory/firms",
+      qs5,
       {
         method: "PUT",
         body: JSON.stringify(val),
@@ -542,6 +566,12 @@ function AllQuestions() {
     setLoading2(false);
   };
 
+  const handleQues = () => {
+    // window.location.href = "/all-ques";
+    setCss(false);
+    setShowSubDivs(!showSubDivs);
+  };
+
   const handleDelete = (id) => {
     setQuesId(id);
     setDeleteBtn(true);
@@ -549,7 +579,8 @@ function AllQuestions() {
 
   const handleDeleteQuestion = async () => {
     // console.log(quesId);
-    const dataa = await fetch("/category/getcategories");
+    const qs6=`/category/getcategories`;
+    const dataa = await fetch(qs6);
     const resp = await dataa.json();
     let firmscount = [],
       divisionscount = [],
@@ -597,15 +628,17 @@ function AllQuestions() {
       tagscount,
       positionscount,
     };
-    const deletedata = await fetch(`/question/${quesId}`, {
+    const qs7=`/question/${quesId}`;
+    const deletedata = await fetch(qs7, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
     });
     const deleted = await deletedata.json();
+    const qs8=`/category/updatecategory/firms`;
     const data = await fetch(
-      "/category/updatecategory/firms",
+      qs8,
       {
         method: "PUT",
         body: JSON.stringify(value),
@@ -671,15 +704,52 @@ function AllQuestions() {
               style={{ display: "flex", flexDirection: "column", gap: "13px" }}
             >
               {/* it will redirect to Dashboard.jsx */}
-              <Link to="/dashboard" className="add-que" onClick={handleAdd}>
+              {/* <Link to="/dashboard" className="add-que" onClick={() =>handleAdd()}>
                 <MdLibraryAdd className="icon-side" />
                 Add Questions
-              </Link>
+              </Link> */}
+              <div className="add-que" onClick={() =>handleAdd()}>
+                <MdLibraryAdd className="icon-side" />
+                Add Questions
+              </div>
 
-              <div className={css ? "add-que-hover" : "add-que"}>
+              
+              
+              {showSubDivs1 && (
+                <div>
+                  <Link key = {'true'} to = {'/dashboard/true'} className ={css ? "add-que-hover" : "add-que"}>
+                  <div className={"feedbox-que"}>
+                    Feedbox Questions
+                  </div>
+                  </Link>
+
+                  <Link key = {'false'} to = {'/dashboard/false'} className={css ? "add-que-hover" : "add-que"}>
+                  <div className={"quant-que"}>
+                    Quant Questions
+                  </div>
+                  </Link>
+                </div>
+              )}
+<div className={css ? "add-que-hover" : "add-que"} onClick={() => handleQues()}>
                 <FaList className="icon-side" />
                 All Questions
               </div>
+              
+              {showSubDivs && (
+                <div>
+                  <Link key = {'true'} to = {'/all-ques/true'} className = {css ? "add-que-hover" : "add-que"}>
+                  <div className={"feedbox-que"}>
+                    Feedbox Questions
+                  </div>
+                  </Link>
+
+                  <Link key = {'false'} to = {'/all-ques/false'} className={css ? "add-que-hover" : "add-que"}>
+                  <div className={"quant-que"}>
+                    Quant Questions
+                  </div>
+                  </Link>
+                </div>
+              )}
 
               <div
                 onClick={() => {

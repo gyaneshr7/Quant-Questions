@@ -17,13 +17,14 @@ function Progress() {
   const [nonQuant, setNonQuant] = useState([]);
   const [finance, setFinance] = useState([]);
   const [derivatives, setDerivatives] = useState([]);
-  const [categories,setCategories]=useState();
+  const [categories,setCategories]=useState([]);
   let correctSubmissions = [];
   let uniqueCorrectSubmissions = [];
   let uniqueAttemptedQuestions = [];
   let categoryLabels=[];
   let categoryData=[];
   let categoryColor=[];
+  // const port = `http://localhost:8000`
 
   categories && categories.map((category)=>{
     categoryLabels.push(category.name);
@@ -32,7 +33,7 @@ function Progress() {
   categories && categories.map((category)=>{
     categoryColor.push(category.color);
   })
-
+  
   categoryLabels.length>0 && 
   categoryLabels.map((label)=>{
     let count=0;
@@ -78,12 +79,14 @@ function Progress() {
   
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`/user/get/all/attempted/question/${user.id}`)
+      const attemptedQue = `/user/get/all/attempted/question/${user.id}`
+      const data = await fetch(attemptedQue)
       const res = await data.json();
       setUserData(res);
       // console.log(res,"sldai");
       setSubmittedQuestions(res.submittedQuestions.reverse());
       res.submittedQuestions.map((category) => {
+        if(category.question){
         if (category.question.category === 'Brainteasers') {
           setBrainTeasers(arr => [...new Set(arr), category]);
         } else if (category.question.category === 'Derivatives') {
@@ -98,6 +101,7 @@ function Progress() {
         else if (category.question.category === 'Marketing') {
           // setMarketing(arr => [...new Set(arr), category]);
         }
+      }
       })
     }
     const fetchCategory = async () => {
@@ -118,6 +122,7 @@ function Progress() {
 
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
+    
     labels: categoryLabels,
     datasets: [{
       data: categoryData,
@@ -146,6 +151,7 @@ function Progress() {
         <div className='categ-head'>Submissions by Category</div>
         <div className='row1-prog'>
           <div className='doughnut'>
+          
          <Doughnut data={submittedQuestions && submittedQuestions.length>0?data:data1} /> 
           </div>
 
@@ -157,7 +163,7 @@ function Progress() {
               </div>
 
               <div className='col-sub'>
-                <div><span className='give-nums'>{wrong.length>0 ? wrong.length:0}</span>/{questions && questions.length}</div>
+                <div><span className='give-nums'>{wrong.length>0 && correct.length>0 ? (wrong.length+correct.length):0}</span>/{questions && questions.length}</div>
                 <div className='my-sub'>Attempted Questions</div>
               </div>
 
@@ -196,7 +202,7 @@ function Progress() {
               uniqueCorrectSubmissions.length > 0 ?
                 <tbody>
                   {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
-                    <tr>
+                    data.question && <tr>
                       <td>{data.date}</td>
                       <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>
                       <td>
@@ -239,7 +245,7 @@ function Progress() {
               uniqueCorrectSubmissions.length > 0 ?
                 <tbody>
                   {uniqueCorrectSubmissions.slice(0, 11).map((data) => (
-                    <tr>
+                    data.question && <tr>
                       {/* <td>{data.date}</td> */}
                       <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-com">{data.question.title}</td></Link>
                       <td>
@@ -287,7 +293,7 @@ function Progress() {
               submittedQuestions && submittedQuestions.length>0 ?
               <tbody>
               {submittedQuestions && submittedQuestions.slice(0, 31).map((data) => (
-                <tr>
+                data.question && <tr>
                   <td>{data.date}</td>
                   <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}> <td className="que-co">{data.question.title}</td></Link>
                   <td>
@@ -329,7 +335,7 @@ function Progress() {
               submittedQuestions && submittedQuestions.length>0 ?
               <tbody>
               {submittedQuestions && submittedQuestions.slice(0, 11).map((data) => (
-                <tr>
+                data.question && <tr>
                   {/* <td>{data.date}</td> */}
                   <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}> <td className="que-com">{data.question.title}</td></Link>
                   <td>

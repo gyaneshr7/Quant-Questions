@@ -10,8 +10,8 @@ function Admin() {
   const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
   const [loading,setLoading]=useState(false);
-  const URL = '/auth'
-
+  const URL = 'auth'
+// const port="http://localhost:8000";
   window.history.forward();
   function noBack() {
     window.history.forward();
@@ -26,7 +26,8 @@ function Admin() {
     }
   
     try {
-      const data = await fetch(`${URL}/login`, {
+      const ft1=`/${URL}/login`;
+      const data = await fetch(ft1, {
         method: "POST",
         body: JSON.stringify(val),
         headers: {
@@ -34,12 +35,12 @@ function Admin() {
         }
       })
       const user = await data.json();
-      // console.log(user);
+       console.log(user);
       if(user==='wrong email or password' ||  user=='Not a valid user!'){
         alert(user);
       }else{
         localStorage.setItem("quantuser",JSON.stringify(user));
-        window.location.href='/dashboard'
+        window.location.href='/dashboard/true'
       }
     } catch (error) {
       // console.log(error);

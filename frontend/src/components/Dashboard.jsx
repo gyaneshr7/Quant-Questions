@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./Dashboard.css";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdAddCircle } from "react-icons/io";
@@ -8,14 +9,14 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdLibraryAdd } from "react-icons/md";
 import { ChromePicker } from "react-color";
 import { Link, useLocation } from "react-router-dom";
-import Multiselect from 'multiselect-react-dropdown';
+import Multiselect from "multiselect-react-dropdown";
 import { CategoryScale } from "chart.js";
 import ModalResource from "./ModalResource";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 
 function Dashboard() {
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const [title, setTitle] = useState("");
@@ -60,6 +61,12 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [loginModalShow, setLoginModalShow] = useState(false);
 
+  const [showSubDivs, setShowSubDivs] = useState(false);
+  const [showSubDivs1, setShowSubDivs1] = useState(false);
+
+  // const port = "http://localhost:8000";
+  const {isInterviewee} = useParams();
+
   if (typeof window !== "undefined") {
     injectStyle();
   }
@@ -102,12 +109,22 @@ function Dashboard() {
 
   // add questions to db
   const submitHandler = async () => {
-    let val = '';
-    const questions = await fetch(`http:///localhost:8000/question/getallquestions`);
+    let val = "";
+    const questions = await fetch(
+      `/question/getallquestions`
+    );
     const quesres = await questions.json();
     // console.log(quesres.length, "length");
-    if (title !== '' && question !== '' && answer !== '' && difficulty !== '' && category !== '' && anstype !== '' && (firms !== '' || divisions !== '' || positions !== '' || tags !== '')) {
-      if (anstype === 'Mcq') {
+    if (
+      title !== "" &&
+      question !== "" &&
+      answer !== "" &&
+      difficulty !== "" &&
+      category !== "" &&
+      anstype !== "" &&
+      (firms !== "" || divisions !== "" || positions !== "" || tags !== "")
+    ) {
+      if (anstype === "Mcq") {
         val = {
           uniqueId: quesres.length + 1,
           title: title,
@@ -121,7 +138,7 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
-          explanation: explanation
+          explanation: explanation,
         };
       } else {
         val = {
@@ -136,28 +153,30 @@ function Dashboard() {
           divisions: divisionsArray,
           position: positionsArray,
           tags: tagsArray,
-          explanation: explanation
+          explanation: explanation,
         };
       }
       // console.log(val);
 
       // make post request for saving question in database
-      await fetch("/question/add", {
+      const dataa2 = `/question/add`;
+      await fetch(dataa2, {
         method: "POST",
         body: JSON.stringify(val),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      }).then(() => {
-        toast.dark("Question added Successfully")
-        setAnsType("");
-        setAnswer("");
-        setTitle("");
-        setQuestion("");
-        setCategory("");
-        setDifficulty("");
-        setExplanation("");
       })
+        .then(() => {
+          toast.dark("Question added Successfully");
+          setAnsType("");
+          setAnswer("");
+          setTitle("");
+          setQuestion("");
+          setCategory("");
+          setDifficulty("");
+          setExplanation("");
+        })
         .then(() => {
           setAnsType("");
           setAnswer("");
@@ -166,19 +185,17 @@ function Dashboard() {
           setCategory("");
           setDifficulty("");
           setExplanation("");
-
         })
-        .catch((err)=>{
-          alert(err)
+        .catch((err) => {
+          alert(err);
         });
       // const res = await data.json();
       // console.log(res);
-
     } else {
-      toast.warning("Enter value in all fields...")
+      toast.warning("Enter value in all fields...");
     }
-
-    const dataa = await fetch("/category/getcategories");
+    const dataa3 = `/category/getcategories`;
+    const dataa = await fetch(dataa3);
     const resp = await dataa.json();
     let firmscount = [],
       divisionscount = [],
@@ -230,7 +247,7 @@ function Dashboard() {
     };
     // console.log(value);
     const data = await fetch(
-      "http://localhost:8000/category/updatecategory/firms",
+      "/category/updatecategory/firms",
       {
         method: "PUT",
         body: JSON.stringify(value),
@@ -240,12 +257,13 @@ function Dashboard() {
       }
     );
     const res = await data.json();
-    window.location.href = '/dashboard'
+    window.location.href = "/dashboard";
   };
 
   useEffect(() => {
     const fetchcategories = async () => {
-      const data = await fetch("/category/getcategories");
+      const dataa4 = `/category/getcategories`;
+      const data = await fetch(dataa4);
       const res = await data.json();
       setallCategories(res);
       setFirms(res.firms);
@@ -256,7 +274,7 @@ function Dashboard() {
       setAnswerTypes(res.answerType);
     };
     fetchcategories();
-    setLoading(false)
+    setLoading(false);
   }, [firmEdit, divisionEdit, positionEdit, tagEdit, loading]);
 
   const selectedFirms = (name) => {
@@ -273,7 +291,7 @@ function Dashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.setItem("quantuser", null);
+    localStorage.removeItem("quantuser");
     window.location.href = "/";
     setCss(true);
   };
@@ -281,21 +299,25 @@ function Dashboard() {
   const handleQues = () => {
     // window.location.href = "/all-ques";
     setCss(false);
+    setShowSubDivs(!showSubDivs);
+  };
+  const handleAdd = () => {
+    
+    setCss(false);
+    setShowSubDivs1(!showSubDivs1);
   };
 
   // send data to backend
   const addcategory = async (name, val) => {
     // console.log(name, val);
-    const data = await fetch(
-      `/category/addcategory/${name}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(val),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    );
+    const dataa5 = `/category/addcategory/${name}`;
+    const data = await fetch(dataa5, {
+      method: "PUT",
+      body: JSON.stringify(val),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
     const res = await data.json();
     // console.log(res);
     setLoading(true);
@@ -344,13 +366,13 @@ function Dashboard() {
         // console.log(name, categoryVal, color);
         val = {
           value: categoryVal,
-          color: color
-        }
-        addcategory(name, val)
+          color: color,
+        };
+        addcategory(name, val);
         setCategoryEdit(false);
         setCategoryVal("");
         setIsOpen(false);
-        setColor('');
+        setColor("");
       }
     } else if (name == "answerType") {
       if (answerTypeVal) {
@@ -367,30 +389,98 @@ function Dashboard() {
   return (
     <div>
       <div className="dash">
-
         {/* admin sidebar */}
         <div className="dash-left">
           <div className="dash-head">Admin Panel</div>
           <div className="side-que">
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "13px" }}
+            >
+              
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
-              <div className={css ? "add-que-hover" : "add-que"}>
+              {/* <div
+                className="all-que"
+                onClick={() => {
+                  handleQues();
+                }}
+              > */}
+                {/* <div
+                className="add-que"
+                onClick={() => {
+                  handleAdd();
+                }}
+              ></div> */}
+                
+                {/* <Link to="/all-ques" className="add-que"> */}
+                
+                {/* <div className="all-que">
+                <MdLibraryAdd className="icon-side" />
+                Add Questions
+              </div> */}
+               <div className="add-que" onClick={() =>handleAdd()}>
                 <MdLibraryAdd className="icon-side" />
                 Add Questions
               </div>
+              {showSubDivs1 && (
+                <div>
+                  <Link key = {'true'} to = {'/dashboard/true'} className = {css ? "add-que-hover" : "add-que"}>
+                  <div className={"feedbox-que"}>
+                    Feedbox Questions
+                  </div>
+                  </Link>
 
-              <Link to="/all-ques" className="add-que" onClick={handleQues}>
+                  <Link key = {'false'} to = {'/dashboard/false'} className={css ? "add-que-hover" : "add-que"}>
+                  <div className={"quant-que"}>
+                    Quant Questions
+                  </div>
+                  </Link>
+                </div>
+              )}
+              {/* <div className="add-que">
+                  <FaList className="icon-side" />
+                  All Questions
+                </div> */}
+                {/* </Link> */}
+                <div className={css ? "add-que-hover" : "add-que"} onClick={() => handleQues()}>
                 <FaList className="icon-side" />
                 All Questions
-              </Link>
+              </div>
+              {/* </div> */}
+              {showSubDivs && (
+                <div>
+                  <Link key={'true'} to = {'/all-ques/true'} className = {css ? "add-que-hover" : "add-que"}>
+                  <div className={"feedbox-que"}>
+                    Feedbox Questions
+                  </div>
+                  </Link>
 
-              <div onClick={() => { setLoginModalShow(true); setCss(false); }} className={css ? "add-que" : "add-que-hover"}>
+                  <Link key={'false'} to = {'/all-ques/false'} className={css ? "add-que-hover" : "add-que"}>
+                  <div className={"quant-que"}>
+                    Quant Questions
+                  </div>
+                  </Link>
+                </div>
+              )}
+
+              <div
+                onClick={() => {
+                  setLoginModalShow(true);
+                  setCss(false);
+                }}
+                className={css ? "add-que" : "add-que-hover"}
+              >
                 <MdLibraryAdd className="icon-side" />
                 Add Resources
               </div>
             </div>
 
-            <ModalResource show={loginModalShow} close={() => { setLoginModalShow(false); setCss(true) }} />
+            <ModalResource
+              show={loginModalShow}
+              close={() => {
+                setLoginModalShow(false);
+                setCss(true);
+              }}
+            />
 
             <div style={{ paddingLeft: "25px" }}>
               <div className="add-que" onClick={handleLogout}>
@@ -398,15 +488,14 @@ function Dashboard() {
                 Logout
               </div>
             </div>
-
           </div>
         </div>
 
-{/* admin nav */}
+        {/* admin nav */}
         <div className="dash-right">
           <div className="ad-nav">
             <div className="admin-name">
-              Khushi Agrawal
+              Kartikeya Mathur
               <FaUserCircle className="" size="25" />
             </div>
           </div>
@@ -434,7 +523,9 @@ function Dashboard() {
                         </option>
                         {categoryNames.length > 0 &&
                           categoryNames.map((category, i) => (
-                            <option key={i} value={category}>{category}</option>
+                            <option key={i} value={category}>
+                              {category}
+                            </option>
                           ))}
                       </select>
                     )}
@@ -464,25 +555,44 @@ function Dashboard() {
                       </button>
                     )}
 
-                    {categoryEdit && <button className="add" onClick={() => setIsOpen(!isOpen)}>
-                      Choose Color
-                    </button>}
+                    {categoryEdit && (
+                      <button
+                        className="add"
+                        onClick={() => setIsOpen(!isOpen)}
+                      >
+                        Choose Color
+                      </button>
+                    )}
                     {isOpen && (
-                      <div style={{ height: "50px", width: "50px", zIndex: 999 }}>
+                      <div
+                        style={{ height: "50px", width: "50px", zIndex: 999 }}
+                      >
                         <ChromePicker
                           color={color}
-                          onChange={(updatedColor) => setColor(updatedColor.hex)}
+                          onChange={(updatedColor) =>
+                            setColor(updatedColor.hex)
+                          }
                         />
                       </div>
                     )}
-                    {categoryEdit && color.length > 0 && <div style={{ backgroundColor: color, width: "30px", height: "30px", borderRadius: "5px" }}></div>}
+                    {categoryEdit && color.length > 0 && (
+                      <div
+                        style={{
+                          backgroundColor: color,
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "5px",
+                        }}
+                      ></div>
+                    )}
 
                     {categoryEdit && (
                       <IoIosRemoveCircle
                         className="cross-icon-img"
                         size="25"
                         onClick={() => {
-                          setCategoryEdit(false); setIsOpen(false)
+                          setCategoryEdit(false);
+                          setIsOpen(false);
                         }}
                       />
                     )}
@@ -535,7 +645,9 @@ function Dashboard() {
                         </option>
                         {answerTypeNames.length > 0 &&
                           answerTypeNames.map((ans, i) => (
-                            <option key={i} value={ans}>{ans}</option>
+                            <option key={i} value={ans}>
+                              {ans}
+                            </option>
                           ))}
                       </select>
                     )}
@@ -588,9 +700,9 @@ function Dashboard() {
                             placeholder="Firms"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() { }}
-                            onRemove={function noRefCheck() { }}
-                            onSearch={function noRefCheck() { }}
+                            onKeyPressFn={function noRefCheck() {}}
+                            onRemove={function noRefCheck() {}}
+                            onSearch={function noRefCheck() {}}
                             onSelect={selectedFirms}
                             options={firmNames}
                             selectedValues={{}}
@@ -645,9 +757,9 @@ function Dashboard() {
                             placeholder="Divisions"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() { }}
-                            onRemove={function noRefCheck() { }}
-                            onSearch={function noRefCheck() { }}
+                            onKeyPressFn={function noRefCheck() {}}
+                            onRemove={function noRefCheck() {}}
+                            onSearch={function noRefCheck() {}}
                             onSelect={selectedDivisions}
                             options={divisionNames}
                             selectedValues={{}}
@@ -702,9 +814,9 @@ function Dashboard() {
                             placeholder="Position"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() { }}
-                            onRemove={function noRefCheck() { }}
-                            onSearch={function noRefCheck() { }}
+                            onKeyPressFn={function noRefCheck() {}}
+                            onRemove={function noRefCheck() {}}
+                            onSearch={function noRefCheck() {}}
                             onSelect={selectedPositions}
                             options={positionNames}
                             selectedValues={{}}
@@ -759,9 +871,9 @@ function Dashboard() {
                             placeholder="Tags"
                             displayValue=""
                             isObject={false}
-                            onKeyPressFn={function noRefCheck() { }}
-                            onRemove={function noRefCheck() { }}
-                            onSearch={function noRefCheck() { }}
+                            onKeyPressFn={function noRefCheck() {}}
+                            onRemove={function noRefCheck() {}}
+                            onSearch={function noRefCheck() {}}
                             onSelect={selectedTags}
                             options={tagNames}
                             selectedValues={{}}
@@ -890,27 +1002,24 @@ function Dashboard() {
                 </div>
               )}
 
-              {(anstype === "Mcq" || anstype === "Text") &&
-                (
-                  <div className="title">
-                    <label className="disp-title">Add Explanation</label>
-                    <textarea
-                      className="quest-input"
-                      type="text"
-                      placeholder="Enter Explanation"
-                      value={explanation}
-                      onChange={(e) => setExplanation(e.target.value)}
-                    />
-                  </div>
-                )}
+              {(anstype === "Mcq" || anstype === "Text") && (
+                <div className="title">
+                  <label className="disp-title">Add Explanation</label>
+                  <textarea
+                    className="quest-input"
+                    type="text"
+                    placeholder="Enter Explanation"
+                    value={explanation}
+                    onChange={(e) => setExplanation(e.target.value)}
+                  />
+                </div>
+              )}
 
-                <ToastContainer/>
+              <ToastContainer />
               <div className="add-btn-admin">
                 <button className="add-btn" onClick={submitHandler}>
                   Add Question
                 </button>
-
-
               </div>
             </div>
           </div>

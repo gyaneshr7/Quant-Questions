@@ -16,11 +16,12 @@ router.get('/', async (req, res) => {
 // get user by id
 router.get('/:id', async (req, res) => {
     try {
-        const data = await User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }]);
-        console.log();
+        const data = await User.aggregate([{ $match: { _id: new mongoose.Types.ObjectId(req.params.id) } }]);
         res.status(200).json(data[0]);
+        console.log("hello");
     } catch (error) {
         res.status(500).json(error);
+        console.log(error);
     }
 })
 
@@ -77,10 +78,12 @@ router.put('/submittedans/:id', async (req, res) => {
             wrongAns: req.body.wrongAns,
             $push: { submittedQuestions: req.body.submittedQuestions },
         }, { new: true }).populate('submittedQuestions');
-        console.log(data);
+        // console.log(data);
         res.status(200).json(data);
     } catch (error) {
+        console.log("Hello");
         res.status(500).json(error);
+        
     }
 })
 
@@ -95,6 +98,7 @@ router.put('/update/ans/status/:id/:quesId', async (req, res) => {
                 }
             }, { new: true })
             res.status(200).json(userdata)
+            console.log("Hi");
         } else {
             const data = await User.findOneAndUpdate({ _id: req.params.id }, {
                 $push: { currentAttempted: req.body }

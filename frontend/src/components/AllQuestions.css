@@ -10,6 +10,12 @@
     width: 800px;
 }
 
+.openbtn web-btn{
+    margin-top: 0%;
+}
+.counterTimer{
+    margin-bottom: 0%;
+}
 .all-ques-drop:hover {
     background-color: rgb(212, 210, 210);
     border-left: 4px solid rgb(108, 108, 235);
@@ -122,7 +128,20 @@
 .ques-d input {
     width: 300px;
 }
-
+.container{
+    margin-bottom: 0%;
+}
+#main{
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+.main-user{
+    margin-bottom: 0%;
+}
+.all-foots{
+    padding: 0%;
+    margin: 0%;
+}
 .quest1:empty:before {
     content: attr(data-placeholder);
 }

@@ -33,10 +33,6 @@ import { RiShieldStarLine } from "react-icons/ri";
 import Modal from "react-bootstrap/Modal";
 import { AiFillStar } from "react-icons/ai";
 import { log } from "util";
-import Timer from "./Timer";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import ConfirmModal from "./ConfirmModal";
 
 function QueDetail() {
   const location = useLocation();
@@ -58,7 +54,6 @@ function QueDetail() {
   const [chooseCategory, setChooseCategory] = useState(false);
   const [categoryCss, setCategoryCss] = useState();
   const [showModal, setShowModal] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const [badge, setBadge] = useState();
   const [star1, setStar1] = useState(false);
@@ -68,29 +63,7 @@ function QueDetail() {
   const [star5, setStar5] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-  const params = useParams();
-
-  // const port = "http://localhost:8000";
-
-  window.history.pushState(null, null, window.location.href);
-  window.onpopstate = function () {
-    window.history.go(1);
-  };
-
-  const questionHandler = () => {
-    setIsConfirmOpen(true);
-  }
-  
-  const handleCloseConfirm = () => {
-    setIsConfirmOpen(false);
-  };
-  
-  const handleConfirm = () => {
-    // Navigate to a specific route
-    localStorage.setItem('targetTime', null);
-    navigate(`/profile`);
-  };
+  // const port = 'http://localhost:8000'
 
   const user = JSON.parse(localStorage.getItem("quantuser"));
 
@@ -106,13 +79,7 @@ function QueDetail() {
     let allRadio = document.querySelectorAll("#my-radio");
     allRadio.forEach((value) => (value.checked = false));
   };
-  // const handleFinalSubmit = () => {
-    
-  //   // if (confirmed) {
-  //     localStorage.setItem('targetTime', null);
-  //      navigate("/profile");
-  //   // }
-  // };
+
   const handlePreviousButtonClick = () => {
     setAnswer("");
     setShowAns(false);
@@ -146,22 +113,18 @@ function QueDetail() {
     : allQuestions && currentQuestion === allQuestions.length - 1;
 
   const fetchQuestions = async () => {
-    const getuser = `/user/${user.id}`;
-    const data1 = await fetch(getuser);
-    const res1 = await data1.json();
-    console.log(res1);
-    const isinterviewee = res1.intervieweeFeedbox;
 
-    const fetchQuestionsUrl = `/question/getallquestions/${isinterviewee}`;
-    const data = await fetch(fetchQuestionsUrl);
+    const fetchquestions = `/question/get/random/question`
+    const data = await fetch(fetchquestions);
     const res = await data.json();
-
-    res &&
-      res.map((ques, i) => {
-        if (ques._id == params.id) {
-          setCurrentQuestion(i);
-        }
-      });
+    // console.log(location.state.id,"jhhjhjjhj");
+    // res &&
+    //   res.map((ques, i) => {
+        // if (ques._id == location.state.id) {
+          setCurrentQuestion(0);
+        //   console.log(i);
+        // }
+    //   });
     setAllquestions(res);
     let category = [];
     res.map((data) => {
@@ -173,7 +136,7 @@ function QueDetail() {
   };
 
   const fetchUser = async () => {
-    const fetchuser = `/user/${user.id}`;
+    const fetchuser = `/user/${user.id}`
     const data = await fetch(fetchuser);
     const res = await data.json();
     setUserData(res);
@@ -192,8 +155,10 @@ function QueDetail() {
       setCurrentQuestion(0);
       setChooseCategory(true);
     } else {
-      const CategoryWiseQuestions = `/question/getquestions/category/${category}`;
-      const data = await fetch(CategoryWiseQuestions);
+      const CategoryWiseQuestions = `/question/getquestions/category/${category}`
+      const data = await fetch(
+        CategoryWiseQuestions
+      );
       const res = await data.json();
       setCategoryQuestions(res);
       setCurrentQuestion(0);
@@ -215,7 +180,7 @@ function QueDetail() {
       return;
     }
 
-    const anssubmithandler = `/user/${user.id}`;
+    const anssubmithandler = `/user/${user.id}`
     const a = await fetch(anssubmithandler);
     const updateduser = await a.json();
     // console.log(updateduser, "updateduser1");
@@ -258,27 +223,9 @@ function QueDetail() {
         quesAcceptance = 1;
         // console.log("correctanswer");
 
-        const feet2 = `/user/get/all/attempted/question/${user.id}`;
-        const data1 = await fetch(feet2);
-        const res = await data1.json();
-        console.log(res);
-        const questionid = chooseCategory
-          ? categoryQuestions[currentQuestion]._id
-          : allQuestions[currentQuestion]._id;
-        let updatedscore = -1;
-        res.currentAttempted.forEach((question) => {
-          if (question.questionId === questionid) {
-            updatedscore = updateduser.score;
-            return;
-          }
-        });
-        if (updatedscore === -1) {
-          updatedscore = updateduser.score + score;
-        }
-
         val = {
           userId: updateduser._id,
-          score: updatedscore,
+          score: updateduser.score + score,
           totalSubmissions: updateduser.totalSubmissions + 1,
           correctAns: updateduser.correctAns + 1,
           wrongAns: updateduser.wrongAns,
@@ -291,15 +238,17 @@ function QueDetail() {
           },
         };
         // update user with submission and correct answers data
-        const submittedData = `/user/submittedans/${userData._id}`;
-        // console.log(userData._id)
-        const data = await fetch(submittedData, {
-          method: "PUT",
-          body: JSON.stringify(val),
-          headers: {
-            "Content-type": "application/json",
-          },
-        });
+        const submittedData = `/user/submittedans/${userData._id}`
+        const data = await fetch(
+          submittedData,
+          {
+            method: "PUT",
+            body: JSON.stringify(val),
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
         const updateUser = await data.json();
         // console.log(updateUser, "updateduser2");
       } else {
@@ -321,16 +270,18 @@ function QueDetail() {
           },
         };
         // update details of user
-        const updateUser = `/user/submittedans/${userData._id}`;
-        const data = await fetch(updateUser, {
-          method: "PUT",
-          body: JSON.stringify(val),
-          headers: {
-            "Content-type": "application/json",
-          },
-        });
+        const data = await fetch(
+          `/user/submittedans/${userData._id}`,
+          {
+            method: "PUT",
+            body: JSON.stringify(val),
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
         const res = await data.json();
-        console.log(res, "wrong");
+        // console.log(res, "wrong");
       }
 
       // set questions submission and accepted value
@@ -344,20 +295,20 @@ function QueDetail() {
       };
 
       // update question for submissions and acceptance
-
-      const updateque = `/question/updateans/${
-        chooseCategory
-          ? categoryQuestions[currentQuestion]._id
-          : allQuestions[currentQuestion]._id
-      }`;
-
-      const updateQues = await fetch(updateque, {
-        method: "PUT",
-        body: JSON.stringify(quesValue),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const updateQues = await fetch(
+        `/question/updateans/${
+          chooseCategory
+            ? categoryQuestions[currentQuestion]._id
+            : allQuestions[currentQuestion]._id
+        }`,
+        {
+          method: "PUT",
+          body: JSON.stringify(quesValue),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const updatedResp = await updateQues.json();
       // console.log(updatedResp, "3")
 
@@ -376,25 +327,24 @@ function QueDetail() {
         chooseCategory
           ? categoryQuestions[currentQuestion]._id
           : allQuestions[currentQuestion]._id
-      }`;
-
-      console.log(allQuestions[currentQuestion]._id);
-      //  allQuestions 65c725545d88d7880279f6bf
-      // userdata.id 65c70fc0fd583745f670d163
-      const updateUser = await fetch(updateQuestions, {
-        method: "PUT",
-        body: JSON.stringify(userUpdation),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      }`
+      const updateUser = await fetch(
+        updateQuestions,
+        {
+          method: "PUT",
+          body: JSON.stringify(userUpdation),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const updatedUserResp = await updateUser.json();
       // console.log(updatedUserResp, "kmjbvtfcrdt");
 
       // update badge status
       let count = 0;
       updatedUserResp.currentAttempted.map((ques) => {
-        if (ques.status == "correct") {
+        if (ques.status === "correct") {
           count++;
         }
       });
@@ -402,64 +352,64 @@ function QueDetail() {
       let badgeval = {};
       let highestCount = updatedUserResp.highestCount;
       if (count >= 0 && count <= 100) {
-        if (count == 2) {
+        if (count === 2) {
           setBadge("Bronze");
           setStar1(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "bone", status: true };
-        } else if (count == 1) {
+        } else if (count === 1) {
           badgeval = { name: "bone", status: false };
         }
-        if (count == 4) {
+        if (count === 4) {
           setBadge("Bronze");
           setStar2(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "btwo", status: true };
-        } else if (count == 3) {
+        } else if (count === 3) {
           badgeval = { name: "btwo", status: false };
         }
-        if (count == 6) {
+        if (count === 6) {
           setBadge("Bronze");
           setStar3(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "bthree", status: true };
-        } else if (count == 5) {
+        } else if (count === 5) {
           badgeval = { name: "bthree", status: false };
         }
-        if (count == 8) {
+        if (count === 8) {
           setBadge("Bronze");
           setStar4(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "bfour", status: true };
-        } else if (count == 7) {
+        } else if (count === 7) {
           badgeval = { name: "bfour", status: false };
         }
-        if (count == 10) {
+        if (count === 10) {
           setBadge("Bronze");
           setStar5(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "bfive", status: true };
-        } else if (count == 9) {
+        } else if (count === 9) {
           badgeval = { name: "bfive", status: false };
         }
-        if (count == 11) {
+        if (count === 11) {
           setBadge("Silver");
           setStar1(true);
           if (count > highestCount) {
             setShowModal(true);
           }
           badgeval = { name: "sone", status: true };
-        } else if (count == 9) {
+        } else if (count === 9) {
           badgeval = { name: "sone", status: false };
         }
         // if (count == 10) {
@@ -521,34 +471,34 @@ function QueDetail() {
         //   }
       }
       if (count > 100 && count <= 250) {
-        if (count == 120) {
+        if (count === 120) {
           setBadge("Silver");
           setStar3(true);
           setShowModal(true);
           badgeval = { name: "sthree", status: true };
         } else if (count > 100 && count < 120) {
           badgeval = { name: "sthree", status: false };
-        } else if (count == 140) {
+        } else if (count === 140) {
           setBadge("Silver");
           setStar4(true);
           setShowModal(true);
           badgeval = { name: "sfour", status: true };
         } else if (count > 120 && count < 140) {
           badgeval = { name: "sfour", status: false };
-        } else if (count == 160) {
+        } else if (count === 160) {
           setBadge("Silver");
           setStar5(true);
           setShowModal(true);
           badgeval = { name: "sfive", status: true };
         } else if (count > 140 && count < 160) {
           badgeval = { name: "sfive", status: false };
-        } else if (count == 220) {
+        } else if (count === 220) {
           setBadge("Gold");
           setStar1(true);
           badgeval = { name: "gone", status: true };
         } else if (count > 160 && count < 220) {
           badgeval = { name: "gone", status: false };
-        } else if (count == 250) {
+        } else if (count === 250) {
           setBadge("Gold");
           setStar2(true);
           badgeval = { name: "gtwo", status: true };
@@ -557,28 +507,28 @@ function QueDetail() {
         }
       }
       if (count > 250 && count <= 420) {
-        if (count == 280) {
+        if (count === 280) {
           setBadge("Gold");
           setStar3(true);
           badgeval = { name: "gthree", status: true };
         } else if (count > 250 && count < 280) {
           badgeval = { name: "gthree", status: false };
         }
-        if (count == 310) {
+        if (count === 310) {
           setBadge("Gold");
           setStar4(true);
           badgeval = { name: "gfour", status: true };
         } else if (count > 280 && count < 310) {
           badgeval = { name: "gfour", status: false };
         }
-        if (count == 340) {
+        if (count === 340) {
           setBadge("Gold");
           setStar5(true);
           badgeval = { name: "gfive", status: true };
         } else if (count > 310 && count < 340) {
           badgeval = { name: "gfive", status: false };
         }
-        if (count == 420) {
+        if (count === 420) {
           setBadge("Platinum");
           setStar1(true);
           badgeval = { name: "pone", status: true };
@@ -587,28 +537,28 @@ function QueDetail() {
         }
       }
       if (count > 420 && count <= 600) {
-        if (count == 465) {
+        if (count === 465) {
           setBadge("Platinum");
           setStar2(true);
           badgeval = { name: "ptwo", status: true };
         } else if (count > 420 && count < 465) {
           badgeval = { name: "ptwo", status: false };
         }
-        if (count == 510) {
+        if (count === 510) {
           setBadge("Platinum");
           setStar3(true);
           badgeval = { name: "pthree", status: true };
         } else if (count > 465 && count < 510) {
           badgeval = { name: "pthree", status: false };
         }
-        if (count == 555) {
+        if (count === 555) {
           setBadge("Platinum");
           setStar4(true);
           badgeval = { name: "pfour", status: true };
         } else if (count > 510 && count < 555) {
           badgeval = { name: "pfour", status: false };
         }
-        if (count == 600) {
+        if (count === 600) {
           setBadge("Platinum");
           setStar5(true);
           badgeval = { name: "pfive", status: true };
@@ -629,17 +579,20 @@ function QueDetail() {
       }
       // console.log(badgeval,count,highestCount);
 
-      const badgeUpdate = `/user/update/badge/status/${userData._id}`;
-      const updatebadge = await fetch(badgeUpdate, {
-        method: "PUT",
-        body: JSON.stringify(badgeCountVal),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const updatebadge = await fetch(
+        `/user/update/badge/status/${userData._id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(badgeCountVal),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const badgeres = await updatebadge.json();
       // console.log(badgeres)
     }
+    
   };
 
   const showMyAnswer = () => {
@@ -706,17 +659,8 @@ function QueDetail() {
   };
 
   return (
-    <div style={{height: "calc(100vh + 61.03px)"}}>
-      <ConfirmModal
-        isOpen={isConfirmOpen}
-        onClose={handleCloseConfirm}
-        onConfirm={handleConfirm}
-        text={"Submit the test?"}
-      />
+    <div>
       <Header />
-      <div>
-
-      <Timer />
       <div id="main" className="detail-side">
         <div className="que-side">
           <div id="main">
@@ -743,7 +687,7 @@ function QueDetail() {
                 <div className="detail-title quest-title">
                   {chooseCategory
                     ? categoryQuestions[currentQuestion] &&
-                    categoryQuestions[currentQuestion].title
+                      categoryQuestions[currentQuestion].title
                     : allQuestions && allQuestions[currentQuestion].title}
                 </div>
               </div>
@@ -760,7 +704,7 @@ function QueDetail() {
                   <AiOutlineMail size={23} />
                   <GrNote size={17} />
                   <AiOutlineLike size={23} color="green" />
-                  </div>
+                </div>
                 <div className="icon-line2">
                   <DiJavascript1 size={20} />
                   <RiLightbulbFlashLine size={20} />
@@ -800,7 +744,7 @@ function QueDetail() {
                 <div className="options">
                   {categoryQuestions[currentQuestion].options.map(
                     (option, i) =>
-                    option !== "" && (
+                      option !== "" && (
                         <div className="disp-radio" key={i}>
                           <input
                             type="radio"
@@ -842,8 +786,8 @@ function QueDetail() {
                 {allQuestions &&
                   allQuestions[currentQuestion].options.map(
                     (option, i) =>
-                    option !== "" && (
-                      <div className="disp-radio" key={i}>
+                      option !== "" && (
+                        <div className="disp-radio" key={i}>
                           <input
                             type="radio"
                             id="my-radio"
@@ -865,13 +809,13 @@ function QueDetail() {
             )}
 
             <div className="align-btn">
-              <button className="submit" disabled={answer === ""}>
+              <button className="submit">
                 {loading ? (
                   <div
                     className="spinner-border text-white"
                     role="status"
                     style={{ height: "15px", width: "15px" }}
-                    >
+                  >
                     <span className="visually-hidden">Loading...</span>
                   </div>
                 ) : (
@@ -880,18 +824,18 @@ function QueDetail() {
                   </div>
                 )}
               </button>
-
-              {/* {correctAns && (
+              
+              {correctAns && (
                 <p className="correct-ans-style">Correct Answer</p>
               )}
               {wrongAns && (
                 <>
                   <button className="show-ans-btn" onClick={showMyAnswer}>
-                  {hide ? "Hide Answer" : "View Answer"}
+                    {hide ? "Hide Answer" : "View Answer"}
                   </button>
                   <p className="wrong-ans-style">Wrong Answer</p>
                 </>
-              )} */}
+              )}
             </div>
 
             <div className="show-my-ans">
@@ -922,7 +866,7 @@ function QueDetail() {
                   //  dangerouslySetInnerHTML={{__html: `${chooseCategory ? categoryQuestions[currentQuestion] && katex.renderToString(categoryQuestions[currentQuestion].explanation) : allQuestions && katex.renderToString(allQuestions[currentQuestion].explanation)}`}}
                    plugins={[remarkMath]}
                   //  renderers={renderers}           
-                  remarkPlugins={[gfm]}
+                   remarkPlugins={[gfm]}
                    rehypePlugins={[rehypeRaw]} 
                    style={{justifyContent:"left"}} >
                   </ReactMarkdown> */}
@@ -976,7 +920,7 @@ function QueDetail() {
               <div
                 className={
                   categoryCss == "All"
-                  ? "categoryonclick categoryClicked"
+                    ? "categoryonclick categoryClicked"
                     : "categoryonclick"
                 }
                 onClick={() => {
@@ -997,7 +941,7 @@ function QueDetail() {
                   <div
                     className={
                       categoryCss == data
-                      ? "categoryonclick categoryClicked"
+                        ? "categoryonclick categoryClicked"
                         : "categoryonclick"
                     }
                     onClick={() => {
@@ -1026,7 +970,7 @@ function QueDetail() {
               <div
                 className={
                   categoryCss === "All"
-                  ? "categoryonclick categoryClicked"
+                    ? "categoryonclick categoryClicked"
                     : "categoryonclick"
                 }
                 onClick={() => {
@@ -1042,8 +986,8 @@ function QueDetail() {
                   <div
                     className={
                       categoryCss === data
-                      ? "categoryonclick categoryClicked"
-                      : "categoryonclick"
+                        ? "categoryonclick categoryClicked"
+                        : "categoryonclick"
                     }
                     onClick={() => {
                       fetchCategoryWiseQuestions(data);
@@ -1097,14 +1041,14 @@ function QueDetail() {
             </div>
             {open1 && (
               <div className="detail-block">
-                {/* <div className="my-detail">
+                <div className="my-detail">
                   <div className="status-detail">Status:</div>
                   <div className="solving">
                     {userData && chooseCategory ? (
                       userData &&
                       userData.currentAttempted.some(
                         (data) =>
-                        data.questionId ===
+                          data.questionId ===
                           categoryQuestions[currentQuestion]._id
                       ) ? (
                         userData &&
@@ -1129,7 +1073,7 @@ function QueDetail() {
                       userData.currentAttempted.some(
                         (data) =>
                           data.questionId === allQuestions[currentQuestion]._id
-                          ) ? (
+                      ) ? (
                       userData &&
                       userData &&
                       userData.currentAttempted.map((data) => (
@@ -1142,26 +1086,26 @@ function QueDetail() {
                           {data.questionId ===
                             allQuestions[currentQuestion]._id &&
                             data.status === "wrong" && <div>{data.status}</div>}
-                            </>
+                        </>
                       ))
                     ) : (
                       <div>Unsolved</div>
-                      )}
-                      </div>
-                </div>*/}
+                    )}
+                  </div>
+                </div>
                 <div className="my-detail">
                   <div className="status-detail">Difficulty:</div>
                   <div
                     className={
                       chooseCategory
-                      ? categoryQuestions[currentQuestion].difficulty ===
-                      "easy"
+                        ? categoryQuestions[currentQuestion].difficulty ===
+                          "easy"
                           ? "success-de"
                           : categoryQuestions[currentQuestion].difficulty ===
-                          "hard"
+                            "hard"
                           ? "danger-de"
                           : "medium-de"
-                          : allQuestions[currentQuestion].difficulty === "easy"
+                        : allQuestions[currentQuestion].difficulty === "easy"
                         ? "success-de"
                         : allQuestions[currentQuestion].difficulty === "hard"
                         ? "danger-de"
@@ -1227,7 +1171,7 @@ function QueDetail() {
                 <div className="all-firms"></div>
                 {chooseCategory
                   ? categoryQuestions[currentQuestion].tags.map((item) => (
-                    <div className="all-firms">
+                      <div className="all-firms">
                         <div className="tag-item">{item}</div>
                       </div>
                     ))
@@ -1251,11 +1195,11 @@ function QueDetail() {
               <div className="main-tags">
                 {chooseCategory
                   ? categoryQuestions[currentQuestion].firms.map((item) => (
-                    <div className="all-firms">
+                      <div className="all-firms">
                         <div className="tag-item">{item}</div>
                       </div>
                     ))
-                    : allQuestions[currentQuestion].firms.map((item) => (
+                  : allQuestions[currentQuestion].firms.map((item) => (
                       <div className="all-firms">
                         <div className="tag-item">{item}</div>
                       </div>
@@ -1263,13 +1207,6 @@ function QueDetail() {
               </div>
             )}
           </div>
-          {isNextDisabled && (
-            <div style={{ margin: "5vh" }}>
-              <button className="submit" onClick={() => questionHandler()}>
-                Final Submit
-              </button>
-            </div>
-          )}
         </div>
       </div>
       <Modal
@@ -1312,7 +1249,7 @@ function QueDetail() {
                   <AiFillStar
                     className={
                       star2 || star3 || star4 || star5
-                      ? "star"
+                        ? "star"
                         : "star star-class"
                     }
                   />
@@ -1363,7 +1300,7 @@ function QueDetail() {
         style={{ position: "absolute", width: 0, height: 0 }}
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
-        >
+      >
         <defs>
           <filter id="goo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
@@ -1374,13 +1311,12 @@ function QueDetail() {
               mode="matrix"
               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
               result="goo"
-              />
+            />
             <feComposite in="SourceGraphic" in2="goo" operator="atop" />
           </filter>
         </defs>
       </svg>
     </div>
-              </div>
   );
 }
 

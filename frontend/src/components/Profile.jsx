@@ -24,7 +24,7 @@ function Profile() {
   const [categories, setCategories] = useState([]);
   const user = JSON.parse(localStorage.getItem("quantuser"));
   const [show, setShow] = useState(false);
-
+// const port="http://localhost:8000";
   // correct and wrong answers
   const correct = [],
     wrong = [];
@@ -109,7 +109,8 @@ function Profile() {
 
   // fetch categories
   const fetchCategories = async () => {
-    const data = await fetch(`/category/getcategories`);
+    const feet1=`/category/getcategories`;
+    const data = await fetch(feet1);
     const res = await data.json();
     setCategories(res.category);
   }
@@ -117,8 +118,9 @@ function Profile() {
   useEffect(() => {
     let score = [];
     const fetchData = async () => {
+      const feet2=`/user/get/all/attempted/question/${user.id}`;
       const data = await fetch(
-        `/user/get/all/attempted/question/${user.id}`
+        feet2
       );
       const res = await data.json();
       // console.log(res.badges.filter(obj=>obj.name=='bfour' && obj.status==true))
@@ -126,14 +128,26 @@ function Profile() {
       setSubmittedQuestions(res.submittedQuestions.reverse());
     };
     const fetchQuestions = async () => {
-      const data = await fetch(
-        `/question/getallquestions`
-      );
-      const res = await data.json();
+
+      // const feet3=`${port}/question/getallquestions`;
+      // const data = await fetch(
+      //   feet3
+      // );
+      // const res = await data.json();
+      const getuser=`/user/${user.id}`
+    const data1=await fetch(getuser)
+    const res1=await data1.json();
+    console.log(res1);
+    const isinterviewee=res1.intervieweeFeedbox;
+
+    const fetchQuestionsUrl=`/question/getallquestions/${isinterviewee}`
+    const data = await fetch(fetchQuestionsUrl);
+    const res = await data.json();
       setQuestions(res);
     };
     const fetchScore = async () => {
-      const data = await fetch(`/user/get/scores`);
+      const feet4=`/user/get/scores`;
+      const data = await fetch(feet4);
       const res = await data.json();
       res &&
         res.map((data) => {
@@ -154,9 +168,9 @@ function Profile() {
       {
         label: "",
         data: [
-          questions && questions.length,
+          questions && (questions.length-(correct.length+wrong.length)),
           correct.length > 0 && correct.length,
-          wrong && wrong.length,
+          wrong && correct && (wrong.length+correct.length),
         ],
         backgroundColor: ["#3f497f", "#539165", "#f7C04A"],
         // backgroundColor: ["#8da0cb", "#66c2a5", "rgb(81, 80, 80)"],
@@ -285,7 +299,7 @@ function Profile() {
                 <div className="define-prog prog1">
                   <p>Todo</p>
                   <p style={{ textAlign: "center" }}>
-                    {questions && questions.length}
+                    {questions && (questions.length-correct.length-wrong.length)}
                   </p>
                 </div>
 
@@ -298,7 +312,7 @@ function Profile() {
 
                 <div className="define-prog prog3">
                   <p>Attempted</p>
-                  <p style={{ textAlign: "center" }}>{wrong && wrong.length}</p>
+                  <p style={{ textAlign: "center" }}>{wrong && correct && (wrong.length+correct.length)}</p>
                 </div>
               </div>
             </div>
@@ -321,8 +335,8 @@ function Profile() {
                   <tbody>
                     {submittedQuestions &&
                       submittedQuestions.slice(0, 10).map((data, i) => (
-                        <tr key={i}>
-                          {data.question &&
+                        data.question && <tr key={i}>
+                          {data.question && 
                           <Link to="/quedetail" style={{textDecoration:"none",color:"black"}} state={{ id: data.question._id }}><td className="que-co">{data.question.title}</td></Link>}
                           <td>
                             {data.correctAns ? (

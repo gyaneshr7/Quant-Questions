@@ -9,7 +9,7 @@ var jwt = require('jsonwebtoken');
 router.post("/register", async (req, res) => {
   try {
     console.log(req.body);
-    const { name, email, password,phoneNo,role } = req.body;
+    const { name, email, password,phoneNo,role,intervieweeFeedbox } = req.body;
     
     // Validate user input
     if (!(email && password && name )) {
@@ -25,8 +25,9 @@ router.post("/register", async (req, res) => {
           name,
           email: email.toLowerCase(), // sanitize: convert email to lowercase
           password: CryptoJS.AES.encrypt(req.body.password, process.env.JWT_SecretKey).toString(),
-          role: role,
-          phoneNo:phoneNo
+          role,
+          phoneNo,
+          intervieweeFeedbox   // whenever in an object if there is a single instance of a key like this then it means name of the key is equal to name of the value
         });
 
         // return new user
@@ -46,8 +47,12 @@ router.post("/login", async (req, res) => {
     const password = req.body.password;
     const role = req.body.role;
     const user = await User.aggregate([{ $match: { email: email } }]);
-    console.log(user[0].password);
-    console.log(user[0].email);
+    if (!user || user.length < 1) {
+      res.status(401).json("wrong email or password");
+    }
+    // console.log(user)
+    // console.log(user[0].password);
+    // console.log(user[0].email);
     var bytes = CryptoJS.AES.decrypt(user[0].password, process.env.JWT_SecretKey);
     var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
  

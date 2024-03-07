@@ -1,3 +1,8 @@
+
+.container{
+    overflow: hidden;
+}
+
 .detail-side{
     display:flex;
     justify-content: center;
@@ -13,6 +18,9 @@
     border-radius: 5px;
 }
 
+.disp-sidebar{
+    margin-top: 0%;
+}
 .detail-two{
     margin-top: 86px;
     width:250px;
@@ -44,6 +52,7 @@
     color:black;
     font-family: 'Campton-Bold',helvetica,sans-serif;
     font-weight: 800;
+    height: 8vh;
 }
 
 .quest-title{
@@ -61,12 +70,14 @@
     color:black;
     width:750px;
     font-weight: 500;
+    height:15vh
 }
 
 .que-side{
     padding-bottom: 50px;
     display: flex;
     flex-direction: column;
+    height:100vh;
 }
 .answer{
     text-align: left;
@@ -173,6 +184,7 @@
     margin-left: 40px;
     position: relative;
     top:-15px;
+    height: 31vh;
 }
 
 .disp-radio{
@@ -567,7 +579,10 @@
 
     .detail-one{
         width:350px;
-        margin:auto;
+        margin:50vh;
+        height: 5vh;
+        overflow: auto;
+        box-sizing: border-box;
     }
 
     .main-detail{
@@ -579,6 +594,7 @@
     .detail-title{
         font-size: 15px;
         text-align: justify;
+        height: 16vh;
     }
 
     .que-descr{

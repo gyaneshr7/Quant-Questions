@@ -5,21 +5,51 @@ const User = require('../models/User');
 
 // Add questions
 router.post('/add', async (req, res) => {
-    console.log(req.body);
+    console.log("This is request",req.body);
     try {
         const question = await Questions.create(req.body);
+        //console.log(question);
         res.status(500).json(question);
     } catch (error) {
         res.status(500).json(error);  
     }
 })
-
-// Fetch all questions
 router.get('/getallquestions', async (req, res) => {
     try {
         const questions = await Questions.aggregate([{ $match: {} }]);
-        res.status(500).json(questions);
+        res.json(questions);
     } catch (error) {
+        res.status(500).json(error);
+    } 
+})
+// Fetch all questions
+router.get('/getallquestions/:isinterviewee', async (req, res) => {
+    try {
+        //   getallquestions/:isinterviewee here :isinterviewee is the parameter of the request which is variable in nature it is true when 
+        const isinterviewee=req.params.isinterviewee; //the variable interviewee stores the boolean value of parameter from the request 
+        let questions=[];
+        // const userid = req.params.id;
+        console.log(isinterviewee);   
+        const isInterviewee = isinterviewee === 'true'?"true":"false"; // Parse to boolean
+        console.log(typeof(isinterviewee))
+
+        if (isInterviewee=="true"){
+            
+             questions = await Questions.aggregate([
+                { $match: { category: 'Feedbox Recruitment' } }
+            ]);
+            //  res.status(200).json(questions); 
+        } 
+        else{
+            questions = await Questions.aggregate([{ $match: { category: { $nin: ["Feedbox Recruitment"] } } }]);
+            // questions = await Questions.aggregate([{$match: { category: { $in: ['brainteaser','verbal','Mathematics','Profit and Loss','Trigonometry' ] } } }]);
+        console.log("hi",questions)
+        // res.status(200).json(questions);
+        }
+          res.status(200).json(questions);
+        
+    } catch (error) {
+        console.log(error)
         res.status(500).json(error);
     }
 })
@@ -72,7 +102,7 @@ router.get('/get/random/question', async (req, res) => {
     try {
         const questions = await Questions.aggregate([
             { $match: {} },
-            { $sample: { size: 1 } }
+            { $sample: { size: 10 } }
         ])
         res.status(500).json(questions);
     } catch (error) {

@@ -9,10 +9,12 @@ import { Link } from "react-router-dom";
 function Submissions() {
   const [submittedQuestions, setSubmittedQuestions] = useState();
   const user = JSON.parse(localStorage.getItem("quantuser"));
+  // const port="";
   useEffect(() => {
     const fetchData = async () => {
+      const dat21=`/user/get/all/attempted/question/${user.id}`;
       const data = await fetch(
-        `/user/get/all/attempted/question/${user.id}`
+        dat21
       );
       const res = await data.json();
       setSubmittedQuestions(res.submittedQuestions.reverse());
@@ -60,7 +62,7 @@ function Submissions() {
               <tbody className="tablebody">
               {tableData &&
                 tableData.map((data) => (
-                  <tr height="1%">
+                  data.question && <tr height="1%">
                     <td className="set">{data.date}</td>
                     
                     <td className="quest set que-co">
@@ -136,7 +138,7 @@ function Submissions() {
               <tbody className="tablebody">
               {tableData &&
                 tableData.map((data) => (
-                  <tr height="1%">
+                 data.question && <tr height="1%">
                     {/* <td className="set">{data.date}</td> */}
                     
                     

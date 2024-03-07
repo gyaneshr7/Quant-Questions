@@ -19,7 +19,7 @@ const mongo_url = process.env.MONGO_URL;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(
-  "mongodb+srv://kartikeyamathur16:kartikeya@cluster0.foqphxt.mongodb.net/?retryWrites=true&w=majority"
+  mongo_url
 );
 
 app.use(express.json());

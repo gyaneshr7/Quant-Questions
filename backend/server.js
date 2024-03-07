@@ -14,7 +14,7 @@ const categoryController = require("./routes/category");
 const resourceController = require("./routes/resource");
 
 dotenv.config();
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 const mongo_url = process.env.MONGO_URL;
 
 mongoose.set("strictQuery", false);
